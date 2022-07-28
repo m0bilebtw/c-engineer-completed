@@ -13,16 +13,20 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,14 +74,18 @@ public class CEngineerCompletedPlugin extends Plugin
 	};
 
 	// Killcount and new pb patterns from runelite/ChatCommandsPlugin
+	private static final String ZULRAH = "Zulrah";
+	private static final String C_ENGINEER = "C Engineer";
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
 	private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
 	private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
 	private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? (?:\\w+) combat task:.*");
 	private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
-	private static final String C_ENGINEER = "C Engineer";
-	private static final String ZULRAH = "Zulrah";
+	private static final Pattern BOND_OFFER_REGEX = Pattern.compile(C_ENGINEER + " is offering to give you a bond\\.");
+
+	Sound[] BOND_OFFER_SOUNDS = new Sound[] { Sound.BOND_OFFER_1, Sound.BOND_OFFER_2, Sound.BOND_OFFER_3 };
+	private static final Random random = new Random();
 
     private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
@@ -293,6 +301,29 @@ public class CEngineerCompletedPlugin extends Plugin
 
 		// save tick so that next time we get an offer, we can check it isn't the duplicate of this offer
 		lastGEOfferTick = client.getTickCount();
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded e) {
+		if (e.getGroupId() != WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId() || !config.easterEggs())
+			return;
+
+		clientThread.invokeLater(() -> {
+			Widget root = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId(), WidgetInfo.DIALOG_OPTION_OPTIONS.getChildId());
+			if (root == null)
+				return;
+
+			Widget[] children = root.getChildren();
+			if (children == null)
+				return;
+
+			for (Widget child : children) {
+				if (BOND_OFFER_REGEX.matcher(Text.removeTags(child.getText())).matches()) {
+					soundEngine.playClip(BOND_OFFER_SOUNDS[random.nextInt(BOND_OFFER_SOUNDS.length)]);
+					return;
+				}
+			}
+		});
 	}
 
 	private boolean isAchievementDiaryCompleted(int diary, int value) {

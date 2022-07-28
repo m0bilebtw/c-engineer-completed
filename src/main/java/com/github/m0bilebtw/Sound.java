@@ -10,7 +10,10 @@ public enum Sound {
     EASTER_EGG_STAIRCASE("Staircase_r1.wav"),
     EASTER_EGG_STRAYDOG_BONE("ILoveYou_r1.wav"),
     EASTER_EGG_TWISTED_BOW_1GP("TwistedBow1GP_r1.wav"),
-    EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav");
+    EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav"),
+    BOND_OFFER_1("BondTroll1_r1.wav"),
+    BOND_OFFER_2("BondTroll2_r1.wav"),
+    BOND_OFFER_3("BondTroll3_r1.wav");
 
     private final String resourceName;
 
