@@ -76,6 +76,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	// Killcount and new pb patterns from runelite/ChatCommandsPlugin
 	private static final String ZULRAH = "Zulrah";
 	private static final String C_ENGINEER = "C Engineer";
+	private static final String M0BILE_BTW = "m0bile btw";
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
 	private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
@@ -97,6 +98,8 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastLoginTick = -1;
 	private int lastGEOfferTick = -1;
 	private int lastZulrahKillTick = -1;
+
+	private Player cEngineerPlayer = null;
 
 	@Override
 	protected void startUp() throws Exception
@@ -325,6 +328,51 @@ public class CEngineerCompletedPlugin extends Plugin
 			}
 		});
 	}
+
+	@Subscribe
+	public void onPlayerSpawned(PlayerSpawned playerSpawned) {
+		Player player = playerSpawned.getPlayer();
+
+		if (M0BILE_BTW.equals(player.getName())) { // todo change to c engi
+			cEngineerPlayer = player;
+		}
+	}
+
+	@Subscribe
+	public void onPlayerDespawned(PlayerDespawned playerDespawned) {
+		Player player = playerDespawned.getPlayer();
+
+		if (M0BILE_BTW.equals(player.getName())) { // todo change to c engi
+			cEngineerPlayer = null;
+		}
+	}
+
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved projectileMoved) {
+		if (cEngineerPlayer == null)
+			return;
+
+		Projectile projectile = projectileMoved.getProjectile();
+		if (projectile.getId() != /*snowball*/ 861)
+			return;
+
+		Actor myself = client.getLocalPlayer();
+		if (myself == null)
+			return;
+
+		Actor projectileInteracting = projectile.getInteracting();
+		LocalPoint cEngineerLocation = cEngineerPlayer.getLocalLocation();
+
+		if (myself.equals(projectileInteracting) &&
+				cEngineerLocation.getX() == projectile.getX1() &&
+				cEngineerLocation.getY() == projectile.getY1()) {
+			log.debug("Incoming snowball from {}!", cEngineerPlayer.getName());
+			client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Watch out, snowball incoming!", C_ENGINEER);
+		}
+
+		// todo cooldown?
+	}
+
 
 	private boolean isAchievementDiaryCompleted(int diary, int value) {
 		switch (diary) {
