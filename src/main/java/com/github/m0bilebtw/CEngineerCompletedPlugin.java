@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+
+import static com.github.m0bilebtw.Sound.BOND_OFFER_SOUNDS;
+import static com.github.m0bilebtw.Sound.SNOWBALL_SOUNDS;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_EASY;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_HARD;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_MEDIUM;
@@ -85,7 +88,6 @@ public class CEngineerCompletedPlugin extends Plugin
 	private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
 	private static final Pattern BOND_OFFER_REGEX = Pattern.compile(C_ENGINEER + " is offering to give you a bond\\.");
 
-	Sound[] BOND_OFFER_SOUNDS = new Sound[] { Sound.BOND_OFFER_1, Sound.BOND_OFFER_2, Sound.BOND_OFFER_3 };
 	private static final Random random = new Random();
 
     private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
@@ -368,6 +370,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				cEngineerLocation.getY() == projectile.getY1()) {
 			log.debug("Incoming snowball from {}!", cEngineerPlayer.getName());
 			client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Watch out, snowball incoming!", C_ENGINEER);
+			soundEngine.playClip(SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)]);
 		}
 
 		// todo cooldown?
@@ -386,8 +389,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	}
 
 	@Provides
-	CEngineerCompletedConfig provideConfig(ConfigManager configManager)
-	{
+	CEngineerCompletedConfig provideConfig(ConfigManager configManager) {
 		return configManager.getConfig(CEngineerCompletedConfig.class);
 	}
 
