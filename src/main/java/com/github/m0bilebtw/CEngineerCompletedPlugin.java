@@ -31,6 +31,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,6 +101,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastLoginTick = -1;
 	private int lastGEOfferTick = -1;
 	private int lastZulrahKillTick = -1;
+	private int lastSnowballTriggerTick = -1;
 
 	private Player cEngineerPlayer = null;
 
@@ -335,7 +337,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	public void onPlayerSpawned(PlayerSpawned playerSpawned) {
 		Player player = playerSpawned.getPlayer();
 
-		if (M0BILE_BTW.equals(player.getName())) { // todo change to c engi
+		if (C_ENGINEER.equals(player.getName())) {
 			cEngineerPlayer = player;
 		}
 	}
@@ -344,7 +346,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	public void onPlayerDespawned(PlayerDespawned playerDespawned) {
 		Player player = playerDespawned.getPlayer();
 
-		if (M0BILE_BTW.equals(player.getName())) { // todo change to c engi
+		if (C_ENGINEER.equals(player.getName())) {
 			cEngineerPlayer = null;
 		}
 	}
@@ -358,22 +360,30 @@ public class CEngineerCompletedPlugin extends Plugin
 		if (projectile.getId() != /*snowball*/ 861)
 			return;
 
+		int currentTick = client.getTickCount();
+		if (currentTick - lastSnowballTriggerTick < 50) // 30s cool down
+			return;
+
 		Actor myself = client.getLocalPlayer();
 		if (myself == null)
 			return;
 
 		Actor projectileInteracting = projectile.getInteracting();
-		LocalPoint cEngineerLocation = cEngineerPlayer.getLocalLocation();
+		if (!myself.equals(projectileInteracting))
+			return;
 
-		if (myself.equals(projectileInteracting) &&
-				cEngineerLocation.getX() == projectile.getX1() &&
-				cEngineerLocation.getY() == projectile.getY1()) {
-			log.debug("Incoming snowball from {}!", cEngineerPlayer.getName());
-			client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Watch out, snowball incoming!", C_ENGINEER);
-			soundEngine.playClip(SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)]);
+		if (!config.easterEggs())
+			return;
+
+		WorldPoint cEngineerWP = cEngineerPlayer.getWorldLocation();
+		WorldPoint projectileWP = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), cEngineerWP.getPlane()); // we don't care about plane
+
+		// check snowball is *roughly* from C's tile, while allowing for drive-by/moving while the projectile spawns
+		if (cEngineerWP.distanceTo2D(projectileWP) <= 2){
+			lastSnowballTriggerTick = currentTick;
+			executor.schedule(() -> soundEngine.playClip(SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)]),
+					10, TimeUnit.SECONDS);
 		}
-
-		// todo cooldown?
 	}
 
 
