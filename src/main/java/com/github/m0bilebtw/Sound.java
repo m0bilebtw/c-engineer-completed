@@ -23,7 +23,7 @@ public enum Sound {
     SNOWBALL_7("SnowballTroll7_r1.wav"),
     SNOWBALL_8("SnowballTroll8_r1.wav"),
     SNOWBALL_9("SnowballTroll9_r1.wav"),
-    HAIRCUT("Haircut_r1.wav"); // todo make use of haircut
+    HAIRCUT("Haircut_r1.wav");
 
     private final String resourceName;
 

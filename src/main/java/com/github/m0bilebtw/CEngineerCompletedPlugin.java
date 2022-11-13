@@ -14,6 +14,7 @@ import static net.runelite.api.Varbits.DIARY_KARAMJA_HARD;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_MEDIUM;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
@@ -80,7 +81,6 @@ public class CEngineerCompletedPlugin extends Plugin
 	// Killcount and new pb patterns from runelite/ChatCommandsPlugin
 	private static final String ZULRAH = "Zulrah";
 	private static final String C_ENGINEER = "C Engineer";
-	private static final String M0BILE_BTW = "m0bile btw";
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
 	private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
@@ -91,7 +91,8 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	private static final Random random = new Random();
 
-    private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
+	private static final WorldArea FALADOR_HAIRDRESSER = new WorldArea(new WorldPoint(2942, 3377, 0), 8, 12);
+	private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y = 3229;
 
@@ -312,8 +313,19 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded e) {
-		if (e.getGroupId() != WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId() || !config.easterEggs())
+		if (!config.easterEggs() ||
+				(e.getGroupId() != WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId() &&
+						e.getGroupId() != WidgetInfo.FIXED_VIEWPORT_INVENTORY_CONTAINER.getChildId()) )
 			return;
+
+		if (e.getGroupId() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_CONTAINER.getChildId()) {
+			// getting the haircut widget via IDs etc seems overly difficult, so just check location
+			WorldPoint currentLocation = client.getLocalPlayer().getWorldLocation();
+			if (FALADOR_HAIRDRESSER.contains(currentLocation)) {
+				soundEngine.playClip(Sound.HAIRCUT);
+			}
+			return;
+		}
 
 		clientThread.invokeLater(() -> {
 			Widget root = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId(), WidgetInfo.DIALOG_OPTION_OPTIONS.getChildId());
