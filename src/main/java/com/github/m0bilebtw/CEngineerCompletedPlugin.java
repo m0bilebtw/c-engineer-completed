@@ -20,8 +20,13 @@ import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -29,8 +34,10 @@ import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -51,6 +58,9 @@ public class CEngineerCompletedPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private SoundEngine soundEngine;
@@ -96,6 +106,10 @@ public class CEngineerCompletedPlugin extends Plugin
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y = 3229;
 
+    private static final Set<Integer> badCollectionLogNotificationSettingValues = new HashSet<Integer>() {{
+    	add(0); add(2);
+    }};
+
 	private final Map<Skill, Integer> oldExperience = new EnumMap<>(Skill.class);
 	private final Map<Integer, Integer> oldAchievementDiaries = new HashMap<>();
 
@@ -103,6 +117,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastGEOfferTick = -1;
 	private int lastZulrahKillTick = -1;
 	private int lastSnowballTriggerTick = -1;
+	private int lastColLogSettingWarning = -1;
 
 	private Player cEngineerPlayer = null;
 
@@ -249,8 +264,24 @@ public class CEngineerCompletedPlugin extends Plugin
 		}
 	}
 
+	private void checkAndWarnForCollectionLogNotificationSetting(int newVarbitValue) {
+        if (!config.announceCollectionLog())
+            return;
+
+        if (badCollectionLogNotificationSettingValues.contains(newVarbitValue)) {
+            if (lastColLogSettingWarning == -1 || client.getTickCount() - lastColLogSettingWarning > 16) {
+                lastColLogSettingWarning = client.getTickCount();
+                sendHighlightedMessage("Please enable \"Collection log - New addition notification\" in your game settings for C Engineer to know when to announce it!");
+            }
+        }
+	}
+
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged) {
+		if (varbitChanged.getVarbitId() == Varbits.COLLECTION_LOG_NOTIFICATION) {
+			checkAndWarnForCollectionLogNotificationSetting(varbitChanged.getValue());
+		}
+
 		// As we can't listen to specific varbits, we get a tonne of events BEFORE the game has even set the player's
 		// diary varbits correctly, meaning it assumes every diary is on 0, then suddenly every diary that has been
 		// completed gets updated to the true value and tricks the plugin into thinking they only just finished it.
@@ -415,13 +446,31 @@ public class CEngineerCompletedPlugin extends Plugin
 		return configManager.getConfig(CEngineerCompletedConfig.class);
 	}
 
+	private void sendHighlightedMessage(String message) {
+		String highlightedMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(message)
+				.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(highlightedMessage)
+				.build());
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event) {
+		if (CEngineerCompletedConfig.GROUP.equals(event.getGroup())) {
+
 // Disabled - fires continuously while spinner arrow is held - when this is avoidable, can enable
-//	@Subscribe
-//	public void onConfigChanged(ConfigChanged event) {
-//		if (CEngineerCompletedConfig.GROUP.equals(event.getGroup())) {
 //			if ("announcementVolume".equals(event.getKey())) {
 //				soundEngine.playClip(Sound.LEVEL_UP);
 //			}
-//		}
-//	}
+
+            if ("announceCollectionLog".equals(event.getKey())) {
+                clientThread.invokeLater(() ->
+                        checkAndWarnForCollectionLogNotificationSetting(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)));
+            }
+		}
+	}
 }
