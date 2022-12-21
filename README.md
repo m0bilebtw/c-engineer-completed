@@ -6,6 +6,11 @@ C Engineer announces when you complete an achievement!
 
 Huge thanks to [C Engineer](https://www.youtube.com/channel/UCUNoAjAgVHEHc6jrUr4XuWQ) for providing custom recorded audio for this plugin!
 ___
+## General Troubleshooting
+BEFORE TRYING ANYTHING ELSE, ENABLE THIS IN THE **RUNESCAPE** SETTINGS
+
+![image](https://user-images.githubusercontent.com/62370532/208992085-e2c07494-d8bb-489e-b7f3-ed538175acbc.png)
+___
 
 ## Customising your sounds
 
