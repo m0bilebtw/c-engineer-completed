@@ -120,6 +120,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastColLogSettingWarning = -1;
 
 	private Player cEngineerPlayer = null;
+	private boolean gameStateLoggedIn = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -157,6 +158,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+		gameStateLoggedIn = event.getGameState() == GameState.LOGGED_IN;
 		switch(event.getGameState())
 		{
 			case LOGIN_SCREEN:
@@ -268,10 +270,13 @@ public class CEngineerCompletedPlugin extends Plugin
         if (!config.announceCollectionLog())
             return;
 
+        if (!gameStateLoggedIn)
+        	return;
+
         if (badCollectionLogNotificationSettingValues.contains(newVarbitValue)) {
             if (lastColLogSettingWarning == -1 || client.getTickCount() - lastColLogSettingWarning > 16) {
                 lastColLogSettingWarning = client.getTickCount();
-                sendHighlightedMessage("Please enable \"Collection log - New addition notification\" in your game settings for C Engineer to know when to announce it!");
+                sendHighlightedMessage("Please enable \"Collection log - New addition notification\" in your game settings for C Engineer to know when to announce it! (The chat message one, pop-up doesn't matter)");
             }
         }
 	}
