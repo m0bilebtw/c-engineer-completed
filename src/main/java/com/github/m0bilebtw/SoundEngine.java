@@ -67,4 +67,12 @@ public class SoundEngine {
         // underlying line driver
         clip.loop(0);
     }
+
+	public void close()
+	{
+		if (clip != null && clip.isOpen())
+		{
+			clip.close();
+		}
+	}
 }
