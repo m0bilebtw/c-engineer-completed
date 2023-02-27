@@ -138,6 +138,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	{
 		oldExperience.clear();
 		oldAchievementDiaries.clear();
+		soundEngine.close();
 	}
 
 	private void setupOldMaps() {
