@@ -129,7 +129,7 @@ public class CEngineerCompletedPlugin extends Plugin
 		lastLoginTick = -1;
 		executor.submit(() -> {
 			SoundFileManager.ensureDownloadDirectoryExists();
-			SoundFileManager.downloadAllMissingSounds(okHttpClient);
+			SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
 		});
 	}
 
@@ -359,7 +359,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			// getting the haircut widget via IDs etc seems overly difficult, so just check location
 			WorldPoint currentLocation = client.getLocalPlayer().getWorldLocation();
 			if (FALADOR_HAIRDRESSER.contains(currentLocation)) {
-				soundEngine.playClip(Sound.HAIRCUT);
+				soundEngine.playClip(Sound.EASTER_EGG_HAIRCUT);
 			}
 			return;
 		}

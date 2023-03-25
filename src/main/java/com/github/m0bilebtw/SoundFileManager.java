@@ -20,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class SoundFileManager {
@@ -39,25 +40,15 @@ public abstract class SoundFileManager {
         } catch (IOException ignored) { }
     }
 
-    public static void downloadAllMissingSounds(final OkHttpClient okHttpClient) {
-        File[] downloadDirFiles = DOWNLOAD_DIR.listFiles();
+    public static void downloadAllMissingSounds(final OkHttpClient okHttpClient, boolean downloadStreamerTrolls) {
+        // Get set of existing files in our dir - existing sounds will be skipped, unexpected files (not dirs, some sounds depending on config) will be deleted
+        Set<String> filesPresent = getFilesPresent();
 
-        // Get set of existing files in our dir - existing sounds will be skipped, unexpected files (not dirs) will be deleted
-        Set<String> filesPresent = new HashSet<>();
-        if (downloadDirFiles != null && downloadDirFiles.length > 0) {
-            Arrays.stream(downloadDirFiles)
-                    .filter(file -> !file.isDirectory())
-                    .map(File::getName)
-                    .filter(filename -> !DELETE_WARNING_FILENAME.equals(filename))
-                    .forEach(filesPresent::add);
-        }
-
-        // Download any sounds that are not yet present but exist in Sound enum
-        Sound[] allSounds = Sound.values();
-        for (Sound sound : allSounds) {
-            String fileName = sound.getResourceName();
-            if (filesPresent.contains(fileName)) {
-                filesPresent.remove(fileName);
+        // Download any sounds that are not yet present but desired
+        for (Sound sound : getDesiredSoundList(downloadStreamerTrolls)) {
+            String fileNameToDownload = sound.getResourceName();
+            if (filesPresent.contains(fileNameToDownload)) {
+                filesPresent.remove(fileNameToDownload);
                 continue;
             }
 
@@ -66,8 +57,8 @@ public abstract class SoundFileManager {
                 log.error("C Engineer Completed could not download sounds due to an unexpected null RAW_GITHUB value");
                 return;
             }
-            HttpUrl soundUrl = RAW_GITHUB.newBuilder().addPathSegment(fileName).build();
-            Path outputPath = Paths.get(DOWNLOAD_DIR.getPath(), fileName);
+            HttpUrl soundUrl = RAW_GITHUB.newBuilder().addPathSegment(fileNameToDownload).build();
+            Path outputPath = Paths.get(DOWNLOAD_DIR.getPath(), fileNameToDownload);
             try (Response res = okHttpClient.newCall(new Request.Builder().url(soundUrl).build()).execute()) {
                 if (res.body() != null)
                     Files.copy(new BufferedInputStream(res.body().byteStream()), outputPath, StandardCopyOption.REPLACE_EXISTING);
@@ -77,15 +68,33 @@ public abstract class SoundFileManager {
             }
         }
 
-        // filesPresent now contains only files in our directory that we weren't expecting
-        // (eg. old versions of sounds)
+        // filesPresent now contains only files in our directory that weren't desired
+        // (e.g. old versions of sounds, streamer trolls if setting was toggled)
         // We now delete them to avoid cluttering up disk space
-        // We leave dirs behind (filesPresent filters them out early on) as we aren't creating those anyway so they won't build up over time
+        // We leave dirs behind (getFilesPresent ignores dirs) as we aren't creating those anyway, so they won't build up over time
         for (String filename : filesPresent) {
             File toDelete = new File(DOWNLOAD_DIR, filename);
             //noinspection ResultOfMethodCallIgnored
             toDelete.delete();
         }
+    }
+
+    private static Set<String> getFilesPresent() {
+        File[] downloadDirFiles = DOWNLOAD_DIR.listFiles();
+        if (downloadDirFiles == null || downloadDirFiles.length == 0)
+            return new HashSet<>();
+
+        return Arrays.stream(downloadDirFiles)
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .filter(filename -> !DELETE_WARNING_FILENAME.equals(filename))
+                .collect(Collectors.toSet());
+    }
+
+    private static Set<Sound> getDesiredSoundList(boolean includeStreamerTrolls) {
+        return Arrays.stream(Sound.values())
+                .filter(sound -> includeStreamerTrolls || !sound.isStreamerTroll())
+                .collect(Collectors.toSet());
     }
 
     public static InputStream getSoundStream(Sound sound) throws FileNotFoundException {

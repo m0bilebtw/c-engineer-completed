@@ -11,28 +11,38 @@ public enum Sound {
     EASTER_EGG_STRAYDOG_BONE("ILoveYou_r1.wav"),
     EASTER_EGG_TWISTED_BOW_1GP("TwistedBow1GP_r1.wav"),
     EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav"),
-    BOND_OFFER_1("BondTroll1_r1.wav"),
-    BOND_OFFER_2("BondTroll2_r1.wav"),
-    BOND_OFFER_3("BondTroll3_r1.wav"),
-    SNOWBALL_1("SnowballTroll1_r1.wav"),
-    SNOWBALL_2("SnowballTroll2_r1.wav"),
-    SNOWBALL_3("SnowballTroll3_r1.wav"),
-    SNOWBALL_4("SnowballTroll4_r1.wav"),
-    SNOWBALL_5("SnowballTroll5_r1.wav"),
-    SNOWBALL_6("SnowballTroll6_r1.wav"),
-    SNOWBALL_7("SnowballTroll7_r1.wav"),
-    SNOWBALL_8("SnowballTroll8_r1.wav"),
-    SNOWBALL_9("SnowballTroll9_r1.wav"),
-    HAIRCUT("Haircut_r1.wav");
+    EASTER_EGG_HAIRCUT("Haircut_r1.wav"),
+    BOND_OFFER_1("BondTroll1_r1.wav", true),
+    BOND_OFFER_2("BondTroll2_r1.wav", true),
+    BOND_OFFER_3("BondTroll3_r1.wav", true),
+    SNOWBALL_1("SnowballTroll1_r1.wav", true),
+    SNOWBALL_2("SnowballTroll2_r1.wav", true),
+    SNOWBALL_3("SnowballTroll3_r1.wav", true),
+    SNOWBALL_4("SnowballTroll4_r1.wav", true),
+    SNOWBALL_5("SnowballTroll5_r1.wav", true),
+    SNOWBALL_6("SnowballTroll6_r1.wav", true),
+    SNOWBALL_7("SnowballTroll7_r1.wav", true),
+    SNOWBALL_8("SnowballTroll8_r1.wav", true),
+    SNOWBALL_9("SnowballTroll9_r1.wav", true);
 
     private final String resourceName;
+    private final boolean isStreamerTroll;
 
     Sound(String resNam) {
+        this(resNam, false);
+    }
+
+    Sound(String resNam, boolean streamTroll) {
         resourceName = resNam;
+        isStreamerTroll = streamTroll;
     }
 
     String getResourceName() {
         return resourceName;
+    }
+
+    boolean isStreamerTroll() {
+        return isStreamerTroll;
     }
 
     public static final Sound[] BOND_OFFER_SOUNDS = new Sound[] {

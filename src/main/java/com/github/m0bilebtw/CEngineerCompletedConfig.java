@@ -112,4 +112,12 @@ public interface CEngineerCompletedConfig extends Config {
     default boolean easterEggs() {
         return true;
     }
+
+    @ConfigItem(
+            keyName = "downloadStreamerSounds",
+            name = "Include streamer troll sounds (requires plugin restart)",
+            description = "Restart plugin to take effect! If disabled, will remove and no longer download sounds that are streamer trolls",
+            position = 21
+    )
+    default boolean downloadStreamerTrolls() { return true; }
 }
