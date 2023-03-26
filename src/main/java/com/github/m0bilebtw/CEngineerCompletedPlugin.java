@@ -9,6 +9,7 @@ import net.runelite.api.*;
 
 import static com.github.m0bilebtw.Sound.BOND_OFFER_SOUNDS;
 import static com.github.m0bilebtw.Sound.SNOWBALL_SOUNDS;
+import static com.github.m0bilebtw.Sound.STAT_SPY_SOUNDS;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_EASY;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_HARD;
 import static net.runelite.api.Varbits.DIARY_KARAMJA_MEDIUM;
@@ -91,6 +92,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	// Killcount and new pb patterns from runelite/ChatCommandsPlugin
 	private static final String ZULRAH = "Zulrah";
 	private static final String C_ENGINEER = "C Engineer";
+	private static final String SKILL_SPECS = "Skill Specs";
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
 	private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
@@ -98,6 +100,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? (?:\\w+) combat task:.*");
 	private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
 	private static final Pattern BOND_OFFER_REGEX = Pattern.compile(C_ENGINEER + " is offering to give you a bond\\.");
+	private static final Pattern STAT_SPY_REGEX = Pattern.compile(Text.standardize(C_ENGINEER + " is reading your skill stats!"));
 
 	private static final Random random = new Random();
 
@@ -249,6 +252,17 @@ public class CEngineerCompletedPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "I love you.", null);
 			}
 			soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE);
+		} else if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
+			Player localPlayer = client.getLocalPlayer();
+			if (localPlayer == null) return;
+			String localPlayerName = localPlayer.getName();
+			if (localPlayerName == null) return;
+
+			if (SKILL_SPECS.equalsIgnoreCase(Text.toJagexName(localPlayerName))) {
+				soundEngine.playClip(Sound.STAT_SPY_TORVESTA);
+			} else {
+				soundEngine.playClip(STAT_SPY_SOUNDS[random.nextInt(STAT_SPY_SOUNDS.length)]);
+			}
 
 		} else if (config.easterEggs()) { /* check for zulrah kc and then pb same kill */
 			Matcher matcher = KILLCOUNT_PATTERN.matcher(chatMessage.getMessage());
