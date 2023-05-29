@@ -175,6 +175,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				// set to -1 here in-case of race condition with varbits changing before this handler is called
 				// when game state becomes LOGGED_IN
 				lastLoginTick = -1;
+				lastColLogSettingWarning = client.getTickCount(); // avoid warning during DC
 				break;
 			case LOGGED_IN:
 				lastLoginTick = client.getTickCount();
