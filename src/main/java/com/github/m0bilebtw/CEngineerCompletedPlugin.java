@@ -488,20 +488,11 @@ public class CEngineerCompletedPlugin extends Plugin
 //				soundEngine.playClip(Sound.LEVEL_UP);
 //			}
 
-            if ("announceCollectionLog".equals(event.getKey())) {
-                clientThread.invokeLater(() ->
-                        checkAndWarnForCollectionLogNotificationSetting(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)));
-            }
+			if ("announceCollectionLog".equals(event.getKey())) {
+				clientThread.invokeLater(() ->
+						checkAndWarnForCollectionLogNotificationSetting(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)));}
+			}
 		}
 	}
 
-	@Subscribe
-	public void onPetReceived(PetReceivedEvent event) {
-		if (event.getSource() == PetSource.SKILL) {
-			soundEngine.playClip(Sound.PET_SKILL_DROP);
-		} else if (event.getSource() == PetSource.BOSS) {
-			soundEngine.playClip(Sound.PET_BOSS_DROP);
-		}
-	}
-}
 

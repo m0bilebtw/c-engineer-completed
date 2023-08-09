@@ -12,8 +12,8 @@ public interface CEngineerCompletedConfig extends Config {
     @ConfigItem(
             keyName = "announceLevelUp",
             name = "Level Up SFX",
-            description = "Should a jingle play when you level up a skill?",
-            position = 7
+            description = "Should a jingle play when you level up a skill? (headphone users beware)",
+            position = 3
     )
     default boolean announceLevelUp() {
         return true;
@@ -33,7 +33,7 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceQuestCompletion",
             name = "Quest Completion SFX",
             description = "Should a jingle play upon completing a quest?",
-            position = 2
+            position = 6
     )
     default boolean announceQuestCompletion() {
         return true;
@@ -43,7 +43,7 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceCollectionLog",
             name = "Collection Log Entry SFX",
             description = "Should a jingle play when you receive a new collection log item? This one relies on you having chat messages (included with the popup option) enabled in game settings!",
-            position = 3
+            position = 5
     )
     default boolean announceCollectionLog() {
         return true;
@@ -53,7 +53,7 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceAchievementDiary",
             name = "Achievement Diary Completion SFX",
             description = "Should a jingle play when you complete a new achievement diary?",
-            position = 4
+            position = 7
     )
     default boolean announceAchievementDiary() {
         return true;
@@ -63,7 +63,7 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceCombatAchievement",
             name = "Combat Achievement SFX",
             description = "Should a jingle play when you complete a combat task?",
-            position = 5
+            position = 4
     )
     default boolean announceCombatAchievement() {
         return true;
@@ -73,7 +73,7 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceDeath",
             name = "Death SFX",
             description = "Should a jingle play when you die?",
-            position = 6
+            position = 2
     )
     default boolean announceDeath() {
         return true;
@@ -120,4 +120,7 @@ public interface CEngineerCompletedConfig extends Config {
             position = 21
     )
     default boolean downloadStreamerTrolls() { return true; }
+
+
+
 }
