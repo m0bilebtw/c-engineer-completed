@@ -9,8 +9,6 @@ import okhttp3.Response;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -97,7 +95,7 @@ public abstract class SoundFileManager {
                 .collect(Collectors.toSet());
     }
 
-    public static InputStream getSoundStream(Sound sound) throws FileNotFoundException {
-        return new FileInputStream(new File(DOWNLOAD_DIR, sound.getResourceName()));
+    public static InputStream getSoundStream(Sound sound) {
+        return SoundFileManager.class.getResourceAsStream("/sounds/" + sound.getResourceName());
     }
 }
