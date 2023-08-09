@@ -96,7 +96,7 @@ public interface CEngineerCompletedConfig extends Config {
     @ConfigItem(
             keyName = "announcementVolume",
             name = "SFX Volume",
-            description = "Adjust SFX Volume",
+            description = "Adjust SFX Volume (headphone users beware)",
             position = 0
     )
     default int announcementVolume() {
