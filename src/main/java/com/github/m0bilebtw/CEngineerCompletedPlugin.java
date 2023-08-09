@@ -494,4 +494,14 @@ public class CEngineerCompletedPlugin extends Plugin
             }
 		}
 	}
+
+	@Subscribe
+	public void onPetReceived(PetReceivedEvent event) {
+		if (event.getSource() == PetSource.SKILL) {
+			soundEngine.playClip(Sound.PET_SKILL_DROP);
+		} else if (event.getSource() == PetSource.BOSS) {
+			soundEngine.playClip(Sound.PET_BOSS_DROP);
+		}
+	}
 }
+

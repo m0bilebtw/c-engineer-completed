@@ -30,6 +30,8 @@ public enum Sound {
     STAT_SPY_2("StatSpy_SirPugger_r1.wav", true),
     STAT_SPY_3("StatSpy_Soup_r1.wav", true),
     STAT_SPY_TORVESTA("StatSpy_Torvesta_r1.wav", true);
+    PET_SKILL_DROP("PetSkillDrop.wav"),
+    PET_BOSS_DROP("PetBossDrop.wav");
 
     private final String resourceName;
     private final boolean isStreamerTroll;

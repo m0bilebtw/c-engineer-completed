@@ -11,9 +11,9 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceLevelUp",
-            name = "Level ups",
-            description = "Should C Engineer announce when you gain a level in a skill?",
-            position = 0
+            name = "Level Up SFX",
+            description = "Should a jingle play when you level up a skill?",
+            position = 7
     )
     default boolean announceLevelUp() {
         return true;
@@ -21,7 +21,7 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceLevelUpIncludesVirtual",
-            name = "Include virtual level ups",
+            name = "Include virtual level ups?",
             description = "Should C Engineer announce when you gain a virtual (>99) level in a skill?",
             position = 1
     )
@@ -31,8 +31,8 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceQuestCompletion",
-            name = "Quest completions",
-            description = "Should C Engineer announce when you complete a quest?",
+            name = "Quest Completion SFX",
+            description = "Should a jingle play upon completing a quest?",
             position = 2
     )
     default boolean announceQuestCompletion() {
@@ -41,8 +41,8 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceCollectionLog",
-            name = "New collection log entry",
-            description = "Should C Engineer announce when you fill in a new slot in your collection log? This one relies on you having chat messages (included with the popup option) enabled in game settings!",
+            name = "Collection Log Entry SFX",
+            description = "Should a jingle play when you receive a new collection log item? This one relies on you having chat messages (included with the popup option) enabled in game settings!",
             position = 3
     )
     default boolean announceCollectionLog() {
@@ -51,8 +51,8 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceAchievementDiary",
-            name = "Completed achievement diaries",
-            description = "Should C Engineer announce when you complete a new achievement diary?",
+            name = "Achievement Diary Completion SFX",
+            description = "Should a jingle play when you complete a new achievement diary?",
             position = 4
     )
     default boolean announceAchievementDiary() {
@@ -61,8 +61,8 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceCombatAchievement",
-            name = "Completed combat achievement tasks",
-            description = "Should C Engineer announce when you complete a new combat achievement task?",
+            name = "Combat Achievement SFX",
+            description = "Should a jingle play when you complete a combat task?",
             position = 5
     )
     default boolean announceCombatAchievement() {
@@ -71,8 +71,8 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceDeath",
-            name = "When you die",
-            description = "Should C Engineer relive his PvP HCIM death when you die?",
+            name = "Death SFX",
+            description = "Should a jingle play when you die?",
             position = 6
     )
     default boolean announceDeath() {
@@ -81,9 +81,9 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "showChatMessages",
-            name = "Show fake public chat message (only you will see it)",
-            description = "Should C Engineer announce your achievements in game chat as well as audibly?",
-            position = 7
+            name = "Show fake chat message",
+            description = "(only you will see it) Should C Engineer announce your achievements in game chat as well as audibly?",
+            position = 8
     )
     default boolean showChatMessages() {
         return true;
@@ -95,9 +95,9 @@ public interface CEngineerCompletedConfig extends Config {
     )
     @ConfigItem(
             keyName = "announcementVolume",
-            name = "Announcement volume",
-            description = "Adjust how loud the audio announcements are played!",
-            position = 8
+            name = "SFX Volume",
+            description = "Adjust SFX Volume",
+            position = 0
     )
     default int announcementVolume() {
         return 100;
@@ -105,7 +105,7 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "easterEggs",
-            name = "Easter eggs",
+            name = "Easter Eggs",
             description = "Should C Engineer comment on your gameplay?",
             position = 20
     )
@@ -115,7 +115,7 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "downloadStreamerSounds",
-            name = "Include streamer troll sounds (requires plugin restart)",
+            name = "Include Stream Troll Sounds",
             description = "Restart plugin to take effect! If disabled, will remove and no longer download sounds that are streamer trolls",
             position = 21
     )
