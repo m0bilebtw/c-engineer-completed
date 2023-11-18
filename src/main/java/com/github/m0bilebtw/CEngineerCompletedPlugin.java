@@ -20,8 +20,9 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -105,6 +106,9 @@ public class CEngineerCompletedPlugin extends Plugin
 	private static final Random random = new Random();
 
 	private static final WorldArea FALADOR_HAIRDRESSER = new WorldArea(new WorldPoint(2942, 3377, 0), 8, 12);
+	private static final int FALADOR_HAIRCUT_WIDGET_GROUP_ID = 516;
+	private static final int CHILD_ID_MASK = 0xffff;
+
 	private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y = 3229;
@@ -363,12 +367,10 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded e) {
-		if (!config.easterEggs() ||
-				(e.getGroupId() != WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId() &&
-						e.getGroupId() != WidgetInfo.FIXED_VIEWPORT_INVENTORY_CONTAINER.getChildId()) )
+		if (!config.easterEggs())
 			return;
 
-		if (e.getGroupId() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_CONTAINER.getChildId()) {
+		if (e.getGroupId() == FALADOR_HAIRCUT_WIDGET_GROUP_ID) {
 			// getting the haircut widget via IDs etc seems overly difficult, so just check location
 			WorldPoint currentLocation = client.getLocalPlayer().getWorldLocation();
 			if (FALADOR_HAIRDRESSER.contains(currentLocation)) {
@@ -377,8 +379,11 @@ public class CEngineerCompletedPlugin extends Plugin
 			return;
 		}
 
+		if (e.getGroupId() != InterfaceID.DIALOG_OPTION)
+			return;
+
 		clientThread.invokeLater(() -> {
-			Widget root = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId(), WidgetInfo.DIALOG_OPTION_OPTIONS.getChildId());
+			Widget root = client.getWidget(InterfaceID.DIALOG_OPTION, getChildId(ComponentID.DIALOG_OPTION_OPTIONS));
 			if (root == null)
 				return;
 
@@ -393,6 +398,10 @@ public class CEngineerCompletedPlugin extends Plugin
 				}
 			}
 		});
+	}
+
+	private int getChildId(int componentId) {
+		return componentId & CHILD_ID_MASK;
 	}
 
 	@Subscribe
