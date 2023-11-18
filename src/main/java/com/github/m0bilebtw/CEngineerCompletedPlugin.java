@@ -1,6 +1,8 @@
 package com.github.m0bilebtw;
 
 import com.google.inject.Provides;
+
+import java.time.Duration;
 import java.util.HashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,12 +37,10 @@ import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,9 +109,7 @@ public class CEngineerCompletedPlugin extends Plugin
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y = 3229;
 
-    private static final Set<Integer> badCollectionLogNotificationSettingValues = new HashSet<Integer>() {{
-    	add(0); add(2);
-    }};
+    private static final Set<Integer> badCollectionLogNotificationSettingValues = Set.of(0, 2);
 
 	private final Map<Skill, Integer> oldExperience = new EnumMap<>(Skill.class);
 	private final Map<Integer, Integer> oldAchievementDiaries = new HashMap<>();
@@ -210,7 +208,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Level up: completed.", null);
 			}
-			soundEngine.playClip(Sound.LEVEL_UP);
+			soundEngine.playClip(Sound.LEVEL_UP, executor);
 		}
 	}
 
@@ -220,7 +218,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Dying on my HCIM: completed.", null);
 			}
-			soundEngine.playClip(Sound.DEATH);
+			soundEngine.playClip(Sound.DEATH, executor);
 		}
 	}
 
@@ -234,25 +232,25 @@ public class CEngineerCompletedPlugin extends Plugin
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Collection log slot: completed.", null);
 			}
-			soundEngine.playClip(Sound.COLLECTION_LOG_SLOT);
+			soundEngine.playClip(Sound.COLLECTION_LOG_SLOT, executor);
 
 		} else if (config.announceQuestCompletion() && QUEST_REGEX.matcher(chatMessage.getMessage()).matches()) {
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Quest: completed.", null);
 			}
-			soundEngine.playClip(Sound.QUEST);
+			soundEngine.playClip(Sound.QUEST, executor);
 
 		} else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Combat task: completed.", null);
 			}
-			soundEngine.playClip(Sound.COMBAT_TASK);
+			soundEngine.playClip(Sound.COMBAT_TASK, executor);
 
 		} else if (config.easterEggs() && STRAY_DOG_GIVEN_BONES_REGEX.matcher(chatMessage.getMessage()).matches()) {
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "I love you.", null);
 			}
-			soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE);
+			soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE, executor);
 		} else if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
 			Player localPlayer = client.getLocalPlayer();
 			if (localPlayer == null) return;
@@ -260,9 +258,9 @@ public class CEngineerCompletedPlugin extends Plugin
 			if (localPlayerName == null) return;
 
 			if (SKILL_SPECS.equalsIgnoreCase(Text.toJagexName(localPlayerName))) {
-				soundEngine.playClip(Sound.STAT_SPY_TORVESTA);
+				soundEngine.playClip(Sound.STAT_SPY_TORVESTA, executor);
 			} else {
-				soundEngine.playClip(STAT_SPY_SOUNDS[random.nextInt(STAT_SPY_SOUNDS.length)]);
+				soundEngine.playClip(STAT_SPY_SOUNDS[random.nextInt(STAT_SPY_SOUNDS.length)], executor);
 			}
 
 		} else if (config.easterEggs()) { /* check for zulrah kc and then pb same kill */
@@ -277,7 +275,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				if (config.showChatMessages()) {
 					client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Gz on the new personal best! Last time I got a pb here, I died on my HCIM!", null);
 				}
-				soundEngine.playClip(Sound.EASTER_EGG_ZULRAH_PB);
+				soundEngine.playClip(Sound.EASTER_EGG_ZULRAH_PB, executor);
 			}
 		}
 	}
@@ -322,7 +320,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				if (config.showChatMessages()) {
 					client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Achievement diary: completed.", null);
 				}
-				soundEngine.playClip(Sound.ACHIEVEMENT_DIARY);
+				soundEngine.playClip(Sound.ACHIEVEMENT_DIARY, executor);
 			}
 		}
 	}
@@ -337,7 +335,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				if (config.showChatMessages()) {
 					client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Please do not use the northern staircase, use the southern one instead.", null);
 				}
-				soundEngine.playClip(Sound.EASTER_EGG_STAIRCASE);
+				soundEngine.playClip(Sound.EASTER_EGG_STAIRCASE, executor);
 			}
 		}
 	}
@@ -355,7 +353,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				if (config.showChatMessages()) {
 					client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Are you stupid? Did you just try to sell a twisted bow for 1gp?", null);
 				}
-				soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP);
+				soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor);
 			}
 		}
 
@@ -374,7 +372,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			// getting the haircut widget via IDs etc seems overly difficult, so just check location
 			WorldPoint currentLocation = client.getLocalPlayer().getWorldLocation();
 			if (FALADOR_HAIRDRESSER.contains(currentLocation)) {
-				soundEngine.playClip(Sound.EASTER_EGG_HAIRCUT);
+				soundEngine.playClip(Sound.EASTER_EGG_HAIRCUT, executor);
 			}
 			return;
 		}
@@ -390,7 +388,7 @@ public class CEngineerCompletedPlugin extends Plugin
 
 			for (Widget child : children) {
 				if (BOND_OFFER_REGEX.matcher(Text.removeTags(child.getText())).matches()) {
-					soundEngine.playClip(BOND_OFFER_SOUNDS[random.nextInt(BOND_OFFER_SOUNDS.length)]);
+					soundEngine.playClip(BOND_OFFER_SOUNDS[random.nextInt(BOND_OFFER_SOUNDS.length)], executor);
 					return;
 				}
 			}
@@ -445,8 +443,7 @@ public class CEngineerCompletedPlugin extends Plugin
 		// check snowball is *roughly* from C's tile, while allowing for drive-by/moving while the projectile spawns
 		if (cEngineerWP.distanceTo2D(projectileWP) <= 2){
 			lastSnowballTriggerTick = currentTick;
-			executor.schedule(() -> soundEngine.playClip(SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)]),
-					10, TimeUnit.SECONDS);
+			soundEngine.playClip(SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)], executor, Duration.ofSeconds(10));
 		}
 	}
 

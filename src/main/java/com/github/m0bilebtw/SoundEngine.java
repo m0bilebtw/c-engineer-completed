@@ -8,6 +8,10 @@ import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 @Slf4j
@@ -22,10 +26,9 @@ public class SoundEngine {
     private Clip clip = null;
 
     private boolean loadClip(Sound sound) {
-        try (InputStream stream = new BufferedInputStream(SoundFileManager.getSoundStream(sound))) {
-            try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream)) {
-                clip.open(audioInputStream); // liable to error with pulseaudio, works on windows, one user informs me mac works
-            }
+        try (InputStream stream = new BufferedInputStream(SoundFileManager.getSoundStream(sound));
+             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream)) {
+            clip.open(audioInputStream); // liable to error with pulseaudio, works on windows, one user informs me mac works
             return true;
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             log.warn("Failed to load C Engineer sound " + sound, e);
@@ -33,7 +36,15 @@ public class SoundEngine {
         return false;
     }
 
-    public void playClip(Sound sound) {
+    public void playClip(Sound sound, Executor executor) {
+        executor.execute(() -> playClip(sound));
+    }
+
+    public void playClip(Sound sound, ScheduledExecutorService executor, Duration initialDelay) {
+        executor.schedule(() -> playClip(sound), initialDelay.toMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    private void playClip(Sound sound) {
         long currentMTime = System.currentTimeMillis();
         if (clip == null || currentMTime != lastClipMTime || !clip.isOpen()) {
             if (clip != null && clip.isOpen()) {
@@ -68,11 +79,9 @@ public class SoundEngine {
         clip.loop(0);
     }
 
-	public void close()
-	{
-		if (clip != null && clip.isOpen())
-		{
-			clip.close();
-		}
-	}
+    public void close() {
+        if (clip != null && clip.isOpen()) {
+            clip.close();
+        }
+    }
 }
