@@ -1,13 +1,13 @@
-package com.github.m0bilebtw;
+package com.github.dappermickie.odablock;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
-public class CEngineerCompletedPluginTest
+public class OdablockPluginTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(CEngineerCompletedPlugin.class);
+		ExternalPluginManager.loadBuiltin(OdablockPlugin.class);
 		RuneLite.main(args);
 	}
 }
