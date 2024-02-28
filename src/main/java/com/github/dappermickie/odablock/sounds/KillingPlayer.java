@@ -35,7 +35,6 @@ public class KillingPlayer
 
 	@Inject
 	private ScheduledExecutorService executor;
-	private static final Random random = new Random();
 
 	private final String message = "Good shit ma brotha don't forget your key!";
 
@@ -54,26 +53,28 @@ public class KillingPlayer
 
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		Player local = client.getLocalPlayer();// Player Kill message checks
+		Player local = client.getLocalPlayer();
+		String standardized = Text.standardize(chatMessage.getMessage());
+		// Player Kill message checks
 		if (config.playerKilling() &&
-			(PK_PATTERN_1.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_2.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_3.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_4.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_5.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_6.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_7.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_8.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_9.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_10.matcher(Text.standardize(chatMessage.getMessage())).matches() ||
-				PK_PATTERN_11.matcher(Text.standardize(chatMessage.getMessage())).matches()))
+			(PK_PATTERN_1.matcher(standardized).matches() ||
+				PK_PATTERN_2.matcher(standardized).matches() ||
+				PK_PATTERN_3.matcher(standardized).matches() ||
+				PK_PATTERN_4.matcher(standardized).matches() ||
+				PK_PATTERN_5.matcher(standardized).matches() ||
+				PK_PATTERN_6.matcher(standardized).matches() ||
+				PK_PATTERN_7.matcher(standardized).matches() ||
+				PK_PATTERN_8.matcher(standardized).matches() ||
+				PK_PATTERN_9.matcher(standardized).matches() ||
+				PK_PATTERN_10.matcher(standardized).matches() ||
+				PK_PATTERN_11.matcher(standardized).matches()))
 		{
 
 			if (config.showChatMessages())
 			{
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, message, null);
 			}
-			soundEngine.playClip(Sound.PLAYER_KILLING_SOUNDS[random.nextInt(Sound.PLAYER_KILLING_SOUNDS.length)], executor);
+			soundEngine.playClip(Sound.PLAYER_KILLING_SOUNDS, executor);
 		}
 	}
 }

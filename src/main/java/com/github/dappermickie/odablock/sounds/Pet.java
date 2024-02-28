@@ -35,6 +35,10 @@ public class Pet
 
 	public boolean onChatMessage(ChatMessage chatMessage)
 	{
+		if (!config.receivedPet())
+		{
+			return false;
+		}
 		String message = chatMessage.getMessage();
 		// Make sure it's one of the pet messages and not sent by a user to troll
 		if ((message.equals(normalPetMessage) || message.equals(backpackPetMessage) || message.equals(wouldHavePetMessage)) &&

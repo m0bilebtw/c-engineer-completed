@@ -36,9 +36,15 @@ public class SoundEngine
 		}
 		catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
 		{
-			log.warn("Failed to load C Engineer sound " + sound, e);
+			log.warn("Failed to load Odablock sound " + sound, e);
 		}
 		return false;
+	}
+
+	public void playClip(Sound[] sounds, Executor executor)
+	{
+		Sound sound = RandomSoundUtility.getRandomSound(sounds);
+		playClip(sound, executor);
 	}
 
 	public void playClip(Sound sound, Executor executor)

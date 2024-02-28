@@ -1,7 +1,9 @@
 package com.github.dappermickie.odablock;
 
+import java.io.FileWriter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
+import net.runelite.client.util.Text;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,6 +30,7 @@ public abstract class SoundFileManager
 
 	private static final File DOWNLOAD_DIR = new File(RuneLite.RUNELITE_DIR.getPath() + File.separator + "odablock-sounds");
 	private static final String DELETE_WARNING_FILENAME = "EXTRA_FILES_WILL_BE_DELETED_BUT_FOLDERS_WILL_REMAIN";
+	private static final String SOUNDVERSION_FILENAME = "SOUNDVERSION";
 	private static final File DELETE_WARNING_FILE = new File(DOWNLOAD_DIR, DELETE_WARNING_FILENAME);
 	private static final HttpUrl RAW_GITHUB = HttpUrl.parse("https://raw.githubusercontent.com/dappermickie/odablock-sounds/sounds");
 
@@ -47,20 +50,56 @@ public abstract class SoundFileManager
 		}
 	}
 
-	public static void downloadAllMissingSounds(final OkHttpClient okHttpClient, boolean downloadStreamerTrolls)
+	public static void downloadAllMissingSounds(final OkHttpClient okHttpClient)
 	{
 		// Get set of existing files in our dir - existing sounds will be skipped, unexpected files (not dirs, some sounds depending on config) will be deleted
 		Set<String> filesPresent = getFilesPresent();
 
+		HttpUrl versionUrl = RAW_GITHUB.newBuilder().addPathSegment(SOUNDVERSION_FILENAME).build();
+		int latestVersion = -1;
+		try (Response res = okHttpClient.newCall(new Request.Builder().url(versionUrl).build()).execute())
+		{
+			if (res.body() != null)
+			{
+				latestVersion = Integer.parseInt(Text.standardize(res.body().string()));
+			}
+		}
+		catch (IOException e)
+		{
+			log.error("Odablock Plugin could not download sound version", e);
+			return;
+		}
+
+		int currentVersion = -1;
+		try
+		{
+			currentVersion = getSoundVersion();
+		}
+		catch (IOException e)
+		{
+			// No current version available
+			var soundVersionFile = new File(DOWNLOAD_DIR, SOUNDVERSION_FILENAME);
+			try
+			{
+				soundVersionFile.createNewFile();
+			}
+			catch (IOException e2)
+			{
+				log.error("Couldn't create soundversion file");
+			}
+		}
+
+		if (latestVersion == currentVersion)
+		{
+			return;
+		}
+
+		writeLatestVersion(latestVersion);
+
 		// Download any sounds that are not yet present but desired
-		for (Sound sound : getDesiredSoundList(downloadStreamerTrolls))
+		for (Sound sound : getDesiredSoundList())
 		{
 			String fileNameToDownload = sound.getResourceName();
-			if (filesPresent.contains(fileNameToDownload))
-			{
-				filesPresent.remove(fileNameToDownload);
-				continue;
-			}
 
 			if (RAW_GITHUB == null)
 			{
@@ -108,18 +147,40 @@ public abstract class SoundFileManager
 			.filter(file -> !file.isDirectory())
 			.map(File::getName)
 			.filter(filename -> !DELETE_WARNING_FILENAME.equals(filename))
+			.filter(filename -> !SOUNDVERSION_FILENAME.equals(filename))
 			.collect(Collectors.toSet());
 	}
 
-	private static Set<Sound> getDesiredSoundList(boolean includeStreamerTrolls)
+	private static Set<Sound> getDesiredSoundList()
 	{
 		return Arrays.stream(Sound.values())
-			.filter(sound -> includeStreamerTrolls || !sound.isStreamerTroll())
 			.collect(Collectors.toSet());
 	}
 
 	public static InputStream getSoundStream(Sound sound) throws FileNotFoundException
 	{
 		return new FileInputStream(new File(DOWNLOAD_DIR, sound.getResourceName()));
+	}
+
+	public static int getSoundVersion() throws IOException
+	{
+		File soundVersionFile = new File(DOWNLOAD_DIR, SOUNDVERSION_FILENAME);
+		String soundVersionContent = Files.readString(soundVersionFile.toPath());
+		return Integer.parseInt(soundVersionContent);
+	}
+
+	private static void writeLatestVersion(int version)
+	{
+		var soundVersionFile = new File(DOWNLOAD_DIR, SOUNDVERSION_FILENAME);
+		try
+		{
+			FileWriter myWriter = new FileWriter(soundVersionFile);
+			myWriter.write(String.valueOf(version));
+			myWriter.close();
+		}
+		catch (IOException e)
+		{
+			log.error("Couldn't write latest soundversion");
+		}
 	}
 }

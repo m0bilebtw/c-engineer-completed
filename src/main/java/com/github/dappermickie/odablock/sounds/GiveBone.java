@@ -32,7 +32,7 @@ public class GiveBone
 	private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
 
 	public boolean onChatMessage(ChatMessage chatMessage){
-		if (!config.easterEggs() || !STRAY_DOG_GIVEN_BONES_REGEX.matcher(chatMessage.getMessage()).matches())
+		if (!config.giveBone() || !STRAY_DOG_GIVEN_BONES_REGEX.matcher(chatMessage.getMessage()).matches())
 		{
 			return false;
 		}

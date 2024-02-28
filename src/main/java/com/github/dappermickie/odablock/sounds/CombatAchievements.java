@@ -42,7 +42,7 @@ public class CombatAchievements
 		{
 			client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, "Combat task: completed.", null);
 		}
-		soundEngine.playClip(Sound.COMBAT_TASK, executor);
+		soundEngine.playClip(Sound.COMBAT_TASK_SOUNDS, executor);
 		return true;
 	}
 }

@@ -54,10 +54,32 @@ public interface OdablockConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "zebakRoar",
+		name = "Zebak Roar",
+		description = "Should the zebak roar be replaced with oda's SLAAA?",
+		position = 1
+	)
+	default boolean zebakRoar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "vengeance",
+		name = "Vengeance",
+		description = "Should oda's 'Invisivengene' play whenever you cast vengeance?",
+		position = 2
+	)
+	default boolean vengeance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "playerKilling",
 		name = "Player Killing",
 		description = "Should Odablock tell you something when you kill a player? (only works if you're still close to the player when he dies)",
-		position = 0
+		position = 3
 	)
 	default boolean playerKilling()
 	{
@@ -68,7 +90,7 @@ public interface OdablockConfig extends Config
 		keyName = "onlyForOwnPlayer",
 		name = "Only Own Player",
 		description = "Should Odablock sounds play for your player only? (ags, dds spec ...)",
-		position = 0
+		position = 4
 	)
 	default boolean ownPlayerOnly()
 	{
@@ -79,7 +101,7 @@ public interface OdablockConfig extends Config
 		keyName = "ddsSpec",
 		name = "DDS Spec",
 		description = "Should Odablock sounds play for your dds spec?",
-		position = 0
+		position = 5
 	)
 	default boolean ddsSpec()
 	{
@@ -90,7 +112,7 @@ public interface OdablockConfig extends Config
 		keyName = "agsSpec",
 		name = "AGS Spec",
 		description = "Should Odablock sounds play for ags spec?",
-		position = 0
+		position = 6
 	)
 	default boolean agsSpec()
 	{
@@ -101,7 +123,7 @@ public interface OdablockConfig extends Config
 		keyName = "acbSpec",
 		name = "ACB Spec",
 		description = "Should Odablock sounds play for acb spec? (only works with soudns on)",
-		position = 0
+		position = 7
 	)
 	default boolean acbSpec()
 	{
@@ -112,7 +134,7 @@ public interface OdablockConfig extends Config
 		keyName = "bankPin",
 		name = "Bank Pin",
 		description = "Should Odablock make the 'ai ai ai ai' sound when you type in your bank pin?",
-		position = 0
+		position = 8
 	)
 	default boolean bankPin()
 	{
@@ -123,7 +145,7 @@ public interface OdablockConfig extends Config
 		keyName = "turnOnRun",
 		name = "Turn on run",
 		description = "Should Odablock say 'FAST! I said FAST!' sound when you turn your run on?",
-		position = 0
+		position = 9
 	)
 	default boolean turnOnRun()
 	{
@@ -134,7 +156,7 @@ public interface OdablockConfig extends Config
 		keyName = "petDog",
 		name = "Pet the Dog",
 		description = "Should Stella say 'Who's a good little zoggy!' when you pet the dog?",
-		position = 0
+		position = 10
 	)
 	default boolean petDog()
 	{
@@ -145,7 +167,7 @@ public interface OdablockConfig extends Config
 		keyName = "dismissRandomEvent",
 		name = "Dismiss random event",
 		description = "Should Odablock say 'No sanks!' when you dismiss a random event?",
-		position = 0
+		position = 11
 	)
 	default boolean dismissRandomEvent()
 	{
@@ -156,7 +178,7 @@ public interface OdablockConfig extends Config
 		keyName = "declineTrade",
 		name = "Decline Trade",
 		description = "Should Odablock say 'No Sanks!' when you decline a trade?",
-		position = 0
+		position = 12
 	)
 	default boolean declineTrade()
 	{
@@ -168,7 +190,7 @@ public interface OdablockConfig extends Config
 		keyName = "acceptTrade",
 		name = "Accept Trade",
 		description = "Should Odablock say 'Oda the generous strikes again!' when you accept a trade?",
-		position = 0
+		position = 13
 	)
 	default boolean acceptTrade()
 	{
@@ -179,7 +201,7 @@ public interface OdablockConfig extends Config
 		keyName = "sendReport",
 		name = "Send Report",
 		description = "Should Odablock say 'Reported for salutations!' when you report someone?",
-		position = 0
+		position = 14
 	)
 	default boolean sendReport()
 	{
@@ -189,8 +211,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceLevelUp",
 		name = "Level ups",
-		description = "Should C Engineer announce when you gain a level in a skill?",
-		position = 1
+		description = "Should Odablock announce when you gain a level in a skill?",
+		position = 15
 	)
 	default boolean announceLevelUp()
 	{
@@ -200,8 +222,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceLevelUpIncludesVirtual",
 		name = "Include virtual level ups",
-		description = "Should C Engineer announce when you gain a virtual (>99) level in a skill?",
-		position = 2
+		description = "Should Odablock announce when you gain a virtual (>99) level in a skill?",
+		position = 16
 	)
 	default boolean announceLevelUpIncludesVirtual()
 	{
@@ -211,8 +233,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceQuestCompletion",
 		name = "Quest completions",
-		description = "Should C Engineer announce when you complete a quest?",
-		position = 3
+		description = "Should Odablock announce when you complete a quest?",
+		position = 17
 	)
 	default boolean announceQuestCompletion()
 	{
@@ -223,7 +245,7 @@ public interface OdablockConfig extends Config
 		keyName = "prayerMessage",
 		name = "Prayer Message",
 		description = "Should Odablock let you know when you run out of prayer?",
-		position = 4
+		position = 18
 	)
 	default boolean prayerMessage()
 	{
@@ -234,7 +256,7 @@ public interface OdablockConfig extends Config
 		keyName = "redemptionMessage",
 		name = "Redemption Message",
 		description = "Should Odablock let you know when you proc a redemption?",
-		position = 5
+		position = 19
 	)
 	default boolean redemptionMessage()
 	{
@@ -244,8 +266,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceCollectionLog",
 		name = "New collection log entry",
-		description = "Should C Engineer announce when you fill in a new slot in your collection log? This one relies on you having chat messages (included with the popup option) enabled in game settings!",
-		position = 6
+		description = "Should Odablock announce when you fill in a new slot in your collection log? This one relies on you having chat messages (included with the popup option) enabled in game settings!",
+		position = 20
 	)
 	default boolean announceCollectionLog()
 	{
@@ -255,8 +277,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceAchievementDiary",
 		name = "Completed achievement diaries",
-		description = "Should C Engineer announce when you complete a new achievement diary?",
-		position = 7
+		description = "Should Odablock announce when you complete a new achievement diary?",
+		position = 21
 	)
 	default boolean announceAchievementDiary()
 	{
@@ -266,8 +288,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceCombatAchievement",
 		name = "Completed combat achievement tasks",
-		description = "Should C Engineer announce when you complete a new combat achievement task?",
-		position = 8
+		description = "Should Odablock announce when you complete a new combat achievement task?",
+		position = 22
 	)
 	default boolean announceCombatAchievement()
 	{
@@ -277,8 +299,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "announceDeath",
 		name = "When you die",
-		description = "Should C Engineer relive his PvP HCIM death when you die?",
-		position = 9
+		description = "Should Odablock say something when you die?",
+		position = 23
 	)
 	default boolean announceDeath()
 	{
@@ -288,8 +310,8 @@ public interface OdablockConfig extends Config
 	@ConfigItem(
 		keyName = "showChatMessages",
 		name = "Show fake public chat message (only you will see it)",
-		description = "Should C Engineer announce your achievements in game chat as well as audibly?",
-		position = 10
+		description = "Should Odablock announce your achievements in game chat as well as audibly?",
+		position = 24
 	)
 	default boolean showChatMessages()
 	{
@@ -304,7 +326,7 @@ public interface OdablockConfig extends Config
 		keyName = "announcementVolume",
 		name = "Announcement volume",
 		description = "Adjust how loud the audio announcements are played!",
-		position = 11
+		position = 25
 	)
 	default int announcementVolume()
 	{
@@ -312,23 +334,100 @@ public interface OdablockConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "easterEggs",
-		name = "Easter eggs",
-		description = "Should C Engineer comment on your gameplay?",
-		position = 20
+		keyName = "dhAxe",
+		name = "DH/Soulreaper Axe sounds",
+		description = "Should Odablock say something whenever you switch styles on your DH or soulreaper axe?",
+		position = 26
 	)
-	default boolean easterEggs()
+	default boolean dhAxe()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "downloadStreamerSounds",
-		name = "Include streamer troll sounds (requires plugin restart)",
-		description = "Restart plugin to take effect! If disabled, will remove and no longer download sounds that are streamer trolls",
-		position = 21
+		keyName = "giveBone",
+		name = "Give Bone",
+		description = "Should stella say something whenever you give a bone to a dog?",
+		position = 27
 	)
-	default boolean downloadStreamerTrolls()
+	default boolean giveBone()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hairDresser",
+		name = "Hairdresser",
+		description = "Should Odablock say something whenever you open up the hairdresser interface in falador?",
+		position = 28
+	)
+	default boolean hairDresser()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "killingRat",
+		name = "Killing rat (or scurrius)",
+		description = "Should Odablock say something whenever you kill a rat or Scurrius?",
+		position = 29
+	)
+	default boolean killingRat()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "receivedPet",
+		name = "Received pet",
+		description = "Should Odablock say something whenever you receive a pet?",
+		position = 29
+	)
+	default boolean receivedPet()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "pkChest",
+		name = "PK Chest",
+		description = "Should Odablock say something whenever you open the PK chest?",
+		position = 30
+	)
+	default boolean pkChest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "snowballed",
+		name = "Snowballed",
+		description = "Should Odablock say something whenever you get snowballed by Odablock or one of his mods?",
+		position = 31
+	)
+	default boolean snowballed()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "tobSounds",
+		name = "TOB Sounds",
+		description = "Should Odablock say something whenever you finish a TOB chest?",
+		position = 32
+	)
+	default boolean tobSounds()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "coxSounds",
+		name = "Play sounds whenever you end a COX raid",
+		description = "Should Odablock say something whenever you end a COX raid?",
+		position = 33
+	)
+	default boolean coxSounds()
 	{
 		return true;
 	}

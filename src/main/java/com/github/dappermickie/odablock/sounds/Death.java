@@ -38,8 +38,7 @@ public class Death
 		{
 			if (config.showChatMessages())
 			{
-				//TODO: Add different chat message
-				client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, "Dying on my HCIM: completed.", null);
+				client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, "It must be a glitch?!?!", null);
 			}
 			soundEngine.playClip(Sound.DEATH, executor);
 		}

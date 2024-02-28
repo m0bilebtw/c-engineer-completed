@@ -64,6 +64,11 @@ public class TobChestLight
 
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
+		if (!config.tobSounds())
+		{
+			return;
+		}
+
 		int objId = event.getGameObject().getId();
 		if (REWARD_CHEST_IDS.contains(objId))
 		{
@@ -92,11 +97,11 @@ public class TobChestLight
 					// TODO: Maybe change sound if it's yours
 					if (isMine)
 					{
-						soundEngine.playClip(Sound.GETTING_PURPLE, executor);
+						soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
 					}
 					else
 					{
-						soundEngine.playClip(Sound.GETTING_PURPLE, executor);
+						soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
 					}
 				}
 				else

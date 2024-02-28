@@ -23,8 +23,8 @@ dependencies {
 	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
 }
 
-group = 'com.github.m0bilebtw'
-version = '1.0.7'
+group = 'com.github.dappermickie.odablock'
+version = '1.0.0'
 
 
 tasks.withType(JavaCompile) {

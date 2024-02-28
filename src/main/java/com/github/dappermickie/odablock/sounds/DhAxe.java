@@ -5,8 +5,10 @@ import com.github.dappermickie.odablock.DhAxeStyles;
 import com.github.dappermickie.odablock.OdablockConfig;
 import com.github.dappermickie.odablock.OdablockVarbitValues;
 import com.github.dappermickie.odablock.OdablockVarbits;
+import com.github.dappermickie.odablock.RandomSoundUtility;
 import com.github.dappermickie.odablock.Sound;
 import com.github.dappermickie.odablock.SoundEngine;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,12 +37,13 @@ public class DhAxe extends TimedSoundBase
 
 	@Inject
 	private ScheduledExecutorService executor;
+	private static final Random random = new Random();
 
 	private int current43 = -1;
 	private int current46 = -1;
 	private int current843 = 0;
 	private DhAxeStyles dhAxeStyle;
-	private final int[] dhAxeIds = new int[]{ItemID.DHAROKS_GREATAXE, ItemID.DHAROKS_GREATAXE_100, ItemID.DHAROKS_GREATAXE_75, ItemID.DHAROKS_GREATAXE_50, ItemID.DHAROKS_GREATAXE_25};
+	private final int[] dhAxeIds = new int[]{ItemID.DHAROKS_GREATAXE, ItemID.DHAROKS_GREATAXE_100, ItemID.DHAROKS_GREATAXE_75, ItemID.DHAROKS_GREATAXE_50, ItemID.DHAROKS_GREATAXE_25, ItemID.SOULREAPER_AXE, ItemID.SOULREAPER_AXE_28338};
 
 	DhAxe()
 	{
@@ -66,6 +69,11 @@ public class DhAxe extends TimedSoundBase
 			current843 = value;
 		}
 		else
+		{
+			return;
+		}
+
+		if (!config.dhAxe())
 		{
 			return;
 		}
@@ -120,22 +128,22 @@ public class DhAxe extends TimedSoundBase
 		if (current43 == OdablockVarbitValues.COMBAT_STYLE_43_0.Value &&
 			current46 == OdablockVarbitValues.COMBAT_STYLE_46_1.Value)
 		{
-			sound = Sound.DH_AXE_CHOP;
+			sound = RandomSoundUtility.getRandomSound(Sound.DH_AXE_CHOP_SOUNDS);
 		}
 		else if (current43 == OdablockVarbitValues.COMBAT_STYLE_43_1.Value &&
 			current46 == OdablockVarbitValues.COMBAT_STYLE_46_2.Value)
 		{
-			sound = Sound.DH_AXE_HACK;
+			sound = RandomSoundUtility.getRandomSound(Sound.DH_AXE_HACK_SOUNDS);
 		}
 		else if (current43 == OdablockVarbitValues.COMBAT_STYLE_43_2.Value &&
 			current46 == OdablockVarbitValues.COMBAT_STYLE_46_2.Value)
 		{
-			sound = Sound.DH_AXE_SMASH;
+			sound = RandomSoundUtility.getRandomSound(Sound.DH_AXE_SMASH_SOUNDS);
 		}
 		else if (current43 == OdablockVarbitValues.COMBAT_STYLE_43_3.Value &&
 			current46 == OdablockVarbitValues.COMBAT_STYLE_46_3.Value)
 		{
-			sound = Sound.DH_AXE_BLOCK;
+			sound = RandomSoundUtility.getRandomSound(Sound.DH_AXE_BLOCK_SOUNDS);
 		}
 		return sound;
 	}

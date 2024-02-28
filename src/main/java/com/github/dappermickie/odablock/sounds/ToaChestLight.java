@@ -55,11 +55,11 @@ public class ToaChestLight
 			// TODO: Maybe change the sound if it's not your purple?
 			if (purpleIsMine)
 			{
-				soundEngine.playClip(Sound.GETTING_PURPLE, executor);
+				soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
 			}
 			else
 			{
-				soundEngine.playClip(Sound.GETTING_PURPLE, executor);
+				soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
 			}
 		}
 		else

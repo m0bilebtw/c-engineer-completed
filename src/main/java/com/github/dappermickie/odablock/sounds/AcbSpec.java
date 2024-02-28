@@ -1,9 +1,11 @@
 package com.github.dappermickie.odablock.sounds;
 
 import com.github.dappermickie.odablock.OdablockConfig;
+import com.github.dappermickie.odablock.RandomSoundUtility;
 import com.github.dappermickie.odablock.Sound;
 import com.github.dappermickie.odablock.SoundEngine;
 import com.github.dappermickie.odablock.SoundIds;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -41,10 +43,9 @@ public class AcbSpec
 			if (soundId == SoundIds.ACB_SPEC.Id)
 			{
 				event.consume();
-				soundEngine.playClip(Sound.ACB_SPEC, executor);
+				soundEngine.playClip(Sound.ACB_SPEC_SOUNDS, executor);
 				if (config.showChatMessages())
 				{
-					//TODO: Add different chat message
 					client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, message, null);
 				}
 				return;

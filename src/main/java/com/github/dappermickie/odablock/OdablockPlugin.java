@@ -6,6 +6,7 @@ import com.github.dappermickie.odablock.sounds.AchievementDiaries;
 import com.github.dappermickie.odablock.sounds.AgsSpec;
 import com.github.dappermickie.odablock.sounds.CollectionLog;
 import com.github.dappermickie.odablock.sounds.CombatAchievements;
+import com.github.dappermickie.odablock.sounds.CoxSounds;
 import com.github.dappermickie.odablock.sounds.DdsSpec;
 import com.github.dappermickie.odablock.sounds.Death;
 import com.github.dappermickie.odablock.sounds.DeclineTrade;
@@ -18,6 +19,7 @@ import com.github.dappermickie.odablock.sounds.KillingRat;
 import com.github.dappermickie.odablock.sounds.LevelUp;
 import com.github.dappermickie.odablock.sounds.Pet;
 import com.github.dappermickie.odablock.sounds.PetDog;
+import com.github.dappermickie.odablock.sounds.PkChest;
 import com.github.dappermickie.odablock.sounds.PrayerDown;
 import com.github.dappermickie.odablock.sounds.QuestCompleted;
 import com.github.dappermickie.odablock.sounds.RedemptionProc;
@@ -28,6 +30,8 @@ import com.github.dappermickie.odablock.sounds.ToaChestLight;
 import com.github.dappermickie.odablock.sounds.ToaChestOpens;
 import com.github.dappermickie.odablock.sounds.TobChestLight;
 import com.github.dappermickie.odablock.sounds.TurnOnRun;
+import com.github.dappermickie.odablock.sounds.Vengeance;
+import com.github.dappermickie.odablock.sounds.ZebakRoar;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 import java.util.concurrent.ScheduledExecutorService;
@@ -184,6 +188,18 @@ public class OdablockPlugin extends Plugin
 	private HairDresser hairDresser;
 
 	@Inject
+	private PkChest pkChest;
+
+	@Inject
+	private Vengeance vengeance;
+
+	@Inject
+	private CoxSounds coxSounds;
+
+	@Inject
+	private ZebakRoar zebakRoar;
+
+	@Inject
 	@Named("developerMode")
 	private boolean developerMode;
 	// End of sound injections
@@ -197,7 +213,9 @@ public class OdablockPlugin extends Plugin
 		achievementDiaries.setLastLoginTick(-1);
 		executor.submit(() -> {
 			SoundFileManager.ensureDownloadDirectoryExists();
-			SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
+			SoundFileManager.downloadAllMissingSounds(okHttpClient);
+			SnowballUserManager.ensureDownloadDirectoryExists();
+			SnowballUserManager.downloadSnowballUsers(okHttpClient);
 		});
 	}
 
@@ -313,6 +331,7 @@ public class OdablockPlugin extends Plugin
 			debugScripts.onVarbitChanged(event);
 		}
 
+		vengeance.onVarbitChanged(event);
 		turnOnRun.onVarbitChanged(event);
 		dhAxe.onVarbitChanged(event);
 		tobChestLight.onVarbitChanged(event);
@@ -344,6 +363,7 @@ public class OdablockPlugin extends Plugin
 		}
 
 		hairDresser.onWidgetLoaded(event);
+		pkChest.onWidgetLoaded(event);
 	}
 
 	@Subscribe
@@ -435,6 +455,7 @@ public class OdablockPlugin extends Plugin
 		agsSpec.onSoundEffectPlayed(event);
 		ddsSpec.onSoundEffectPlayed(event);
 		prayerDown.onSoundEffectPlayed(event);
+		zebakRoar.onSoundEffectPlayed(event);
 	}
 
 	@Subscribe
@@ -448,6 +469,7 @@ public class OdablockPlugin extends Plugin
 	{
 		toaChestOpens.onGameObjectSpawned(event);
 		tobChestLight.onGameObjectSpawned(event);
+		coxSounds.onGameObjectSpawned(event);
 	}
 
 	@Subscribe

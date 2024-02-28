@@ -48,10 +48,9 @@ public class AgsSpec extends TimedSoundBase
 				{
 					if (config.showChatMessages())
 					{
-						//TODO: Add different chat message
 						client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, message, null);
 					}
-					soundEngine.playClip(Sound.AGS_SPEC, executor);
+					soundEngine.playClip(Sound.AGS_SPEC_SOUNDS, executor);
 				}
 			}
 		}
@@ -73,7 +72,7 @@ public class AgsSpec extends TimedSoundBase
 				}
 				else if (!config.ownPlayerOnly())
 				{
-					soundEngine.playClip(Sound.AGS_SPEC, executor);
+					soundEngine.playClip(Sound.AGS_SPEC_SOUNDS, executor);
 					event.consume();
 					return;
 				}

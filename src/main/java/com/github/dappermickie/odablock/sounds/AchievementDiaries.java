@@ -2,10 +2,12 @@ package com.github.dappermickie.odablock.sounds;
 
 import com.github.dappermickie.odablock.OdablockConfig;
 import static com.github.dappermickie.odablock.OdablockPlugin.ODABLOCK;
+import com.github.dappermickie.odablock.RandomSoundUtility;
 import com.github.dappermickie.odablock.Sound;
 import com.github.dappermickie.odablock.SoundEngine;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,6 +37,7 @@ public class AchievementDiaries
 
 	@Inject
 	private ScheduledExecutorService executor;
+	private static final Random random = new Random();
 
 	private int lastLoginTick = -1;
 
@@ -79,7 +82,7 @@ public class AchievementDiaries
 				{
 					client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, "Achievement diary: completed.", null);
 				}
-				soundEngine.playClip(Sound.ACHIEVEMENT_DIARY, executor);
+				soundEngine.playClip(Sound.ACHIEVEMENT_DIARY_SOUNDS, executor);
 			}
 		}
 	}
