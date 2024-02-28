@@ -54,7 +54,7 @@ public class RedemptionProc extends TimedSoundBase
 						//TODO: Add different chat message
 						client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, "Your redemption has procced.", null);
 					}
-					soundEngine.playClip(Sound.REDEMPTION_PROC, executor);
+					soundEngine.playClip(Sound.REDEMPTION_PROC_SOUNDS, executor);
 					return;
 				}
 			}

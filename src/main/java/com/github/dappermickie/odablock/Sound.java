@@ -2,7 +2,11 @@ package com.github.dappermickie.odablock;
 
 public enum Sound
 {
-	REDEMPTION_PROC("RedemptionProc.wav"),//#1
+	REDEMPTION_PROC("RedemptionProc_r1.wav"),//#1
+	REDEMPTION_PROC_2("RedemptionProc_r2.wav"),//#1
+	REDEMPTION_PROC_3("RedemptionProc_r3.wav"),//#1
+	REDEMPTION_PROC_4("RedemptionProc_r4.wav"),//#1
+
 	DEATH("DyingHCIMCompleted_r1.wav"),//#2
 	COLLECTION_LOG_SLOT("ColLogSlotCompleted_r1.wav"),//#3
 	SMITED_NO_PRAYER("SmitedNoPrayer.wav"),//#4
@@ -180,5 +184,12 @@ public enum Sound
 		COMBAT_TASK_2,
 		COMBAT_TASK_3,
 		COMBAT_TASK_4
+	};
+
+	public static final Sound[] REDEMPTION_PROC_SOUNDS = new Sound[]{
+		REDEMPTION_PROC,
+		REDEMPTION_PROC_2,
+		REDEMPTION_PROC_3,
+		REDEMPTION_PROC_4
 	};
 }

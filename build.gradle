@@ -1,26 +1,35 @@
 plugins {
-	id 'java'
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 repositories {
-	mavenLocal()
-	maven {
-		url = 'https://repo.runelite.net'
-	}
-	mavenCentral()
+    mavenLocal()
+    maven {
+        url = 'https://repo.runelite.net'
+    }
+    mavenCentral()
 }
 
 def runeLiteVersion = 'latest.release'
 
 dependencies {
-	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+    compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-	testImplementation 'junit:junit:4.13.1'
-	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
-	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+    testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+}
+
+shadowJar {
+    from sourceSets.test.output
+    configurations = [project.configurations.testRuntimeClasspath]
+    manifest {
+        attributes "Main-Class": "com.github.dappermickie.odablock.OdablockPluginTest"
+    }
 }
 
 group = 'com.github.dappermickie.odablock'
@@ -28,5 +37,5 @@ version = '1.0.0'
 
 
 tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
+    options.encoding = 'UTF-8'
 }

@@ -108,7 +108,15 @@ public class DhAxe extends TimedSoundBase
 		}
 
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (itemContainer == null)
+		{
+			return false;
+		}
 		final Item item = itemContainer.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+		if (item == null)
+		{
+			return false;
+		}
 		final int itemId = item.getId();
 
 		for (int id : dhAxeIds)

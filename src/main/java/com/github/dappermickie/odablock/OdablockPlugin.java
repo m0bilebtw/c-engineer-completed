@@ -15,6 +15,7 @@ import com.github.dappermickie.odablock.sounds.DismissRandomEvent;
 import com.github.dappermickie.odablock.sounds.EnteringBankPin;
 import com.github.dappermickie.odablock.sounds.GiveBone;
 import com.github.dappermickie.odablock.sounds.HairDresser;
+import com.github.dappermickie.odablock.sounds.KillingPlayer;
 import com.github.dappermickie.odablock.sounds.KillingRat;
 import com.github.dappermickie.odablock.sounds.LevelUp;
 import com.github.dappermickie.odablock.sounds.Pet;
@@ -200,6 +201,9 @@ public class OdablockPlugin extends Plugin
 	private ZebakRoar zebakRoar;
 
 	@Inject
+	private KillingPlayer killingPlayer;
+
+	@Inject
 	@Named("developerMode")
 	private boolean developerMode;
 	// End of sound injections
@@ -212,6 +216,7 @@ public class OdablockPlugin extends Plugin
 		clientThread.invoke(this::setupOldMaps);
 		achievementDiaries.setLastLoginTick(-1);
 		executor.submit(() -> {
+			PlayerKillLineManager.Setup(okHttpClient);
 			SoundFileManager.ensureDownloadDirectoryExists();
 			SoundFileManager.downloadAllMissingSounds(okHttpClient);
 			SnowballUserManager.ensureDownloadDirectoryExists();
@@ -318,6 +323,8 @@ public class OdablockPlugin extends Plugin
 		}
 		else if (giveBone.onChatMessage(chatMessage))
 		{
+			return;
+		} else if (killingPlayer.onChatMessage(chatMessage)) {
 			return;
 		}
 	}
@@ -481,7 +488,10 @@ public class OdablockPlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
-		debugScripts.onScriptCallbackEvent(scriptCallbackEvent);
+		if (developerMode)
+		{
+			debugScripts.onScriptCallbackEvent(scriptCallbackEvent);
+		}
 	}
 
 	public static int TO_GROUP(int id)
