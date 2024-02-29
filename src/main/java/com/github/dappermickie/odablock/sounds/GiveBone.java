@@ -38,7 +38,7 @@ public class GiveBone
 		}
 		if (config.showChatMessages())
 		{
-			client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, "I love you.", null);
+			client.addChatMessage(ChatMessageType.PUBLICCHAT, "Stella", "Who's a good doggy?", null);
 		}
 		soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE, executor);
 		return true;

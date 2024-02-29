@@ -12,6 +12,8 @@ import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -20,6 +22,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 
 @Singleton
 @Slf4j
@@ -37,6 +40,10 @@ public class DhAxe extends TimedSoundBase
 
 	@Inject
 	private ScheduledExecutorService executor;
+	@Getter(AccessLevel.PACKAGE)
+	@Inject
+	private ClientThread clientThread;
+
 	private static final Random random = new Random();
 
 	private int current43 = -1;
@@ -77,8 +84,7 @@ public class DhAxe extends TimedSoundBase
 		{
 			return;
 		}
-
-		playSound();
+		clientThread.invokeLater(this::playSound);
 	}
 
 	public void playSound()
@@ -91,6 +97,10 @@ public class DhAxe extends TimedSoundBase
 		}
 
 		Sound sound = getSoundForDhAxeStyle();
+		if (sound == null)
+		{
+			return;
+		}
 		final int currentTick = client.getTickCount();
 		if (canPlaySound(currentTick))
 		{

@@ -50,7 +50,7 @@ public class PetDog
 			Text.standardize(chatMessage.getName()).equals(Text.standardize(local.getName())))
 		{
 			// Check if last pet dog click is within 15 ticks
-			if (lastPetDogTick != -1 && currentTick - lastPetDogTick < 15)
+			if (lastPetDogTick == -1 || currentTick - lastPetDogTick < 15)
 			{
 				soundEngine.playClip(Sound.PETTING_DOG, executor);
 				return true;

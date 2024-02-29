@@ -34,7 +34,7 @@ public class AgsSpec extends TimedSoundBase
 
 	AgsSpec()
 	{
-		super(4);
+		super(5);
 	}
 
 	public void onTick(int currentTick, Player local)
@@ -51,6 +51,7 @@ public class AgsSpec extends TimedSoundBase
 						client.addChatMessage(ChatMessageType.PUBLICCHAT, ODABLOCK, message, null);
 					}
 					soundEngine.playClip(Sound.AGS_SPEC_SOUNDS, executor);
+					setLastPlayedTickTick(currentTick);
 				}
 			}
 		}
@@ -65,17 +66,8 @@ public class AgsSpec extends TimedSoundBase
 		{
 			if (soundId == SoundIds.AGS_SPEC.Id)
 			{
-				if (local == event.getSource())
-				{
-					event.consume();
-					return;
-				}
-				else if (!config.ownPlayerOnly())
-				{
-					soundEngine.playClip(Sound.AGS_SPEC_SOUNDS, executor);
-					event.consume();
-					return;
-				}
+				event.consume();
+				return;
 			}
 		}
 	}
