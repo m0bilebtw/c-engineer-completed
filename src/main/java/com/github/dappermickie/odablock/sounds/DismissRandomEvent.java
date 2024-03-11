@@ -28,13 +28,15 @@ public class DismissRandomEvent
 	@Inject
 	private ScheduledExecutorService executor;
 
-	private final String optionText = "Dismiss";
+	private static final String optionText = "Dismiss";
+	private static final int runePouchWidgetId = 983062;
 
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
+		int widgetId = menuOptionClicked.getWidget().getId();
 		String option = menuOptionClicked.getMenuOption();
 		// Dismiss random event
-		if (config.dismissRandomEvent() && option.equals(optionText))
+		if (config.dismissRandomEvent() && option.equals(optionText) && widgetId != runePouchWidgetId)
 		{
 			soundEngine.playClip(Sound.DISMISSING_RANDOM_EVENT, executor);
 		}
