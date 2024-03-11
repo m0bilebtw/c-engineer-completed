@@ -1,4 +1,4 @@
-# Odablock Plugin [![Plugin Installs](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/c-engineer-completed)](https://runelite.net/plugin-hub/m0bile%20btw) [![Plugin Rank](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/c-engineer-completed)](https://runelite.net/plugin-hub)
+# Odablock Plugin [![Plugin Installs](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/odablock)](https://runelite.net/plugin-hub/dappermickie) [![Plugin Rank](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/odablock)](https://runelite.net/plugin-hub/show/odablock)
 
 ##### A plugin for [RuneLite](https://runelite.net/)
 
