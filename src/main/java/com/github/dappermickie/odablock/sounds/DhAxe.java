@@ -50,7 +50,7 @@ public class DhAxe extends TimedSoundBase
 	private int current46 = -1;
 	private int current843 = 0;
 	private DhAxeStyles dhAxeStyle;
-	private final int[] dhAxeIds = new int[]{ItemID.DHAROKS_GREATAXE, ItemID.DHAROKS_GREATAXE_100, ItemID.DHAROKS_GREATAXE_75, ItemID.DHAROKS_GREATAXE_50, ItemID.DHAROKS_GREATAXE_25, ItemID.SOULREAPER_AXE, ItemID.SOULREAPER_AXE_28338};
+	private final int[] dhAxeIds = new int[]{ItemID.DHAROKS_GREATAXE, ItemID.DHAROKS_GREATAXE_100, ItemID.DHAROKS_GREATAXE_75, ItemID.DHAROKS_GREATAXE_50, ItemID.DHAROKS_GREATAXE_25, ItemID.SOULREAPER_AXE, ItemID.SOULREAPER_AXE_28338, ItemID.DHAROKS_GREATAXE_25516};
 
 	DhAxe()
 	{
