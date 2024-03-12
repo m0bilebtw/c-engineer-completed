@@ -34,6 +34,8 @@ public abstract class SoundFileManager
 	private static final File DELETE_WARNING_FILE = new File(DOWNLOAD_DIR, DELETE_WARNING_FILENAME);
 	private static final HttpUrl RAW_GITHUB = HttpUrl.parse("https://raw.githubusercontent.com/dappermickie/odablock-sounds/sounds");
 
+	private static boolean isUpdating = false;
+
 	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public static void ensureDownloadDirectoryExists()
 	{
@@ -93,8 +95,16 @@ public abstract class SoundFileManager
 		{
 			return;
 		}
-
+		isUpdating = true;
 		writeLatestVersion(latestVersion);
+
+		for (String filename : filesPresent)
+		{
+			File toDelete = new File(DOWNLOAD_DIR, filename);
+			//noinspection ResultOfMethodCallIgnored
+			toDelete.delete();
+			log.warn("Odablock plugin deleted " + filename);
+		}
 
 		// Download any sounds that are not yet present but desired
 		for (Sound sound : getDesiredSoundList())
@@ -105,6 +115,7 @@ public abstract class SoundFileManager
 			{
 				// Hush intellij, it's okay, the potential NPE can't hurt you now
 				log.error("Odablock Plugin could not download sounds due to an unexpected null RAW_GITHUB value");
+				isUpdating = false;
 				return;
 			}
 			HttpUrl soundUrl = RAW_GITHUB.newBuilder().addPathSegment(fileNameToDownload).build();
@@ -114,25 +125,18 @@ public abstract class SoundFileManager
 				if (res.body() != null)
 				{
 					Files.copy(new BufferedInputStream(res.body().byteStream()), outputPath, StandardCopyOption.REPLACE_EXISTING);
+					log.warn("Odablock plugin downloaded " + fileNameToDownload);
 				}
 			}
 			catch (IOException e)
 			{
 				log.error("Odablock Plugin could not download sounds", e);
+				isUpdating = false;
 				return;
 			}
 		}
 
-		// filesPresent now contains only files in our directory that weren't desired
-		// (e.g. old versions of sounds, streamer trolls if setting was toggled)
-		// We now delete them to avoid cluttering up disk space
-		// We leave dirs behind (getFilesPresent ignores dirs) as we aren't creating those anyway, so they won't build up over time
-		for (String filename : filesPresent)
-		{
-			File toDelete = new File(DOWNLOAD_DIR, filename);
-			//noinspection ResultOfMethodCallIgnored
-			toDelete.delete();
-		}
+		isUpdating = false;
 	}
 
 	private static Set<String> getFilesPresent()
@@ -167,6 +171,11 @@ public abstract class SoundFileManager
 		File soundVersionFile = new File(DOWNLOAD_DIR, SOUNDVERSION_FILENAME);
 		String soundVersionContent = Files.readString(soundVersionFile.toPath());
 		return Integer.parseInt(soundVersionContent);
+	}
+
+	public static boolean getIsUpdating()
+	{
+		return isUpdating;
 	}
 
 	private static void writeLatestVersion(int version)

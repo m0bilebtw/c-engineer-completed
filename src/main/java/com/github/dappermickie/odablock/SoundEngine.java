@@ -59,6 +59,10 @@ public class SoundEngine
 
 	private void playClip(Sound sound)
 	{
+		if (SoundFileManager.getIsUpdating())
+		{
+			return;
+		}
 		long currentMTime = System.currentTimeMillis();
 		if (clip == null || currentMTime != lastClipMTime || !clip.isOpen())
 		{
