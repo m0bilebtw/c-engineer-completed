@@ -463,6 +463,7 @@ public class OdablockPlugin extends Plugin
 		ddsSpec.onSoundEffectPlayed(event);
 		prayerDown.onSoundEffectPlayed(event);
 		zebakRoar.onSoundEffectPlayed(event);
+		acbSpec.onSoundEffectPlayed(event);
 	}
 
 	@Subscribe
