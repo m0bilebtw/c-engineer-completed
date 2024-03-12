@@ -10,6 +10,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.api.widgets.Widget;
 
 @Singleton
 @Slf4j
@@ -33,7 +34,8 @@ public class DismissRandomEvent
 
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		int widgetId = menuOptionClicked.getWidget().getId();
+		Widget widget = menuOptionClicked.getWidget();
+		int widgetId = widget == null ? -1 : widget.getId();
 		String option = menuOptionClicked.getMenuOption();
 		// Dismiss random event
 		if (config.dismissRandomEvent() && option.equals(optionText) && widgetId != runePouchWidgetId)
