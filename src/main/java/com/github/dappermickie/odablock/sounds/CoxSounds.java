@@ -6,13 +6,16 @@ import com.github.dappermickie.odablock.Sound;
 import com.github.dappermickie.odablock.SoundEngine;
 import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
@@ -35,46 +38,67 @@ public class CoxSounds
 
 	// YOINK from https://github.com/AnkouOSRS/cox-light-colors/blob/master/src/main/java/com/coxlightcolors/CoxLightColorsPlugin.java#L82
 
-	private static final int LIGHT_OBJECT_ID = 28848;
-	private GameObject lightObject;
-	private static Integer currentLightType;
-	private static final int VARBIT_LIGHT_TYPE = 5456;
+	private static final Pattern SPECIAL_DROP_MESSAGE = Pattern.compile("(.+) - (.+)");
+	private int endedRaidTick = -1;
+	private boolean isWhiteLight = true;
 
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	public boolean onChatMessage(ChatMessage chatMessage)
 	{
-		if(!config.coxSounds()) {
-			return;
-		}
-		GameObject obj = event.getGameObject();
-		if (LIGHT_OBJECT_ID == obj.getId())
+		if (!config.coxSounds())
 		{
-			log.info("Light gameObject spawned");
-			lightObject = obj;
-			playSound();
+			return false;
 		}
-	}
+		if (client.getLocalPlayer() == null || client.getLocalPlayer().getName() == null)
+		{
+			return false;
+		}
 
-	public void onGameObjectDespawned(GameObjectDespawned event)
-	{
-		if (LIGHT_OBJECT_ID == event.getGameObject().getId())
+		if (chatMessage.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
-			log.info("Light gameObject despawned");
-			lightObject = null;
-		}
-	}
+			String message = Text.removeTags(chatMessage.getMessage());
 
-	private void playSound()
-	{
-		if (lightObject != null)
-		{
-			currentLightType = client.getVarbitValue(VARBIT_LIGHT_TYPE);
-			if (currentLightType != 0)
+			if (message.contains("your raid is complete!"))
 			{
-				soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+				isWhiteLight = true;
+				endedRaidTick = client.getTickCount();
+				return true;
+			}
+
+			Matcher matcher = SPECIAL_DROP_MESSAGE.matcher(message);
+
+			if (matcher.find())
+			{
+				final String dropReceiver = Text.sanitize(matcher.group(1)).trim();
+				// Maybe we can play a different sound if it's a twisted bow?
+				final String dropName = matcher.group(2).trim();
+
+				// We might want to play a different sound if you're the one receiving the purple
+				if (dropReceiver.equals(Text.sanitize(client.getLocalPlayer().getName())))
+				{
+					isWhiteLight = false;
+				}
+				else
+				{
+					isWhiteLight = false;
+				}
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public void onGameTick(GameTick event)
+	{
+		if (endedRaidTick != -1 && client.getTickCount() - endedRaidTick == 2)
+		{
+			if (isWhiteLight)
+			{
+				soundEngine.playClip(Sound.WHITE_LIGHT_AFTER_RAID, executor);
 			}
 			else
 			{
-				soundEngine.playClip(Sound.WHITE_LIGHT_AFTER_RAID, executor);
+				soundEngine.playClip(Sound.PLAYER_KILLING_SOUNDS, executor);
 			}
 		}
 	}
