@@ -120,7 +120,7 @@ public class TobChestLight
 			for (int i = 0; i < MAX_RAIDERS; i++)
 			{
 				Integer playervarp = THEATRE_RAIDERS_VARP + i;
-				if (varcmap.containsKey(playervarp))
+				if (varcmap.containsKey(playervarp) && !varcmap.get(playervarp).equals(""))
 				{
 					playerCount++;
 				}
