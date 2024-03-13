@@ -324,7 +324,13 @@ public class OdablockPlugin extends Plugin
 		else if (giveBone.onChatMessage(chatMessage))
 		{
 			return;
-		} else if (killingPlayer.onChatMessage(chatMessage)) {
+		}
+		else if (killingPlayer.onChatMessage(chatMessage))
+		{
+			return;
+		}
+		else if (coxSounds.onChatMessage(chatMessage))
+		{
 			return;
 		}
 	}
@@ -426,7 +432,6 @@ public class OdablockPlugin extends Plugin
 			return;
 		}
 		final Player local = client.getLocalPlayer();
-
 		int currentTick = client.getTickCount();
 
 		redemptionProc.onTick(currentTick, local);
@@ -434,6 +439,7 @@ public class OdablockPlugin extends Plugin
 		agsSpec.onTick(currentTick, local);
 		prayerDown.onGameTick(event);
 		tobChestLight.onGameTick(event);
+		coxSounds.onGameTick(event);
 
 		// Should always happen after all tick events
 		cleanupTicks(currentTick);
@@ -477,7 +483,6 @@ public class OdablockPlugin extends Plugin
 	{
 		toaChestOpens.onGameObjectSpawned(event);
 		tobChestLight.onGameObjectSpawned(event);
-		coxSounds.onGameObjectSpawned(event);
 	}
 
 	@Subscribe
