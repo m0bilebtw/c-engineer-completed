@@ -215,6 +215,7 @@ public class OdablockPlugin extends Plugin
 	{
 		clientThread.invoke(this::setupOldMaps);
 		achievementDiaries.setLastLoginTick(-1);
+		prayerDown.setLastLoginTick(-1);
 		executor.submit(() -> {
 			PlayerKillLineManager.Setup(okHttpClient);
 			SoundFileManager.ensureDownloadDirectoryExists();
@@ -264,10 +265,13 @@ public class OdablockPlugin extends Plugin
 				//soundEngine.playClip(Sound.CLIENT_DISCONNECTS, executor);
 
 				achievementDiaries.setLastLoginTick(-1);
+				prayerDown.setLastLoginTick(-1);
 				collectionLog.setlastColLogSettingWarning();
 				break;
 			case LOGGED_IN:
-				achievementDiaries.setLastLoginTick(client.getTickCount());
+				final int currentTick = client.getTickCount();
+				achievementDiaries.setLastLoginTick(currentTick);
+				prayerDown.setLastLoginTick(currentTick);
 				break;
 		}
 	}

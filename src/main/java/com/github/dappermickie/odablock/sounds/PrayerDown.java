@@ -18,67 +18,81 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @Singleton
 @Slf4j
-public class PrayerDown {
+public class PrayerDown
+{
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private OdablockConfig config;
+	@Inject
+	private OdablockConfig config;
 
-    @Inject
-    private SoundEngine soundEngine;
+	@Inject
+	private SoundEngine soundEngine;
 
 	@Inject
 	private ScheduledExecutorService executor;
 
-    @Inject RedemptionProc redemptionProc;
+	@Inject
+	RedemptionProc redemptionProc;
 
-    private int previousPrayerValue = -1;
-    private boolean notifyPrayer = false;
+	private int previousPrayerValue = -1;
+	private boolean notifyPrayer = false;
+	private int lastLoginTick = -1;
 
-    public void onGameTick(GameTick event){
+	public void setLastLoginTick(int tick)
+	{
+    	lastLoginTick = tick;
+	}
 
-        if (config.prayerMessage() && checkLowPrayer()) {
-            //TODO: Change to 'Oh no' sound
-            soundEngine.playClip(Sound.SMITED_NO_PRAYER, executor);
-        }
-    }
+	public void onGameTick(GameTick event)
+	{
+		if (config.prayerMessage() && checkLowPrayer() && client.getTickCount() - lastLoginTick > 2 && lastLoginTick != -1)
+		{
+			soundEngine.playClip(Sound.SMITED_NO_PRAYER, executor);
+		}
+	}
 
-    private boolean checkLowPrayer()
-    {
-        int currentPrayerValue = client.getBoostedSkillLevel(Skill.PRAYER);
-        if (previousPrayerValue != currentPrayerValue) {
-            previousPrayerValue = currentPrayerValue;
-        } else {
-            return false;
-        }
-        if (currentPrayerValue <= 0)
-        {
-            if (!notifyPrayer &&
-                    !redemptionProc.HasRedemptionProcced())
-            {
-                notifyPrayer = true;
-                return true;
-            }
-        }
-        else
-        {
-            notifyPrayer = false;
-        }
-        return false;
-    }
+	private boolean checkLowPrayer()
+	{
+		int currentPrayerValue = client.getBoostedSkillLevel(Skill.PRAYER);
+		if (previousPrayerValue != currentPrayerValue)
+		{
+			previousPrayerValue = currentPrayerValue;
+		}
+		else
+		{
+			return false;
+		}
+		if (currentPrayerValue <= 0)
+		{
+			if (!notifyPrayer &&
+				!redemptionProc.HasRedemptionProcced())
+			{
+				notifyPrayer = true;
+				return true;
+			}
+		}
+		else
+		{
+			notifyPrayer = false;
+		}
+		return false;
+	}
 
-    public void onSoundEffectPlayed(SoundEffectPlayed event) {
-        int soundId = event.getSoundId();
+	public void onSoundEffectPlayed(SoundEffectPlayed event)
+	{
+		int soundId = event.getSoundId();
 
-        if (config.prayerMessage()) {
-            //if(!config.ownPlayerOnly() || (config.ownPlayerOnly() && local == event.getSource())) {
-            if (soundId == SoundIds.PRAYER_DOWN.Id) {
-                event.consume();
-                return;
-            }
-            //}
-        }
-    }
+		if (config.prayerMessage())
+		{
+			//if(!config.ownPlayerOnly() || (config.ownPlayerOnly() && local == event.getSource())) {
+			if (soundId == SoundIds.PRAYER_DOWN.Id)
+			{
+				event.consume();
+				return;
+			}
+			//}
+		}
+	}
 }
