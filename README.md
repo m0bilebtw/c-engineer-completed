@@ -13,10 +13,10 @@ BEFORE TRYING ANYTHING ELSE, ENABLE THIS IN THE **RUNESCAPE** SETTINGS
 
 ![image](https://user-images.githubusercontent.com/62370532/208992085-e2c07494-d8bb-489e-b7f3-ed538175acbc.png)
 
-Whenever this doesn't fix your issue, please feel free to look in the [Issues](https://github.com/DapperMickie/odablock-sounds/issues) section of this github page to see if anyone else had this issue. If there is not an issue open for your specific problem, please open a new issue so we can track all the bugs/problems that you might find using this plugin. We will try to resolve all problems within a reasonable time.
+Whenever this does not resolve your issue, please feel free to look in the [Issues](https://github.com/DapperMickie/odablock-sounds/issues) section of this GitHub page to see if anyone else had this issue.
 ___
 
-## Customising your sounds
+## Customizing your sounds
 
 ### Warning
 
@@ -24,7 +24,7 @@ Because we have a system in place that automatically updates the sounds for this
 
 ### 1. Locate your `.runelite` folder
 
-On windows this is likely to be here: `C:\Users\<your username>\.runelite`
+On Windows this is likely to be here: `C:\Users\<your username>\.runelite`
 
 If you aren't sure, it's the same place that stores your `settings.properties`
 
@@ -53,6 +53,10 @@ Remove your sound and make sure it plays the default sound for that event - if n
 Check that your file is actually a valid `.wav` and not just a renamed `.mp3` or similar
 
 Check that the file is still there in the `odablock-sounds` folder, if you accidentally used an incorrect file name, it won't have been loaded, and will have been deleted
+
+### 5. Resetting all sounds
+
+You can reset all the sounds by deleting the `odablock-sounds` folder and then reloading your client.
 ___
 
 ## Other information
@@ -125,6 +129,4 @@ Because the OSRS team adds new player kill lines from time to time, we've chosen
 
 ### Known Issues
 
-- PulseAudio on linux can just refuse to accept the audio formats used despite claiming to accept them.
-- Chambers of Xerics sounds don't play correctly (now plays whenever you enter the Olm room instead of waiting until you finished the raid).
-- Dismiss random events plays whenever you 'dismiss' the rune pouch.
+PulseAudio on Linux can just refuse to accept the audio formats used despite claiming to accept them.
