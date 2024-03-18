@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Model;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.WallObjectSpawned;
 
@@ -43,7 +42,7 @@ public class ToaChestLight
 	{
 		final WallObject wallObject = event.getWallObject();
 
-		if (!config.enableToaChest() || wallObject.getId() != WALL_OBJECT_ID_SARCOPHAGUS)
+		if ((!config.toaPurpleChest() && !config.toaWhiteChest()) || wallObject.getId() != WALL_OBJECT_ID_SARCOPHAGUS)
 		{
 			return;
 		}
@@ -52,17 +51,20 @@ public class ToaChestLight
 
 		if (sarcophagusIsPurple)
 		{
-			// TODO: Maybe change the sound if it's not your purple?
-			if (purpleIsMine)
+			if (config.toaPurpleChest())
 			{
-				soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
-			}
-			else
-			{
-				soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+				// TODO: Maybe change the sound if it's not your purple?
+				if (purpleIsMine)
+				{
+					soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+				}
+				else
+				{
+					soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+				}
 			}
 		}
-		else
+		else if (config.toaWhiteChest())
 		{
 			soundEngine.playClip(Sound.WHITE_LIGHT_AFTER_RAID, executor);
 		}

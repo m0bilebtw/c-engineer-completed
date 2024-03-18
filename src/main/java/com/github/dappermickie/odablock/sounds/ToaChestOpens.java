@@ -32,7 +32,7 @@ public class ToaChestOpens
 
 	public void onGameObjectSpawned(GameObjectSpawned e)
 	{
-		if (!config.enableToaPurpleChestOpens() || e.getGameObject().getId() != SARCOPHAGUS_ID)
+		if (!config.toaPurpleChestOpens() || e.getGameObject().getId() != SARCOPHAGUS_ID)
 		{
 			return;
 		}

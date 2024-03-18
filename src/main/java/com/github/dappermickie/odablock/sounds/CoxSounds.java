@@ -44,7 +44,7 @@ public class CoxSounds
 
 	public boolean onChatMessage(ChatMessage chatMessage)
 	{
-		if (!config.coxSounds())
+		if (!config.coxWhiteChest() && !config.coxPurpleChest())
 		{
 			return false;
 		}
@@ -94,9 +94,12 @@ public class CoxSounds
 		{
 			if (isWhiteLight)
 			{
-				soundEngine.playClip(Sound.WHITE_LIGHT_AFTER_RAID, executor);
+				if (config.coxWhiteChest())
+				{
+					soundEngine.playClip(Sound.WHITE_LIGHT_AFTER_RAID, executor);
+				}
 			}
-			else
+			else if (config.coxPurpleChest())
 			{
 				soundEngine.playClip(Sound.PLAYER_KILLING_SOUNDS, executor);
 			}

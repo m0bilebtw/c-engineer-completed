@@ -11,37 +11,6 @@ public interface OdablockConfig extends Config
 {
 	String CONFIG_GROUP = "odablockplugin";
 
-	@ConfigSection(
-		name = "Tombs of Amascut",
-		description = "All the configurations regarding Tombs of Amascut.",
-		position = 100
-	)
-	String TOA_SECTION = "toaSection";
-
-	@ConfigItem(
-		keyName = "enableToaChest",
-		name = "Toa chest appears",
-		description = "When enabled, Odablock will say 'Please GAGECK' if your party gets a purple or '' if it's a white light.",
-		section = TOA_SECTION,
-		position = 101
-	)
-	default boolean enableToaChest()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "enableToaPurpleChestOpens",
-		name = "Opening The Chest",
-		description = "When enabled, Odablock will say 'Please GAGECK' whenever someone in your party opens the purple chest at TOA.",
-		section = TOA_SECTION,
-		position = 102
-	)
-	default boolean enableToaPurpleChestOpens()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		keyName = "rubyBoltProc",
 		name = "Ruby Bolt SLAAA",
@@ -410,24 +379,107 @@ public interface OdablockConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "tobSounds",
-		name = "TOB Sounds",
-		description = "Should Odablock say something whenever you finish a TOB chest?",
-		position = 32
+	@ConfigSection(
+		name = "Tombs of Amascut",
+		description = "All the configurations regarding Tombs of Amascut.",
+		position = 100
 	)
-	default boolean tobSounds()
+	String TOA_SECTION = "toaSection";
+
+	@ConfigItem(
+		keyName = "toaWhiteChest",
+		name = "TOA White Chest",
+		description = "When enabled, Odablock will say something if you receive a white light.",
+		section = TOA_SECTION,
+		position = 101
+	)
+	default boolean toaWhiteChest()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "coxSounds",
-		name = "Play sounds whenever you end a COX raid",
-		description = "Should Odablock say something whenever you end a COX raid?",
-		position = 33
+		keyName = "toaPurpleChest",
+		name = "TOA Purple Chest",
+		description = "When enabled, Odablock will say something if you receive a purple.",
+		section = TOA_SECTION,
+		position = 102
 	)
-	default boolean coxSounds()
+	default boolean toaPurpleChest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enableToaPurpleChestOpens",
+		name = "Opening The Chest",
+		description = "When enabled, Odablock will say 'Please GAGECK' whenever someone in your party opens the purple chest at TOA.",
+		section = TOA_SECTION,
+		position = 103
+	)
+	default boolean toaPurpleChestOpens()
+	{
+		return true;
+	}
+
+	@ConfigSection(
+		name = "Theatre of Blood",
+		description = "All the configurations regarding Theatre of Blood.",
+		position = 200
+	)
+	String TOB_SECTION = "tobSection";
+
+	@ConfigItem(
+		keyName = "tobWhiteChest",
+		name = "TOB White chest",
+		description = "Should Odablock say something whenever you receive a white chest at TOB?",
+		section = TOB_SECTION,
+		position = 201
+	)
+	default boolean tobWhiteChest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "tobPurpleChest",
+		name = "TOB Purple chest",
+		description = "Should Odablock say something whenever you receive a purple chest at TOB?",
+		section = TOB_SECTION,
+		position = 202
+	)
+	default boolean tobPurpleChest()
+	{
+		return true;
+	}
+
+	@ConfigSection(
+		name = "Chambers of Xeric",
+		description = "All the configurations regarding Chambers of Xeric.",
+		position = 300
+	)
+	String COX_SECTION = "coxSection";
+
+	@ConfigItem(
+		keyName = "coxWhiteChest",
+		name = "COX White chest",
+		description = "Should Odablock say something whenever you get a white light at COX?",
+		section = COX_SECTION,
+		position = 301
+	)
+	default boolean coxWhiteChest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "coxPurpleChest",
+		name = "COX Purple chest",
+		description = "Should Odablock say something whenever you get a purple light at COX?",
+		section = COX_SECTION,
+		position = 302
+	)
+	default boolean coxPurpleChest()
 	{
 		return true;
 	}

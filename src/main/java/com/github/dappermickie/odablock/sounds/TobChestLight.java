@@ -64,7 +64,7 @@ public class TobChestLight
 
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (!config.tobSounds())
+		if (!config.tobPurpleChest() && !config.tobWhiteChest())
 		{
 			return;
 		}
@@ -94,17 +94,20 @@ public class TobChestLight
 			{
 				if (isPurple)
 				{
-					// TODO: Maybe change sound if it's yours
-					if (isMine)
+					if (config.tobPurpleChest())
 					{
-						soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
-					}
-					else
-					{
-						soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+						// TODO: Maybe change sound if it's yours
+						if (isMine)
+						{
+							soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+						}
+						else
+						{
+							soundEngine.playClip(Sound.GETTING_PURPLE_SOUNDS, executor);
+						}
 					}
 				}
-				else
+				else if (config.tobWhiteChest())
 				{
 					soundEngine.playClip(Sound.WHITE_LIGHT_AFTER_RAID, executor);
 				}
