@@ -1,4 +1,4 @@
-# Odablock Plugin [![Plugin Installs](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/odablock)](https://runelite.net/plugin-hub/DapperMickie) [![Plugin Rank](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/odablock)](https://runelite.net/plugin-hub/show/odablock)
+# Odablock Plugin [![Plugin Installs](https://img.shields.io/endpoint?url=https://api.runelite.net/pluginhub/shields/installs/plugin/odablock)](https://runelite.net/plugin-hub/DapperMickie) [![Plugin Rank](https://img.shields.io/endpoint?url=https://api.runelite.net/pluginhub/shields/rank/plugin/odablock)](https://runelite.net/plugin-hub/show/odablock)
 
 ##### A plugin for [RuneLite](https://runelite.net/)
 
