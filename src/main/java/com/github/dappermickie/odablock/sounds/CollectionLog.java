@@ -68,7 +68,7 @@ public class CollectionLog
 		}
 
 		int currentTick = client.getTickCount();
-		if (currentTick - pet.receivedPetTick <= 10)
+		if (currentTick - pet.getReceivedPetTick() <= 10)
 		{
 			return false;
 		}
