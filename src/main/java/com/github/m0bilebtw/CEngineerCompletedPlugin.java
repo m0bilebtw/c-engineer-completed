@@ -128,6 +128,8 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastZulrahKillTick = -1;
 	private int lastSnowballTriggerTick = -1;
 	private int lastColLogSettingWarning = -1;
+	private int lastCEngiInteractOrDamageTick = -1;
+	private static final int C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN = 17;
 
 	private Player cEngineerPlayer = null;
 	private boolean gameStateLoggedIn = false;
@@ -225,11 +227,47 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	@Subscribe
 	public void onActorDeath(ActorDeath actorDeath) {
-		if (config.announceDeath() && actorDeath.getActor() == client.getLocalPlayer()) {
+		if (actorDeath.getActor() != client.getLocalPlayer())
+			return;
+
+		if (config.easterEggs() && client.getTickCount() - lastCEngiInteractOrDamageTick <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
+			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo test this (non-certain detection) and use proper sound
+		} else if (config.announceDeath()) {
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Dying on my HCIM: completed.", null);
 			}
 			soundEngine.playClip(Sound.DEATH, executor);
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged interactingChanged) {
+		if (cEngineerPlayer == null)
+			return;
+
+		if (interactingChanged.getSource() == cEngineerPlayer && interactingChanged.getTarget() == client.getLocalPlayer()) {
+				lastCEngiInteractOrDamageTick = client.getTickCount();
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied) {
+		if (cEngineerPlayer == null)
+			return;
+
+		if (hitsplatApplied.getActor() != client.getLocalPlayer())
+			return;
+
+		int hitType = hitsplatApplied.getHitsplat().getHitsplatType();
+		boolean isRelevantHitType = hitType == HitsplatID.DAMAGE_ME
+				|| hitType == HitsplatID.DAMAGE_ME_ORANGE
+				|| hitType == HitsplatID.DAMAGE_MAX_ME
+				|| hitType == HitsplatID.DAMAGE_MAX_ME_ORANGE
+				|| hitType == HitsplatID.POISON
+				|| hitType == HitsplatID.VENOM;
+		if (isRelevantHitType && client.getTickCount() - lastCEngiInteractOrDamageTick <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
+			// We don't *know* this was C Engineer's doing, but I can't see a better way, so we assume it's a continued interaction
+			lastCEngiInteractOrDamageTick = client.getTickCount();
 		}
 	}
 
