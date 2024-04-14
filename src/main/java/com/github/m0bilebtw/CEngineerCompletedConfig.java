@@ -3,17 +3,26 @@ package com.github.m0bilebtw;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 
 @ConfigGroup(CEngineerCompletedConfig.GROUP)
 public interface CEngineerCompletedConfig extends Config {
     String GROUP = "cengineercompleted";
 
+    @ConfigSection(
+            name = "Announce Achievements",
+            description = "Which sounds that are achievements should play.",
+            position = 0
+    )
+    String SECTION_ACHIEVEMENT_ANNOUNCEMENTS = "Announce Achievements";
+
     @ConfigItem(
             keyName = "announceLevelUp",
             name = "Level ups",
             description = "Should C Engineer announce when you gain a level in a skill?",
-            position = 0
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 1
     )
     default boolean announceLevelUp() {
         return true;
@@ -23,7 +32,8 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceLevelUpIncludesVirtual",
             name = "Include virtual level ups",
             description = "Should C Engineer announce when you gain a virtual (>99) level in a skill?",
-            position = 1
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 2
     )
     default boolean announceLevelUpIncludesVirtual() {
         return false;
@@ -33,7 +43,8 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceQuestCompletion",
             name = "Quest completions",
             description = "Should C Engineer announce when you complete a quest?",
-            position = 2
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 3
     )
     default boolean announceQuestCompletion() {
         return true;
@@ -43,7 +54,8 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceCollectionLog",
             name = "New collection log entry",
             description = "Should C Engineer announce when you fill in a new slot in your collection log? This one relies on you having chat messages (included with the popup option) enabled in game settings!",
-            position = 3
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 4
     )
     default boolean announceCollectionLog() {
         return true;
@@ -53,7 +65,8 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceAchievementDiary",
             name = "Completed achievement diaries",
             description = "Should C Engineer announce when you complete a new achievement diary?",
-            position = 4
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 5
     )
     default boolean announceAchievementDiary() {
         return true;
@@ -63,27 +76,44 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announceCombatAchievement",
             name = "Completed combat achievement tasks",
             description = "Should C Engineer announce when you complete a new combat achievement task?",
-            position = 5
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 6
     )
     default boolean announceCombatAchievement() {
         return true;
     }
 
+    @ConfigSection(
+            name = "Announce Other",
+            description = "Which sounds that are not necessarily achievements (and not easter eggs) should play.",
+            position = 20
+    )
+    String SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS = "Announce Other";
+
     @ConfigItem(
             keyName = "announceDeath",
             name = "When you die",
             description = "Should C Engineer relive his PvP HCIM death when you die?",
-            position = 6
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 21
     )
     default boolean announceDeath() {
         return true;
     }
 
+    @ConfigSection(
+            name = "General Announcement Settings",
+            description = "Settings for other details when achievement sounds play.",
+            position = 40
+    )
+    String SECTION_GENERAL_ANNOUNCEMENT_SETTINGS = "General Announcement Settings";
+
     @ConfigItem(
             keyName = "showChatMessages",
             name = "Show fake public chat message (only you will see it)",
             description = "Should C Engineer announce your achievements in game chat as well as audibly?",
-            position = 7
+            section = SECTION_GENERAL_ANNOUNCEMENT_SETTINGS,
+            position = 41
     )
     default boolean showChatMessages() {
         return true;
@@ -97,17 +127,26 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "announcementVolume",
             name = "Announcement volume",
             description = "Adjust how loud the audio announcements are played!",
-            position = 8
+            section = SECTION_GENERAL_ANNOUNCEMENT_SETTINGS,
+            position = 42
     )
     default int announcementVolume() {
         return 100;
     }
 
+    @ConfigSection(
+            name = "Easter Eggs and Streamer Trolls",
+            description = "Settings for non-achievement sounds.",
+            position = 60
+    )
+    String SECTION_EASTER_EGGS_AND_STREAMERS = "Easter Eggs and Streamer Trolls";
+
     @ConfigItem(
             keyName = "easterEggs",
             name = "Easter eggs",
             description = "Should C Engineer comment on your gameplay?",
-            position = 20
+            section = SECTION_EASTER_EGGS_AND_STREAMERS,
+            position = 61
     )
     default boolean easterEggs() {
         return true;
@@ -117,7 +156,8 @@ public interface CEngineerCompletedConfig extends Config {
             keyName = "downloadStreamerSounds",
             name = "Include streamer troll sounds (requires plugin restart)",
             description = "Restart plugin to take effect! If disabled, will remove and no longer download sounds that are streamer trolls",
-            position = 21
+            section = SECTION_EASTER_EGGS_AND_STREAMERS,
+            position = 62
     )
     default boolean downloadStreamerTrolls() { return true; }
 }
