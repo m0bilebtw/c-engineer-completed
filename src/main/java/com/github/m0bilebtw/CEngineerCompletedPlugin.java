@@ -1,5 +1,6 @@
 package com.github.m0bilebtw;
 
+import com.github.m0bilebtw.emote.EmoteTriggers;
 import com.google.inject.Provides;
 
 import java.time.Duration;
@@ -75,6 +76,9 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	@Inject
 	private OkHttpClient okHttpClient;
+
+	@Inject
+	private EmoteTriggers emoteTriggers;
 
 	private final int[] varbitsAchievementDiaries = {
 			Varbits.DIARY_ARDOUGNE_EASY, Varbits.DIARY_ARDOUGNE_MEDIUM, Varbits.DIARY_ARDOUGNE_HARD, Varbits.DIARY_ARDOUGNE_ELITE,
@@ -456,6 +460,21 @@ public class CEngineerCompletedPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged) {
+		if (cEngineerPlayer == null)
+			return;
+
+		Actor actor = animationChanged.getActor();
+		if (!C_ENGINEER.equals(actor.getName()))
+			return;
+
+		int actorAnimationId = actor.getAnimation();
+		if (actorAnimationId == -1)
+			return;
+
+		emoteTriggers.runTriggers(actorAnimationId);
+	}
 
 	private boolean isAchievementDiaryCompleted(int diary, int value) {
 		switch (diary) {
