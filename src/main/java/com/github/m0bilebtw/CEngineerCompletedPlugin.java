@@ -128,8 +128,8 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastZulrahKillTick = -1;
 	private int lastSnowballTriggerTick = -1;
 	private int lastColLogSettingWarning = -1;
-	private int lastCEngiInteractOrDamageTick = -1;
-	private static final int C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN = 17;
+	private int lastTickOfFightIncludingCEngi = -1;
+	private static final int C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN = 8;
 
 	private Player cEngineerPlayer = null;
 	private boolean gameStateLoggedIn = false;
@@ -230,7 +230,7 @@ public class CEngineerCompletedPlugin extends Plugin
 		if (actorDeath.getActor() != client.getLocalPlayer())
 			return;
 
-		if (config.easterEggs() && client.getTickCount() - lastCEngiInteractOrDamageTick <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
+		if (config.easterEggs() && client.getTickCount() - lastTickOfFightIncludingCEngi <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
 			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo test this (non-certain detection) and use proper sound
 		} else if (config.announceDeath()) {
 			if (config.showChatMessages()) {
@@ -246,7 +246,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			return;
 
 		if (interactingChanged.getSource() == cEngineerPlayer && interactingChanged.getTarget() == client.getLocalPlayer()) {
-				lastCEngiInteractOrDamageTick = client.getTickCount();
+				lastTickOfFightIncludingCEngi = client.getTickCount();
 		}
 	}
 
@@ -265,9 +265,9 @@ public class CEngineerCompletedPlugin extends Plugin
 				|| hitType == HitsplatID.DAMAGE_MAX_ME_ORANGE
 				|| hitType == HitsplatID.POISON
 				|| hitType == HitsplatID.VENOM;
-		if (isRelevantHitType && client.getTickCount() - lastCEngiInteractOrDamageTick <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
-			// We don't *know* this was C Engineer's doing, but I can't see a better way, so we assume it's a continued interaction
-			lastCEngiInteractOrDamageTick = client.getTickCount();
+		if (isRelevantHitType && client.getTickCount() - lastTickOfFightIncludingCEngi <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
+			// We want to keep tracking even if the hitsplats aren't from C anymore so we can still play the sound for a kill C contributed to
+			lastTickOfFightIncludingCEngi = client.getTickCount();
 		}
 	}
 
