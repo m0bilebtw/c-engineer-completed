@@ -106,6 +106,7 @@ public class CEngineerCompletedPlugin extends Plugin
 	private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
 	private static final Pattern BOND_OFFER_REGEX = Pattern.compile(C_ENGINEER + " is offering to give you a bond\\.");
 	private static final Pattern STAT_SPY_REGEX = Pattern.compile(Text.standardize(C_ENGINEER + " is reading your skill stats!"));
+	private static final Pattern ESCAPE_CRYSTAL_REGEX = Pattern.compile(Text.standardize(C_ENGINEER + " activated your crystal\\."));
 
 	private static final Random random = new Random();
 
@@ -273,6 +274,9 @@ public class CEngineerCompletedPlugin extends Plugin
 			} else {
 				soundEngine.playClip(STAT_SPY_SOUNDS[random.nextInt(STAT_SPY_SOUNDS.length)], executor);
 			}
+
+		} else if (config.easterEggs() && ESCAPE_CRYSTAL_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
+			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo use proper sound
 
 		} else if (config.easterEggs()) { /* check for zulrah kc and then pb same kill */
 			Matcher matcher = KILLCOUNT_PATTERN.matcher(chatMessage.getMessage());

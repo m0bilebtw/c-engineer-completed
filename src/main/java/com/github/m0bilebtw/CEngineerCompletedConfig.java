@@ -155,7 +155,7 @@ public interface CEngineerCompletedConfig extends Config {
     @ConfigItem(
             keyName = "easterEggs",
             name = "Easter eggs",
-            description = "Should C Engineer comment on your gameplay?",
+            description = "Should C Engineer comment on your gameplay? And maybe do a little trolling?",
             section = SECTION_EASTER_EGGS_AND_STREAMERS,
             position = 61
     )
