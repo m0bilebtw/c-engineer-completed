@@ -101,6 +101,17 @@ public interface CEngineerCompletedConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            keyName = "announceNonTrouverInfernal",
+            name = "Non-locked infernal in wildy (once per plugin session)",
+            description = "Should C Engineer warn you when you enter the wilderness (only once per plugin session) with an infernal cape that has not been locked with a trouver parchment?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 22
+    )
+    default boolean announceNonTrouverInfernal() {
+        return true;
+    }
+
     @ConfigSection(
             name = "General Announcement Settings",
             description = "Settings for other details when achievement sounds play.",

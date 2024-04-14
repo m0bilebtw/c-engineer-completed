@@ -130,6 +130,7 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	private Player cEngineerPlayer = null;
 	private boolean gameStateLoggedIn = false;
+	private boolean warnedAboutNonParchmentedInfernalThisSession = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -140,6 +141,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			SoundFileManager.ensureDownloadDirectoryExists();
 			SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
 		});
+		warnedAboutNonParchmentedInfernalThisSession = false;
 	}
 
 	@Override
@@ -303,10 +305,40 @@ public class CEngineerCompletedPlugin extends Plugin
         }
 	}
 
+	private void checkAndWarnForUnparchmentedInfernal() {
+		if (!config.announceNonTrouverInfernal())
+			return;
+
+		if (!gameStateLoggedIn)
+			return;
+
+		if (warnedAboutNonParchmentedInfernalThisSession)
+			return;
+
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		boolean warnForEquip = equipment != null &&
+				(equipment.contains(ItemID.INFERNAL_CAPE) || equipment.contains(ItemID.INFERNAL_MAX_CAPE));
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		boolean warnForInvent = inventory != null &&
+				(inventory.contains(ItemID.INFERNAL_CAPE) || inventory.contains(ItemID.INFERNAL_MAX_CAPE));
+
+		if (warnForEquip || warnForInvent) {
+			warnedAboutNonParchmentedInfernalThisSession = true;
+			if (config.showChatMessages()) {
+				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Don't forget to lock your infernal cape with a trouver parchment!", null);
+			}
+			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo use proper sound (change chat message above to match)
+		}
+	}
+
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged) {
 		if (varbitChanged.getVarbitId() == Varbits.COLLECTION_LOG_NOTIFICATION) {
 			checkAndWarnForCollectionLogNotificationSetting(varbitChanged.getValue());
+		}
+
+		if (varbitChanged.getVarbitId() == Varbits.IN_WILDERNESS && varbitChanged.getValue() == 1) {
+			checkAndWarnForUnparchmentedInfernal();
 		}
 
 		// As we can't listen to specific varbits, we get a tonne of events BEFORE the game has even set the player's
