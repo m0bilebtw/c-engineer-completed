@@ -261,6 +261,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "I love you.", null);
 			}
 			soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE, executor);
+
 		} else if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
 			Player localPlayer = client.getLocalPlayer();
 			if (localPlayer == null) return;
@@ -499,6 +500,9 @@ public class CEngineerCompletedPlugin extends Plugin
 
 		Actor actor = animationChanged.getActor();
 		if (!C_ENGINEER.equals(actor.getName()))
+			return;
+
+		if (!config.easterEggs())
 			return;
 
 		int actorAnimationId = actor.getAnimation();
