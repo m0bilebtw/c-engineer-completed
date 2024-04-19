@@ -2,28 +2,15 @@ package com.github.m0bilebtw;
 
 import com.github.m0bilebtw.emote.EmoteTriggers;
 import com.google.inject.Provides;
-
-import java.time.Duration;
-import java.util.HashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-
-import static com.github.m0bilebtw.Sound.BOND_OFFER_SOUNDS;
-import static com.github.m0bilebtw.Sound.SNOWBALL_SOUNDS;
-import static com.github.m0bilebtw.Sound.STAT_SPY_SOUNDS;
-import static net.runelite.api.Varbits.DIARY_KARAMJA_EASY;
-import static net.runelite.api.Varbits.DIARY_KARAMJA_HARD;
-import static net.runelite.api.Varbits.DIARY_KARAMJA_MEDIUM;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -38,13 +25,19 @@ import net.runelite.client.util.Text;
 import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
+import java.time.Duration;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static net.runelite.api.Varbits.DIARY_KARAMJA_EASY;
+import static net.runelite.api.Varbits.DIARY_KARAMJA_HARD;
+import static net.runelite.api.Varbits.DIARY_KARAMJA_MEDIUM;
 
 @Slf4j
 @PluginDescriptor(
@@ -97,14 +90,12 @@ public class CEngineerCompletedPlugin extends Plugin
 	// Killcount and new pb patterns from runelite/ChatCommandsPlugin
 	private static final String ZULRAH = "Zulrah";
 	private static final String C_ENGINEER = "C Engineer";
-	private static final String SKILL_SPECS = "Skill Specs";
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
 	private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
 	private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
 	private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? (?:\\w+) combat task:.*");
 	private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
-	private static final Pattern BOND_OFFER_REGEX = Pattern.compile(C_ENGINEER + " is offering to give you a bond\\.");
 	private static final Pattern STAT_SPY_REGEX = Pattern.compile(Text.standardize(C_ENGINEER + " is reading your skill stats!"));
 	private static final Pattern ESCAPE_CRYSTAL_REGEX = Pattern.compile(Text.standardize(C_ENGINEER + " activated your crystal\\."));
 
@@ -112,7 +103,6 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	private static final WorldArea FALADOR_HAIRDRESSER = new WorldArea(new WorldPoint(2942, 3377, 0), 8, 12);
 	private static final int FALADOR_HAIRCUT_WIDGET_GROUP_ID = 516;
-	private static final int CHILD_ID_MASK = 0xffff;
 
 	private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
     private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
@@ -191,6 +181,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			case LOGGED_IN:
 				lastLoginTick = client.getTickCount();
 				break;
+			default: break;
 		}
 	}
 
@@ -231,7 +222,15 @@ public class CEngineerCompletedPlugin extends Plugin
 			return;
 
 		if (config.easterEggs() && client.getTickCount() - lastTickOfFightIncludingCEngi <= C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN) {
-			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo test this (non-certain detection) and use proper sound
+			if (config.showChatMessages()) {
+				if (random.nextBoolean()) {
+					client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Dying to " + C_ENGINEER + ": completed.", null);
+				} else {
+					client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Sit", null);
+				}
+			}
+			soundEngine.playClip(Sound.DEATH_TO_C_ENGINEER, executor);
+
 		} else if (config.announceDeath()) {
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Dying on my HCIM: completed.", null);
@@ -302,19 +301,10 @@ public class CEngineerCompletedPlugin extends Plugin
 			soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE, executor);
 
 		} else if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
-			Player localPlayer = client.getLocalPlayer();
-			if (localPlayer == null) return;
-			String localPlayerName = localPlayer.getName();
-			if (localPlayerName == null) return;
-
-			if (SKILL_SPECS.equalsIgnoreCase(Text.toJagexName(localPlayerName))) {
-				soundEngine.playClip(Sound.STAT_SPY_TORVESTA, executor);
-			} else {
-				soundEngine.playClip(STAT_SPY_SOUNDS[random.nextInt(STAT_SPY_SOUNDS.length)], executor);
-			}
+			soundEngine.playClip(Sound.STAT_SPY_SOUP, executor);
 
 		} else if (config.easterEggs() && ESCAPE_CRYSTAL_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
-			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo use proper sound
+			soundEngine.playClip(Sound.ESCAPE_CRYSTAL, executor);
 
 		} else if (config.easterEggs()) { /* check for zulrah kc and then pb same kill */
 			Matcher matcher = KILLCOUNT_PATTERN.matcher(chatMessage.getMessage());
@@ -368,9 +358,9 @@ public class CEngineerCompletedPlugin extends Plugin
 		if (warnForEquip || warnForInvent) {
 			warnedAboutNonParchmentedInfernalThisSession = true;
 			if (config.showChatMessages()) {
-				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Don't forget to lock your infernal cape with a trouver parchment!", null);
+				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Your infernal cape is not parched!", null);
 			}
-			soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor); // todo use proper sound (change chat message above to match)
+			soundEngine.playClip(Sound.QOL_NON_PARCH_INFERNAL, executor);
 		}
 	}
 
@@ -455,32 +445,7 @@ public class CEngineerCompletedPlugin extends Plugin
 			if (FALADOR_HAIRDRESSER.contains(currentLocation)) {
 				soundEngine.playClip(Sound.EASTER_EGG_HAIRCUT, executor);
 			}
-			return;
 		}
-
-		if (e.getGroupId() != InterfaceID.DIALOG_OPTION)
-			return;
-
-		clientThread.invokeLater(() -> {
-			Widget root = client.getWidget(InterfaceID.DIALOG_OPTION, getChildId(ComponentID.DIALOG_OPTION_OPTIONS));
-			if (root == null)
-				return;
-
-			Widget[] children = root.getChildren();
-			if (children == null)
-				return;
-
-			for (Widget child : children) {
-				if (BOND_OFFER_REGEX.matcher(Text.removeTags(child.getText())).matches()) {
-					soundEngine.playClip(BOND_OFFER_SOUNDS[random.nextInt(BOND_OFFER_SOUNDS.length)], executor);
-					return;
-				}
-			}
-		});
-	}
-
-	private int getChildId(int componentId) {
-		return componentId & CHILD_ID_MASK;
 	}
 
 	@Subscribe
@@ -531,7 +496,7 @@ public class CEngineerCompletedPlugin extends Plugin
 		// check snowball is *roughly* from C's tile, while allowing for drive-by/moving while the projectile spawns
 		if (cEngineerWP.distanceTo2D(projectileWP) <= 2){
 			lastSnowballTriggerTick = currentTick;
-			soundEngine.playClip(SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)], executor, Duration.ofSeconds(10));
+			soundEngine.playClip(Sound.randomSnowballSound(), executor, Duration.ofSeconds(20));
 		}
 	}
 
