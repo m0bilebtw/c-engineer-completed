@@ -2,16 +2,16 @@ package com.github.m0bilebtw;
 
 import java.util.Random;
 
-public enum Sound { // todo fill in proper sound files
+public enum Sound {
     LEVEL_UP("LevelUpCompleted_r1.wav"),
     QUEST("QuestCompleted_r1.wav"),
     COLLECTION_LOG_SLOT("ColLogSlotCompleted_r1.wav"),
     COMBAT_TASK("CombatTaskCompleted_r1.wav"),
     ACHIEVEMENT_DIARY("AchieveDiaryCompleted_r1.wav"),
     DEATH("DyingHCIMCompleted_r1.wav"),
-    DEATH_TO_C_ENGINEER(""),
+    DEATH_TO_C_ENGINEER("Sit_r1.wav"),
 
-    QOL_NON_PARCH_INFERNAL(""),
+    QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav"),
 
     EASTER_EGG_STAIRCASE("Staircase_r1.wav"),
     EASTER_EGG_STRAYDOG_BONE("ILoveYou_r1.wav"),
@@ -19,24 +19,24 @@ public enum Sound { // todo fill in proper sound files
     EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav"),
     EASTER_EGG_HAIRCUT("Haircut_r1.wav"),
 
-    ESCAPE_CRYSTAL("", true),
+    ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true),
 
-    SNOWBALL_V3_1("", true),
-    SNOWBALL_V3_2("", true),
-    SNOWBALL_V3_3("", true),
-    SNOWBALL_V3_4("", true),
-    SNOWBALL_V3_5("", true),
-    SNOWBALL_V3_6("", true),
-    SNOWBALL_V3_7("", true),
-    SNOWBALL_V3_8("", true),
+    SNOWBALL_V3_1("SnowballV3_Battery_r1.wav", true),
+    SNOWBALL_V3_2("SnowballV3_Bits_r1.wav", true),
+    SNOWBALL_V3_3("SnowballV3_Call_r1.wav", true),
+    SNOWBALL_V3_4("SnowballV3_Knock_r1.wav", true),
+    SNOWBALL_V3_5("SnowballV3_Notif_r1.wav", true),
+    SNOWBALL_V3_6("SnowballV3_Steam_r1.wav", true),
+    SNOWBALL_V3_7("SnowballV3_Sus_r1.wav", true),
+    SNOWBALL_V3_8("SnowballV3_USB_r1.wav", true),
 
-    EMOTE_TROLL_AKKHA("", true),
+    EMOTE_TROLL_AKKHA("Akkha_r1.wav", true),
 
-    EMOTE_TROLL_WE("", true),
-    EMOTE_TROLL_VE("", true),
-    EMOTE_TROLL_IR("", true),
-    EMOTE_TROLL_EL("", true),
-    EMOTE_TROLL_AN("", true),
+    EMOTE_TROLL_WE("Emote_We_r1.wav", true),
+    EMOTE_TROLL_VE("Emote_Ve_r1.wav", true),
+    EMOTE_TROLL_IR("Emote_IR_r1.wav", true),
+    EMOTE_TROLL_EL("Emote_El_r1.wav", true),
+    EMOTE_TROLL_AN("Emote_An_r1.wav", true),
 
     STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
     ;
