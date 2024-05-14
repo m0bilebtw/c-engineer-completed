@@ -101,6 +101,8 @@ public class CEngineerCompletedPlugin extends Plugin
 
 	private static final Random random = new Random();
 
+	private static final Set<Integer> BOUNTY_HUNTER_REGIONS = Set.of(13374, 13375, 13376, 13630, 13631, 13632, 13886, 13887, 13888);
+
 	private static final WorldArea FALADOR_HAIRDRESSER = new WorldArea(new WorldPoint(2942, 3377, 0), 8, 12);
 	private static final int FALADOR_HAIRCUT_WIDGET_GROUP_ID = 516;
 
@@ -349,6 +351,9 @@ public class CEngineerCompletedPlugin extends Plugin
 		if (lastInfernalParchmentWarningTick != -1 && client.getTickCount() - lastInfernalParchmentWarningTick < INFERNAL_PARCHMENT_WARN_COOLDOWN)
 			return;
 
+		if (atBountyHunter())
+			return;
+
 		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 		boolean warnForEquip = equipment != null &&
 				(equipment.contains(ItemID.INFERNAL_CAPE) || equipment.contains(ItemID.INFERNAL_MAX_CAPE));
@@ -363,6 +368,15 @@ public class CEngineerCompletedPlugin extends Plugin
 			}
 			soundEngine.playClip(Sound.QOL_NON_PARCH_INFERNAL, executor);
 		}
+	}
+
+	private boolean atBountyHunter() {
+		Player player = client.getLocalPlayer();
+		if (player == null)
+			return false;
+
+		int regionId = player.getWorldLocation().getRegionID();
+		return BOUNTY_HUNTER_REGIONS.contains(regionId);
 	}
 
 	@Subscribe
