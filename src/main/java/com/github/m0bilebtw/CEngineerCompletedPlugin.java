@@ -346,7 +346,7 @@ public class CEngineerCompletedPlugin extends Plugin
 		if (!gameStateLoggedIn)
 			return;
 
-		if (client.getTickCount() - lastInfernalParchmentWarningTick < INFERNAL_PARCHMENT_WARN_COOLDOWN)
+		if (lastInfernalParchmentWarningTick != -1 && client.getTickCount() - lastInfernalParchmentWarningTick < INFERNAL_PARCHMENT_WARN_COOLDOWN)
 			return;
 
 		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
