@@ -121,9 +121,11 @@ public class CEngineerCompletedPlugin extends Plugin
 	private int lastTickOfFightIncludingCEngi = -1;
 	private static final int C_ENGI_INTERACT_OR_DAMAGE_COOLDOWN = 8;
 
+	private int lastInfernalParchmentWarningTick = -1;
+	private static final int INFERNAL_PARCHMENT_WARN_COOLDOWN = 36;
+
 	private Player cEngineerPlayer = null;
 	private boolean gameStateLoggedIn = false;
-	private boolean warnedAboutNonParchmentedInfernalThisSession = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -134,7 +136,6 @@ public class CEngineerCompletedPlugin extends Plugin
 			SoundFileManager.ensureDownloadDirectoryExists();
 			SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
 		});
-		warnedAboutNonParchmentedInfernalThisSession = false;
 	}
 
 	@Override
@@ -345,7 +346,7 @@ public class CEngineerCompletedPlugin extends Plugin
 		if (!gameStateLoggedIn)
 			return;
 
-		if (warnedAboutNonParchmentedInfernalThisSession)
+		if (client.getTickCount() - lastInfernalParchmentWarningTick < INFERNAL_PARCHMENT_WARN_COOLDOWN)
 			return;
 
 		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
@@ -356,7 +357,7 @@ public class CEngineerCompletedPlugin extends Plugin
 				(inventory.contains(ItemID.INFERNAL_CAPE) || inventory.contains(ItemID.INFERNAL_MAX_CAPE));
 
 		if (warnForEquip || warnForInvent) {
-			warnedAboutNonParchmentedInfernalThisSession = true;
+			lastInfernalParchmentWarningTick = client.getTickCount();
 			if (config.showChatMessages()) {
 				client.addChatMessage(ChatMessageType.PUBLICCHAT, C_ENGINEER, "Your infernal cape is not parched!", null);
 			}
