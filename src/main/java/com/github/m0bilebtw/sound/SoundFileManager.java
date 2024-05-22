@@ -1,4 +1,4 @@
-package com.github.m0bilebtw;
+package com.github.m0bilebtw.sound;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;

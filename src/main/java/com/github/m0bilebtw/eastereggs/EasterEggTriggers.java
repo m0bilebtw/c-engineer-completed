@@ -2,9 +2,9 @@ package com.github.m0bilebtw.eastereggs;
 
 import com.github.m0bilebtw.CEngineerCompletedConfig;
 import com.github.m0bilebtw.LastLoginTick;
-import com.github.m0bilebtw.Sound;
-import com.github.m0bilebtw.SoundEngine;
 import com.github.m0bilebtw.player.CEngineerPlayer;
+import com.github.m0bilebtw.sound.Sound;
+import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;

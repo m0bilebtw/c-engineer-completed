@@ -1,4 +1,4 @@
-package com.github.m0bilebtw;
+package com.github.m0bilebtw.sound;
 
 import java.util.Random;
 
@@ -52,7 +52,7 @@ public enum Sound {
         isStreamerTroll = streamTroll;
     }
 
-    String getResourceName() {
+    public String getResourceName() {
         return resourceName;
     }
 

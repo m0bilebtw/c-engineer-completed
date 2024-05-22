@@ -1,10 +1,10 @@
 package com.github.m0bilebtw.player;
 
 import com.github.m0bilebtw.CEngineerCompletedConfig;
-import com.github.m0bilebtw.Sound;
-import com.github.m0bilebtw.SoundEngine;
 import com.github.m0bilebtw.emote.EmoteTriggers;
 import com.github.m0bilebtw.projectile.ProjectileID;
+import com.github.m0bilebtw.sound.Sound;
+import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;

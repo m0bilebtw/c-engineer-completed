@@ -1,7 +1,7 @@
 package com.github.m0bilebtw.emote;
 
-import com.github.m0bilebtw.Sound;
-import com.github.m0bilebtw.SoundEngine;
+import com.github.m0bilebtw.sound.Sound;
+import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldArea;

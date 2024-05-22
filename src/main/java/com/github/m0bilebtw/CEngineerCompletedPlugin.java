@@ -2,6 +2,9 @@ package com.github.m0bilebtw;
 
 import com.github.m0bilebtw.eastereggs.EasterEggTriggers;
 import com.github.m0bilebtw.player.CEngineerPlayer;
+import com.github.m0bilebtw.sound.Sound;
+import com.github.m0bilebtw.sound.SoundEngine;
+import com.github.m0bilebtw.sound.SoundFileManager;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
