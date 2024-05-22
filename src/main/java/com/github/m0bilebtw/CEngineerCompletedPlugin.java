@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.annotations.Varbit;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
@@ -202,17 +201,6 @@ public class CEngineerCompletedPlugin extends Plugin {
         if (config.announceLevelUp()) {
             cEngineer.sendChatIfEnabled("Level up: completed.");
             soundEngine.playClip(Sound.LEVEL_UP, executor);
-        }
-    }
-
-    @Subscribe
-    public void onActorDeath(ActorDeath actorDeath) {
-        if (actorDeath.getActor() != client.getLocalPlayer())
-            return;
-
-        if (config.announceDeath()) {
-            cEngineer.sendChatIfEnabled("Dying on my HCIM: completed.");
-            soundEngine.playClip(Sound.DEATH, executor);
         }
     }
 

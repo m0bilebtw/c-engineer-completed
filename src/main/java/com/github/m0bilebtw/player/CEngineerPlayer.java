@@ -169,6 +169,10 @@ public class CEngineerPlayer {
                 sendChatIfEnabled("Sit");
             }
             soundEngine.playClip(Sound.DEATH_TO_C_ENGINEER, executor);
+
+        } else if (config.announceDeath()) {
+            sendChatIfEnabled("Dying on my HCIM: completed.");
+            soundEngine.playClip(Sound.DEATH, executor);
         }
     }
 
