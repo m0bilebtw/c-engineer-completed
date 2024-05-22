@@ -1,5 +1,6 @@
 package com.github.m0bilebtw;
 
+import com.github.m0bilebtw.eastereggs.EasterEggTriggers;
 import com.github.m0bilebtw.player.CEngineerPlayer;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
@@ -7,10 +8,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.annotations.Varbit;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -31,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -53,9 +54,6 @@ public class CEngineerCompletedPlugin extends Plugin {
     private ChatMessageManager chatMessageManager;
 
     @Inject
-    private SoundEngine soundEngine;
-
-    @Inject
     private CEngineerCompletedConfig config;
 
     @Inject
@@ -68,7 +66,16 @@ public class CEngineerCompletedPlugin extends Plugin {
     private EventBus eventBus;
 
     @Inject
+    private SoundEngine soundEngine;
+
+    @Inject
     private CEngineerPlayer cEngineer;
+
+    @Inject
+    private EasterEggTriggers easterEggTriggers;
+
+    @Inject
+    LastLoginTick lastLoginTick;
 
     private final int[] varbitsAchievementDiaries = {
             Varbits.DIARY_ARDOUGNE_EASY,   Varbits.DIARY_ARDOUGNE_MEDIUM,   Varbits.DIARY_ARDOUGNE_HARD,   Varbits.DIARY_ARDOUGNE_ELITE,
@@ -84,11 +91,6 @@ public class CEngineerCompletedPlugin extends Plugin {
             Varbits.DIARY_WILDERNESS_EASY, Varbits.DIARY_WILDERNESS_MEDIUM, Varbits.DIARY_WILDERNESS_HARD, Varbits.DIARY_WILDERNESS_ELITE
     };
 
-    // Killcount and new pb patterns from runelite/ChatCommandsPlugin
-    private static final String ZULRAH = "Zulrah";
-    private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
-    private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
-    private static final Pattern STRAY_DOG_GIVEN_BONES_REGEX = Pattern.compile("You give the dog some nice.*bones.*");
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? (?:\\w+) combat task:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
@@ -97,21 +99,11 @@ public class CEngineerCompletedPlugin extends Plugin {
 
     private static final Set<Integer> BOUNTY_HUNTER_REGIONS = Set.of(13374, 13375, 13376, 13630, 13631, 13632, 13886, 13887, 13888);
 
-    private static final WorldArea FALADOR_HAIRDRESSER = new WorldArea(new WorldPoint(2942, 3377, 0), 8, 12);
-    private static final int FALADOR_HAIRCUT_WIDGET_GROUP_ID = 516;
-
-    private static final int ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE = 16671;
-    private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X = 3204;
-    private static final int WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y = 3229;
-
     private static final Set<Integer> badCollectionLogNotificationSettingValues = Set.of(0, 2);
 
     private final Map<Skill, Integer> oldExperience = new EnumMap<>(Skill.class);
     private final Map<Integer, Integer> oldAchievementDiaries = new HashMap<>();
 
-    private int lastLoginTick = -1;
-    private int lastGEOfferTick = -1;
-    private int lastZulrahKillTick = -1;
     private int lastColLogSettingWarning = -1;
 
     private int lastInfernalParchmentWarningTick = -1;
@@ -122,9 +114,10 @@ public class CEngineerCompletedPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception {
         eventBus.register(cEngineer);
+        eventBus.register(easterEggTriggers);
 
         clientThread.invoke(this::setupOldMaps);
-        lastLoginTick = -1;
+        lastLoginTick.unset();
         executor.submit(() -> {
             SoundFileManager.ensureDownloadDirectoryExists();
             SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
@@ -134,6 +127,7 @@ public class CEngineerCompletedPlugin extends Plugin {
     @Override
     protected void shutDown() throws Exception {
         eventBus.unregister(cEngineer);
+        eventBus.unregister(easterEggTriggers);
 
         oldExperience.clear();
         oldAchievementDiaries.clear();
@@ -168,11 +162,11 @@ public class CEngineerCompletedPlugin extends Plugin {
             case CONNECTION_LOST:
                 // set to -1 here in-case of race condition with varbits changing before this handler is called
                 // when game state becomes LOGGED_IN
-                lastLoginTick = -1;
+                lastLoginTick.unset();
                 lastColLogSettingWarning = client.getTickCount(); // avoid warning during DC
                 break;
             case LOGGED_IN:
-                lastLoginTick = client.getTickCount();
+                lastLoginTick.set(client.getTickCount());
                 break;
             default:
                 break;
@@ -221,9 +215,8 @@ public class CEngineerCompletedPlugin extends Plugin {
 
     @Subscribe
     public void onChatMessage(ChatMessage chatMessage) {
-        if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() != ChatMessageType.SPAM) {
+        if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() != ChatMessageType.SPAM)
             return;
-        }
 
         if (config.announceCollectionLog() && COLLECTION_LOG_ITEM_REGEX.matcher(chatMessage.getMessage()).matches()) {
             cEngineer.sendChatIfEnabled("Collection log slot: completed.");
@@ -237,28 +230,11 @@ public class CEngineerCompletedPlugin extends Plugin {
             cEngineer.sendChatIfEnabled("Combat task: completed.");
             soundEngine.playClip(Sound.COMBAT_TASK, executor);
 
-        } else if (config.easterEggs() && STRAY_DOG_GIVEN_BONES_REGEX.matcher(chatMessage.getMessage()).matches()) {
-            cEngineer.sendChatIfEnabled("I love you.");
-            soundEngine.playClip(Sound.EASTER_EGG_STRAYDOG_BONE, executor);
-
         } else if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
             soundEngine.playClip(Sound.STAT_SPY_SOUP, executor);
 
         } else if (config.easterEggs() && ESCAPE_CRYSTAL_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
             soundEngine.playClip(Sound.ESCAPE_CRYSTAL, executor);
-
-        } else if (config.easterEggs()) { /* check for zulrah kc and then pb same kill */
-            Matcher matcher = KILLCOUNT_PATTERN.matcher(chatMessage.getMessage());
-            if (matcher.find() && ZULRAH.equals(matcher.group(1))) {
-                // tick count used to prevent re-announcing if user gets pb on non-zulrah boss after killing zulrah
-                lastZulrahKillTick = client.getTickCount();
-            }
-            matcher = NEW_PB_PATTERN.matcher(chatMessage.getMessage());
-            if (matcher.find() && client.getTickCount() - lastZulrahKillTick < 2) {
-                // Player just got pb, and last zulrah kill was within a tick from now, already checked config.easterEggs()
-                cEngineer.sendChatIfEnabled("Gz on the new personal best! Last time I got a pb here, I died on my HCIM!");
-                soundEngine.playClip(Sound.EASTER_EGG_ZULRAH_PB, executor);
-            }
         }
     }
 
@@ -328,7 +304,7 @@ public class CEngineerCompletedPlugin extends Plugin {
         // completed gets updated to the true value and tricks the plugin into thinking they only just finished it.
         // To avoid this behaviour, we make sure the current tick count is sufficiently high that we've already passed
         // the initial wave of varbit changes from logging in.
-        if (lastLoginTick == -1 || client.getTickCount() - lastLoginTick < 8) {
+        if (lastLoginTick.isUnset() || client.getTickCount() - lastLoginTick.get() < 8) {
             return; // Ignoring varbit change as only just logged in
         }
 
@@ -341,52 +317,6 @@ public class CEngineerCompletedPlugin extends Plugin {
                 // value was not unknown (we know the previous value), value has changed, and value indicates diary is completed now
                 cEngineer.sendChatIfEnabled("Achievement diary: completed.");
                 soundEngine.playClip(Sound.ACHIEVEMENT_DIARY, executor);
-            }
-        }
-    }
-
-    @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked) {
-        if (config.easterEggs() && menuOptionClicked.getId() == ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE &&
-                menuOptionClicked.getMenuOption().equals("Climb-up")) {
-            WorldPoint wp = WorldPoint.fromLocal(client, LocalPoint.fromScene(menuOptionClicked.getParam0(), menuOptionClicked.getParam1()));
-            if (wp.getX() == WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X && wp.getY() == WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y) {
-                // Now we know this is the northern staircase only in lumbridge castle ground floor
-                cEngineer.sendChatIfEnabled("Please do not use the northern staircase, use the southern one instead.");
-                soundEngine.playClip(Sound.EASTER_EGG_STAIRCASE, executor);
-            }
-        }
-    }
-
-    @Subscribe
-    public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent) {
-        if (lastLoginTick == -1 || client.getTickCount() - lastLoginTick < 3) {
-            return; // Ignoring offer change as likely simply because user just logged in
-        }
-
-        final GrandExchangeOffer offer = offerEvent.getOffer();
-        if (config.easterEggs() && offer.getItemId() == ItemID.TWISTED_BOW && offer.getPrice() == 1 && offer.getState() == GrandExchangeOfferState.SELLING) {
-            // selling tbow 1gp, not changed from login, not cancelled, not sold - now just check ticks to avoid double detection because we get sent each offer twice
-            if (lastGEOfferTick == -1 || client.getTickCount() - lastGEOfferTick > 4) {
-                cEngineer.sendChatIfEnabled("Are you stupid? Did you just try to sell a twisted bow for 1gp?");
-                soundEngine.playClip(Sound.EASTER_EGG_TWISTED_BOW_1GP, executor);
-            }
-        }
-
-        // save tick so that next time we get an offer, we can check it isn't the duplicate of this offer
-        lastGEOfferTick = client.getTickCount();
-    }
-
-    @Subscribe
-    public void onWidgetLoaded(WidgetLoaded e) {
-        if (!config.easterEggs())
-            return;
-
-        if (e.getGroupId() == FALADOR_HAIRCUT_WIDGET_GROUP_ID) {
-            // getting the haircut widget via IDs etc seems overly difficult, so just check location
-            WorldPoint currentLocation = client.getLocalPlayer().getWorldLocation();
-            if (FALADOR_HAIRDRESSER.contains(currentLocation)) {
-                soundEngine.playClip(Sound.EASTER_EGG_HAIRCUT, executor);
             }
         }
     }

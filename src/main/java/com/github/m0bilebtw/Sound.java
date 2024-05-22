@@ -17,7 +17,6 @@ public enum Sound {
     EASTER_EGG_STRAYDOG_BONE("ILoveYou_r1.wav"),
     EASTER_EGG_TWISTED_BOW_1GP("TwistedBow1GP_r1.wav"),
     EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav"),
-    EASTER_EGG_HAIRCUT("Haircut_r1.wav"),
 
     ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true),
 

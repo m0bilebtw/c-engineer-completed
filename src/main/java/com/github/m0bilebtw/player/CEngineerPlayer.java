@@ -22,10 +22,12 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 
+@Singleton
 public class CEngineerPlayer {
     public static final String RSN = "C Engineer";
 
