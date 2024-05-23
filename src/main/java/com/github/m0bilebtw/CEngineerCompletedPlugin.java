@@ -1,15 +1,24 @@
 package com.github.m0bilebtw;
 
+import com.github.m0bilebtw.announce.AnnouncementTriggers;
 import com.github.m0bilebtw.eastereggs.EasterEggTriggers;
 import com.github.m0bilebtw.player.CEngineerPlayer;
+import com.github.m0bilebtw.player.LoggedInState;
+import com.github.m0bilebtw.qol.QualityOfLifeTriggers;
 import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
 import com.github.m0bilebtw.sound.SoundFileManager;
+import com.github.m0bilebtw.trolls.TrollTriggers;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.GameState;
+import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -26,7 +35,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.Text;
 import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
@@ -74,10 +82,19 @@ public class CEngineerCompletedPlugin extends Plugin {
     private CEngineerPlayer cEngineer;
 
     @Inject
+    private AnnouncementTriggers announcementTriggers;
+
+    @Inject
     private EasterEggTriggers easterEggTriggers;
 
     @Inject
-    LastLoginTick lastLoginTick;
+    private TrollTriggers trollTriggers;
+
+    @Inject
+    private QualityOfLifeTriggers qolTriggers;
+
+    @Inject
+    private LoggedInState loggedInState;
 
     private final int[] varbitsAchievementDiaries = {
             Varbits.DIARY_ARDOUGNE_EASY,   Varbits.DIARY_ARDOUGNE_MEDIUM,   Varbits.DIARY_ARDOUGNE_HARD,   Varbits.DIARY_ARDOUGNE_ELITE,
@@ -96,10 +113,6 @@ public class CEngineerCompletedPlugin extends Plugin {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? (?:\\w+) combat task:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
-    private static final Pattern STAT_SPY_REGEX = Pattern.compile(Text.standardize(CEngineerPlayer.RSN + " is reading your skill stats!"));
-    private static final Pattern ESCAPE_CRYSTAL_REGEX = Pattern.compile(Text.standardize(CEngineerPlayer.RSN + " activated your crystal\\."));
-
-    private static final Set<Integer> BOUNTY_HUNTER_REGIONS = Set.of(13374, 13375, 13376, 13630, 13631, 13632, 13886, 13887, 13888);
 
     private static final Set<Integer> badCollectionLogNotificationSettingValues = Set.of(0, 2);
 
@@ -108,18 +121,17 @@ public class CEngineerCompletedPlugin extends Plugin {
 
     private int lastColLogSettingWarning = -1;
 
-    private int lastInfernalParchmentWarningTick = -1;
-    private static final int INFERNAL_PARCHMENT_WARN_COOLDOWN = 36;
-
-    private boolean gameStateLoggedIn = false;
-
     @Override
     protected void startUp() throws Exception {
         eventBus.register(cEngineer);
+        eventBus.register(announcementTriggers);
         eventBus.register(easterEggTriggers);
+        eventBus.register(trollTriggers);
+        eventBus.register(qolTriggers);
+        eventBus.register(loggedInState);
+        loggedInState.setForCurrentGameState(client.getGameState());
 
         clientThread.invoke(this::setupOldMaps);
-        lastLoginTick.unset();
         executor.submit(() -> {
             SoundFileManager.ensureDownloadDirectoryExists();
             SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
@@ -129,7 +141,11 @@ public class CEngineerCompletedPlugin extends Plugin {
     @Override
     protected void shutDown() throws Exception {
         eventBus.unregister(cEngineer);
+        eventBus.unregister(announcementTriggers);
         eventBus.unregister(easterEggTriggers);
+        eventBus.unregister(trollTriggers);
+        eventBus.unregister(qolTriggers);
+        eventBus.unregister(loggedInState);
 
         oldExperience.clear();
         oldAchievementDiaries.clear();
@@ -153,7 +169,6 @@ public class CEngineerCompletedPlugin extends Plugin {
 
     @Subscribe
     public void onGameStateChanged(GameStateChanged event) {
-        gameStateLoggedIn = event.getGameState() == GameState.LOGGED_IN;
         switch (event.getGameState()) {
             case LOGIN_SCREEN:
             case HOPPING:
@@ -164,11 +179,7 @@ public class CEngineerCompletedPlugin extends Plugin {
             case CONNECTION_LOST:
                 // set to -1 here in-case of race condition with varbits changing before this handler is called
                 // when game state becomes LOGGED_IN
-                lastLoginTick.unset();
                 lastColLogSettingWarning = client.getTickCount(); // avoid warning during DC
-                break;
-            case LOGGED_IN:
-                lastLoginTick.set(client.getTickCount());
                 break;
             default:
                 break;
@@ -220,12 +231,6 @@ public class CEngineerCompletedPlugin extends Plugin {
         } else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
             cEngineer.sendChatIfEnabled("Combat task: completed.");
             soundEngine.playClip(Sound.COMBAT_TASK, executor);
-
-        } else if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
-            soundEngine.playClip(Sound.STAT_SPY_SOUP, executor);
-
-        } else if (config.easterEggs() && ESCAPE_CRYSTAL_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
-            soundEngine.playClip(Sound.ESCAPE_CRYSTAL, executor);
         }
     }
 
@@ -233,7 +238,7 @@ public class CEngineerCompletedPlugin extends Plugin {
         if (!config.announceCollectionLog())
             return;
 
-        if (!gameStateLoggedIn)
+        if (loggedInState.isLoggedOut())
             return;
 
         if (badCollectionLogNotificationSettingValues.contains(newVarbitValue)) {
@@ -244,50 +249,10 @@ public class CEngineerCompletedPlugin extends Plugin {
         }
     }
 
-    private void checkAndWarnForUnparchmentedInfernal() {
-        if (!config.announceNonTrouverInfernal())
-            return;
-
-        if (!gameStateLoggedIn)
-            return;
-
-        if (lastInfernalParchmentWarningTick != -1 && client.getTickCount() - lastInfernalParchmentWarningTick < INFERNAL_PARCHMENT_WARN_COOLDOWN)
-            return;
-
-        if (atBountyHunter())
-            return;
-
-        ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-        boolean warnForEquip = equipment != null &&
-                (equipment.contains(ItemID.INFERNAL_CAPE) || equipment.contains(ItemID.INFERNAL_MAX_CAPE));
-        ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-        boolean warnForInvent = inventory != null &&
-                (inventory.contains(ItemID.INFERNAL_CAPE) || inventory.contains(ItemID.INFERNAL_MAX_CAPE));
-
-        if (warnForEquip || warnForInvent) {
-            lastInfernalParchmentWarningTick = client.getTickCount();
-            cEngineer.sendChatIfEnabled("Your infernal cape is not parched!");
-            soundEngine.playClip(Sound.QOL_NON_PARCH_INFERNAL, executor);
-        }
-    }
-
-    private boolean atBountyHunter() {
-        Player player = client.getLocalPlayer();
-        if (player == null)
-            return false;
-
-        int regionId = player.getWorldLocation().getRegionID();
-        return BOUNTY_HUNTER_REGIONS.contains(regionId);
-    }
-
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged) {
         if (varbitChanged.getVarbitId() == Varbits.COLLECTION_LOG_NOTIFICATION) {
             checkAndWarnForCollectionLogNotificationSetting(varbitChanged.getValue());
-        }
-
-        if (varbitChanged.getVarbitId() == Varbits.IN_WILDERNESS && varbitChanged.getValue() == 1) {
-            checkAndWarnForUnparchmentedInfernal();
         }
 
         // As we can't listen to specific varbits, we get a tonne of events BEFORE the game has even set the player's
@@ -295,7 +260,7 @@ public class CEngineerCompletedPlugin extends Plugin {
         // completed gets updated to the true value and tricks the plugin into thinking they only just finished it.
         // To avoid this behaviour, we make sure the current tick count is sufficiently high that we've already passed
         // the initial wave of varbit changes from logging in.
-        if (lastLoginTick.isUnset() || client.getTickCount() - lastLoginTick.get() < 8) {
+        if (loggedInState.isLoggedOut() || loggedInState.onlyJustLoggedIn(8)) {
             return; // Ignoring varbit change as only just logged in
         }
 

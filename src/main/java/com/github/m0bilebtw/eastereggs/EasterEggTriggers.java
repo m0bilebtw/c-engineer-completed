@@ -1,8 +1,8 @@
 package com.github.m0bilebtw.eastereggs;
 
 import com.github.m0bilebtw.CEngineerCompletedConfig;
-import com.github.m0bilebtw.LastLoginTick;
 import com.github.m0bilebtw.player.CEngineerPlayer;
+import com.github.m0bilebtw.player.LoggedInState;
 import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.ChatMessageType;
@@ -54,7 +54,7 @@ public class EasterEggTriggers {
     private CEngineerPlayer cEngineer;
 
     @Inject
-    LastLoginTick lastLoginTick;
+    private LoggedInState loggedInState;
 
     private int lastGEOfferTick = -1;
     private int lastZulrahKillTick = -1;
@@ -79,7 +79,7 @@ public class EasterEggTriggers {
         if (!config.easterEggs())
             return;
 
-        if (lastLoginTick.isUnset() || client.getTickCount() - lastLoginTick.get() < 3) {
+        if (loggedInState.isLoggedOut() || loggedInState.onlyJustLoggedIn(3)) {
             return; // Ignoring offer change as likely simply because user just logged in
         }
 
