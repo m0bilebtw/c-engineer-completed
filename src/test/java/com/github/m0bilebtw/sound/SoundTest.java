@@ -1,6 +1,5 @@
-package com.github.m0bilebtw;
+package com.github.m0bilebtw.sound;
 
-import com.github.m0bilebtw.sound.Sound;
 import org.junit.Test;
 
 import java.util.Arrays;
