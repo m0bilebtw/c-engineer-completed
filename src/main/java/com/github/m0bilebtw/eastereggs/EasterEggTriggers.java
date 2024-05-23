@@ -10,6 +10,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemID;
+import net.runelite.api.Scene;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -65,7 +66,9 @@ public class EasterEggTriggers {
             return;
 
         if (menuOptionClicked.getId() == ID_OBJECT_LUMCASTLE_GROUND_LEVEL_STAIRCASE && menuOptionClicked.getMenuOption().equals("Climb-up")) {
-            WorldPoint wp = WorldPoint.fromLocal(client, LocalPoint.fromScene(menuOptionClicked.getParam0(), menuOptionClicked.getParam1()));
+            Scene scene = client.getWorldView(menuOptionClicked.getMenuEntry().getWorldViewId()).getScene();
+            LocalPoint lp = LocalPoint.fromScene(menuOptionClicked.getParam0(), menuOptionClicked.getParam1(), scene);
+            WorldPoint wp = WorldPoint.fromLocal(client, lp);
             if (wp.getX() == WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_X && wp.getY() == WORLD_POINT_LUMCASTLE_STAIRCASE_NORTH_Y) {
                 // Now we know this is the northern staircase only in Lumbridge castle ground floor
                 cEngineer.sendChatIfEnabled("Please do not use the northern staircase, use the southern one instead.");
