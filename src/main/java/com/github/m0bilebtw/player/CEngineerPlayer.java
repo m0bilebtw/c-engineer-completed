@@ -101,7 +101,7 @@ public class CEngineerPlayer {
 
     public boolean couldHaveThrownProjectileFrom(Projectile projectile) {
         WorldPoint cEngineerWP = player.getWorldLocation();
-        WorldPoint projectileWP = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), cEngineerWP.getPlane()); // we don't care about plane
+        WorldPoint projectileWP = WorldPoint.fromLocal(player.getWorldView(), projectile.getX1(), projectile.getY1(), cEngineerWP.getPlane());
 
         // check projectile is *roughly* from C's tile, while allowing for drive-by/moving while the projectile spawns
         return cEngineerWP.distanceTo2D(projectileWP) <= 2;
