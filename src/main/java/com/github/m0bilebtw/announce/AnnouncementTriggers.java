@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 
 public class AnnouncementTriggers {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
-    private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? (?:\\w+) combat task:.*");
+    private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? \\w+ combat task:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
 
     private static final Random random = new Random();
