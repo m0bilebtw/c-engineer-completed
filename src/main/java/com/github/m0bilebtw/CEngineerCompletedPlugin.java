@@ -82,10 +82,7 @@ public class CEngineerCompletedPlugin extends Plugin {
         loggedInState.setForCurrentGameState(client.getGameState());
         announcementTriggers.initialise();
 
-        executor.submit(() -> {
-            SoundFileManager.ensureDownloadDirectoryExists();
-            SoundFileManager.downloadAllMissingSounds(okHttpClient, config.downloadStreamerTrolls());
-        });
+        executor.submit(() -> SoundFileManager.prepareSoundFiles(okHttpClient, config.downloadStreamerTrolls()));
     }
 
     @Override
