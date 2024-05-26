@@ -16,11 +16,13 @@ import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Arrays;
 
 @Singleton
 public class CEngineerPlayer {
     public static final String RSN = "C Engineer";
 
+    private static final int ITEM_IDS_START_FROM = 512;
     private static final int FIGHT_INTERACT_OR_DAMAGE_COOLDOWN = 8;
 
     @Inject
@@ -85,6 +87,17 @@ public class CEngineerPlayer {
 
     public boolean isOutOfRenderDistance() {
         return player == null;
+    }
+
+    public boolean isWearing(int itemId) {
+        if (player == null)
+            return false;
+
+        int[] equipmentIds = player.getPlayerComposition().getEquipmentIds();
+        return Arrays.stream(equipmentIds)
+                .filter(i -> i > ITEM_IDS_START_FROM)
+                .map(i -> i - ITEM_IDS_START_FROM)
+                .anyMatch(i -> i == itemId);
     }
 
     public boolean actorEquals(Actor other) {
