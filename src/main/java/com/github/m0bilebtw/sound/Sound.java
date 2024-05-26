@@ -29,6 +29,11 @@ public enum Sound {
     SNOWBALL_V3_7("SnowballV3_Sus_r1.wav", true),
     SNOWBALL_V3_8("SnowballV3_USB_r1.wav", true),
 
+    SNOWBALL_EQUIPPING_BUCKET_HELM_G("", true),
+    SNOWBALL_EQUIPPING_GIANT_BOOT("", true),
+    SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("", true),
+    SNOWBALL_EQUIPPING_MASK_OF_REBIRTH("", true),
+
     EMOTE_TROLL_AKKHA("Akkha_r1.wav", true),
 
     EMOTE_TROLL_WE("Emote_We_r1.wav", true),
@@ -62,11 +67,11 @@ public enum Sound {
 
     private static final Random random = new Random();
 
-    public static Sound randomSnowballSound() {
-        return SNOWBALL_SOUNDS[random.nextInt(SNOWBALL_SOUNDS.length)];
+    public static Sound randomSnowballSoundNotFromEquippedItem() {
+        return SNOWBALL_SOUNDS_NOT_FROM_EQUIPPED_ITEMS[random.nextInt(SNOWBALL_SOUNDS_NOT_FROM_EQUIPPED_ITEMS.length)];
     }
 
-    private static final Sound[] SNOWBALL_SOUNDS = new Sound[] {
+    private static final Sound[] SNOWBALL_SOUNDS_NOT_FROM_EQUIPPED_ITEMS = new Sound[] {
             Sound.SNOWBALL_V3_1,
             Sound.SNOWBALL_V3_2,
             Sound.SNOWBALL_V3_3,

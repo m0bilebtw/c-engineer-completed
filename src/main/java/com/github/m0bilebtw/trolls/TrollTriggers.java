@@ -107,8 +107,24 @@ public class TrollTriggers {
 
         if (cEngineer.couldHaveThrownProjectileFrom(projectile)) {
             lastSnowballTriggerTick = currentTick;
-            playSoundFromSnowball(Sound.randomSnowballSound());
+            playSoundFromSnowball(pickSnowballSound());
         }
+    }
+
+    private Sound pickSnowballSound() {
+        if (cEngineer.isWearing(ItemID.BUCKET_HELM_G))
+            return Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G;
+
+        if (cEngineer.isWearing(ItemID.GIANT_BOOT))
+            return Sound.SNOWBALL_EQUIPPING_GIANT_BOOT;
+
+        if (cEngineer.isWearing(ItemID.SAGACIOUS_SPECTACLES))
+            return Sound.SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES;
+
+        if (cEngineer.isWearing(ItemID.MASK_OF_REBIRTH))
+            return Sound.SNOWBALL_EQUIPPING_MASK_OF_REBIRTH;
+
+        return Sound.randomSnowballSoundNotFromEquippedItem();
     }
 
     private void playSoundFromSnowball(Sound sound) {
