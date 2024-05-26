@@ -1,7 +1,6 @@
 package com.github.m0bilebtw.player;
 
 import com.github.m0bilebtw.CEngineerCompletedConfig;
-import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -17,7 +16,6 @@ import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.concurrent.ScheduledExecutorService;
 
 @Singleton
 public class CEngineerPlayer {
@@ -29,13 +27,7 @@ public class CEngineerPlayer {
     private Client client;
 
     @Inject
-    private ScheduledExecutorService executor;
-
-    @Inject
     private CEngineerCompletedConfig config;
-
-    @Inject
-    private SoundEngine soundEngine;
 
     private Player player = null;
     private int lastTickOfFightIncludingCEngi = -1;
