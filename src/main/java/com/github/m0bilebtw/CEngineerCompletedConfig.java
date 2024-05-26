@@ -170,5 +170,18 @@ public interface CEngineerCompletedConfig extends Config {
             section = SECTION_EASTER_EGGS_AND_STREAMERS,
             position = 62
     )
-    default boolean downloadStreamerTrolls() { return true; }
+    default boolean downloadStreamerTrolls() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "muteSnowballsIfCEngineerIsNear",
+            name = "Stealthy snowballs when C Engineer is nearby",
+            description = "Mute snowball sound effects if C Engineer is nearby to allow for stealthier trolling",
+            section = SECTION_EASTER_EGGS_AND_STREAMERS,
+            position = 63
+    )
+    default boolean muteSnowballsIfCEngineerIsNear() {
+        return true;
+    }
 }

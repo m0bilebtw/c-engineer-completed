@@ -14,8 +14,10 @@ import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
@@ -23,6 +25,8 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
+
+import static com.github.m0bilebtw.projectile.ProjectileSoundID.SNOWBALL_SOUND_IDS;
 
 public class TrollTriggers {
     private static final Pattern STAT_SPY_REGEX = Pattern.compile(Text.standardize(CEngineerPlayer.RSN + " is reading your skill stats!"));
@@ -87,6 +91,20 @@ public class TrollTriggers {
     }
 
     @Subscribe
+    public void onSoundEffectPlayed(SoundEffectPlayed soundEffectPlayed) {
+        if (shouldMuteSnowballs() && SNOWBALL_SOUND_IDS.contains(soundEffectPlayed.getSoundId())) {
+            soundEffectPlayed.consume();
+        }
+    }
+
+    @Subscribe
+    public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed) {
+        if (shouldMuteSnowballs() && SNOWBALL_SOUND_IDS.contains(areaSoundEffectPlayed.getSoundId())) {
+            areaSoundEffectPlayed.consume();
+        }
+    }
+
+    @Subscribe
     public void onProjectileMoved(ProjectileMoved projectileMoved) {
         if (cEngineer.isOutOfRenderDistance())
             return;
@@ -145,5 +163,12 @@ public class TrollTriggers {
             return Sound.SNOWBALL_EQUIPPING_MASK_OF_REBIRTH;
 
         return Sound.randomSnowballSoundNotFromEquippedItem();
+    }
+
+    private boolean shouldMuteSnowballs() {
+        if (cEngineer.isOutOfRenderDistance())
+            return false;
+
+        return config.muteSnowballsIfCEngineerIsNear();
     }
 }
