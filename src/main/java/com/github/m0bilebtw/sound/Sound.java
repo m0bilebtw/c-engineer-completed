@@ -29,6 +29,8 @@ public enum Sound {
     SNOWBALL_V3_7("SnowballV3_Sus_r1.wav", true),
     SNOWBALL_V3_8("SnowballV3_USB_r1.wav", true),
 
+    SNOWBALL_GAUNTLET_LOBBY("", true),
+
     SNOWBALL_EQUIPPING_BUCKET_HELM_G("", true),
     SNOWBALL_EQUIPPING_GIANT_BOOT("", true),
     SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("", true),

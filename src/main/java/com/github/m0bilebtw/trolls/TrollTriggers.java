@@ -11,6 +11,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Projectile;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ProjectileMoved;
@@ -27,7 +29,10 @@ public class TrollTriggers {
     private static final Pattern ESCAPE_CRYSTAL_REGEX = Pattern.compile(Text.standardize(CEngineerPlayer.RSN + " activated your crystal\\."));
 
     private static final int SNOWBALL_COOLDOWN_TICKS = 50;
+    private static final Duration SNOWBALL_DELAY_GAUNTLET_SOUND = Duration.ofSeconds(450);
     private static final Duration SNOWBALL_DELAY_SOUNDS = Duration.ofSeconds(20);
+
+    private static final WorldArea GAUNTLET_LOBBY = new WorldArea(new WorldPoint(3026, 6117, 1), 14, 14);
 
     @Inject
     private Client client;
@@ -107,11 +112,26 @@ public class TrollTriggers {
 
         if (cEngineer.couldHaveThrownProjectileFrom(projectile)) {
             lastSnowballTriggerTick = currentTick;
-            playSoundFromSnowball(pickSnowballSound());
+            playSoundFromSnowball();
         }
     }
 
-    private Sound pickSnowballSound() {
+    private void playSoundFromSnowball() {
+        WorldPoint currentLocation = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+        if (GAUNTLET_LOBBY.contains(currentLocation)) {
+            soundEngine.playClip(Sound.SNOWBALL_GAUNTLET_LOBBY, executor, SNOWBALL_DELAY_GAUNTLET_SOUND);
+            return;
+        }
+
+        Sound sound = pickSnowballSoundBasedOnEquipment();
+        if (cEngineer.isWearing(ItemID._3RD_AGE_AMULET)) {
+            soundEngine.playClip(sound, executor);
+        } else {
+            soundEngine.playClip(sound, executor, SNOWBALL_DELAY_SOUNDS);
+        }
+    }
+
+    private Sound pickSnowballSoundBasedOnEquipment() {
         if (cEngineer.isWearing(ItemID.BUCKET_HELM_G))
             return Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G;
 
@@ -125,13 +145,5 @@ public class TrollTriggers {
             return Sound.SNOWBALL_EQUIPPING_MASK_OF_REBIRTH;
 
         return Sound.randomSnowballSoundNotFromEquippedItem();
-    }
-
-    private void playSoundFromSnowball(Sound sound) {
-        if (cEngineer.isWearing(ItemID._3RD_AGE_AMULET)) {
-            soundEngine.playClip(sound, executor);
-        } else {
-            soundEngine.playClip(sound, executor, SNOWBALL_DELAY_SOUNDS);
-        }
     }
 }
