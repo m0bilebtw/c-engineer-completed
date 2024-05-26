@@ -11,6 +11,7 @@ import net.runelite.client.util.Text;
 import javax.inject.Inject;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static com.github.m0bilebtw.emote.EmoteAnimationID.PREMIER_SHIELD;
 import static com.github.m0bilebtw.emote.EmoteAnimationID.SMOOTH_DANCE;
 import static com.github.m0bilebtw.emote.EmoteAnimationID.TRICK;
 
@@ -26,10 +27,13 @@ public class EmoteTriggers {
     private ScheduledExecutorService executor;
 
     private static final WorldArea AKKHA_ROOM = new WorldArea(new WorldPoint(3671, 5398, 1), 29, 20);
+    private static final WorldArea BABA_PUZZLE_ROOM = new WorldArea(new WorldPoint(3788, 5264, 0), 42, 31);
 
     public void runTriggers(int animationId) {
         if (animationId == TRICK) {
             akkhaTroll();
+        } else if (animationId == PREMIER_SHIELD) {
+            babaTroll();
         } else if (animationId == SMOOTH_DANCE) {
             smoothDanceTrolls();
         }
@@ -39,6 +43,13 @@ public class EmoteTriggers {
         WorldPoint currentLocation = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
         if (AKKHA_ROOM.contains(currentLocation)) {
             soundEngine.playClip(Sound.EMOTE_TROLL_AKKHA, executor);
+        }
+    }
+
+    private void babaTroll() {
+        WorldPoint currentLocation = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+        if (BABA_PUZZLE_ROOM.contains(currentLocation)) {
+            soundEngine.playClip(Sound.randomBabaEmoteSound(), executor);
         }
     }
 

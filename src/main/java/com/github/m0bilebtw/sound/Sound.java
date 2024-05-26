@@ -36,6 +36,10 @@ public enum Sound {
 
     EMOTE_TROLL_AKKHA("Akkha_r1.wav", true),
 
+    EMOTE_TROLL_BABA_1("", true),
+    EMOTE_TROLL_BABA_2("", true),
+    EMOTE_TROLL_BABA_3("", true),
+
     EMOTE_TROLL_WE("Emote_We_r1.wav", true),
     EMOTE_TROLL_VE("Emote_Ve_r1.wav", true),
     EMOTE_TROLL_IR("Emote_IR_r1.wav", true),
@@ -80,5 +84,15 @@ public enum Sound {
             Sound.SNOWBALL_V3_6,
             Sound.SNOWBALL_V3_7,
             Sound.SNOWBALL_V3_8,
+    };
+
+    public static Sound randomBabaEmoteSound() {
+        return BABA_EMOTE_SOUNDS[random.nextInt(BABA_EMOTE_SOUNDS.length)];
+    }
+
+    private static final Sound[] BABA_EMOTE_SOUNDS = new Sound[] {
+            Sound.EMOTE_TROLL_BABA_1,
+            Sound.EMOTE_TROLL_BABA_2,
+            Sound.EMOTE_TROLL_BABA_3,
     };
 }
