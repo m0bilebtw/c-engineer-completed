@@ -9,6 +9,7 @@ import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.Projectile;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -106,7 +107,15 @@ public class TrollTriggers {
 
         if (cEngineer.couldHaveThrownProjectileFrom(projectile)) {
             lastSnowballTriggerTick = currentTick;
-            soundEngine.playClip(Sound.randomSnowballSound(), executor, SNOWBALL_DELAY_SOUNDS);
+            playSoundFromSnowball(Sound.randomSnowballSound());
+        }
+    }
+
+    private void playSoundFromSnowball(Sound sound) {
+        if (cEngineer.isWearing(ItemID._3RD_AGE_AMULET)) {
+            soundEngine.playClip(sound, executor);
+        } else {
+            soundEngine.playClip(sound, executor, SNOWBALL_DELAY_SOUNDS);
         }
     }
 }
