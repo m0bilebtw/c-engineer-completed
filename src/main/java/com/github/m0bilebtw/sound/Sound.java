@@ -47,6 +47,7 @@ public enum Sound {
     EMOTE_TROLL_IR("Emote_IR_r1.wav", true),
     EMOTE_TROLL_EL("Emote_El_r1.wav", true),
     EMOTE_TROLL_AN("Emote_An_r1.wav", true),
+    EMOTE_TROLL_AF("", true),
 
     STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
     ;

@@ -61,6 +61,9 @@ public class EmoteTriggers {
 
         String lowerJagexName = Text.toJagexName(localName).toLowerCase();
         switch (lowerJagexName) {
+            case "a friend 2":
+                soundEngine.playClip(Sound.EMOTE_TROLL_AF, executor);
+                break;
             case "hmic andeey":
                 soundEngine.playClip(Sound.EMOTE_TROLL_AN, executor);
                 break;
