@@ -49,6 +49,10 @@ public enum Sound {
     EMOTE_TROLL_AN("Emote_An_r1.wav", true),
     EMOTE_TROLL_AF("", true),
 
+    CHAT_TROLL_SKILL_SPECS_HELLO("", true),
+    CHAT_TROLL_SKILL_SPECS_OK("", true),
+    CHAT_TROLL_SKILL_SPECS_OOPS("", true),
+
     STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
     ;
 

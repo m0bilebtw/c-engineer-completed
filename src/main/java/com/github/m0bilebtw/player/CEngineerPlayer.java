@@ -8,6 +8,7 @@ import net.runelite.api.HitsplatID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.PlayerDespawned;
@@ -31,6 +32,9 @@ public class CEngineerPlayer {
     @Inject
     private CEngineerCompletedConfig config;
 
+    @Inject
+    private CEngineerChatTrolls cEngineerChatTrolls;
+
     private Player player = null;
     private int lastTickOfFightIncludingCEngi = -1;
 
@@ -48,6 +52,19 @@ public class CEngineerPlayer {
         if (RSN.equals(despawnedPlayer.getName())) {
             this.player = null;
         }
+    }
+
+    @Subscribe
+    public void onChatMessage(ChatMessage chatMessage) {
+        if (!config.easterEggs())
+            return;
+
+        if (isOutOfRenderDistance() ||
+                chatMessage.getType() != ChatMessageType.PUBLICCHAT ||
+                !RSN.equals(chatMessage.getName()))
+            return;
+
+        cEngineerChatTrolls.runTriggers(chatMessage);
     }
 
     @Subscribe

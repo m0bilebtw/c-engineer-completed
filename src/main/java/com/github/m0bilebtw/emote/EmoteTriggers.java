@@ -1,14 +1,14 @@
 package com.github.m0bilebtw.emote;
 
+import com.github.m0bilebtw.player.LocalPlayer;
 import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Client;
-import net.runelite.api.Player;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
+import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static com.github.m0bilebtw.emote.EmoteAnimationID.PREMIER_SHIELD;
@@ -54,12 +54,10 @@ public class EmoteTriggers {
     }
 
     private void smoothDanceTrolls() {
-        Player localPlayer = client.getLocalPlayer();
-        if (localPlayer == null) return;
-        String localName = localPlayer.getName();
-        if (localName == null) return;
+        Optional<String> lowerJagexNameOpt = LocalPlayer.getLowerJagexName(client);
+        if (lowerJagexNameOpt.isEmpty()) return;
 
-        String lowerJagexName = Text.toJagexName(localName).toLowerCase();
+        String lowerJagexName = lowerJagexNameOpt.get();
         switch (lowerJagexName) {
             case "a friend 2":
                 soundEngine.playClip(Sound.EMOTE_TROLL_AF, executor);
