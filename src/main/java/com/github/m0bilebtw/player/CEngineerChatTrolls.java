@@ -21,11 +21,11 @@ public class CEngineerChatTrolls {
     private ScheduledExecutorService executor;
 
     public void runTriggers(ChatMessage chatMessageFromC) {
-        Optional<String> lowerJagexNameOpt = LocalPlayer.getLowerJagexName(client);
-        if (lowerJagexNameOpt.isEmpty()) return;
+        Optional<String> standardisedNameOpt = LocalPlayer.getStandardisedName(client);
+        if (standardisedNameOpt.isEmpty()) return;
 
-        String lowerJagexName = lowerJagexNameOpt.get();
-        if ("skill specs".equals(lowerJagexName))
+        String standardisedName = standardisedNameOpt.get();
+        if ("skill specs".equals(standardisedName))
             skillSpecsChatTrolls(chatMessageFromC);
     }
 

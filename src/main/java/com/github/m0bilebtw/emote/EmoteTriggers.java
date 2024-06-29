@@ -54,11 +54,11 @@ public class EmoteTriggers {
     }
 
     private void smoothDanceTrolls() {
-        Optional<String> lowerJagexNameOpt = LocalPlayer.getLowerJagexName(client);
-        if (lowerJagexNameOpt.isEmpty()) return;
+        Optional<String> standardisedNameOpt = LocalPlayer.getStandardisedName(client);
+        if (standardisedNameOpt.isEmpty()) return;
 
-        String lowerJagexName = lowerJagexNameOpt.get();
-        switch (lowerJagexName) {
+        String standardisedName = standardisedNameOpt.get();
+        switch (standardisedName) {
             case "a friend 2":
                 soundEngine.playClip(Sound.EMOTE_TROLL_AF, executor);
                 break;

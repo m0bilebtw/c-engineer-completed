@@ -9,7 +9,7 @@ import java.util.Optional;
 public class LocalPlayer {
     private LocalPlayer () {}
 
-    public static Optional<String> getLowerJagexName(Client client) {
+    public static Optional<String> getStandardisedName(Client client) {
         Player localPlayer = client.getLocalPlayer();
         if (localPlayer == null)
             return Optional.empty();
@@ -18,7 +18,6 @@ public class LocalPlayer {
         if (localName == null)
             return Optional.empty();
 
-        String lowerJagexName = Text.toJagexName(localName).toLowerCase();
-        return Optional.of(lowerJagexName);
+        return Optional.of(Text.standardize(localName));
     }
 }
