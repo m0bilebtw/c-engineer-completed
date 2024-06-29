@@ -1,7 +1,7 @@
 package com.github.m0bilebtw.trolls;
 
 import com.github.m0bilebtw.CEngineerCompletedConfig;
-import com.github.m0bilebtw.emote.EmoteTriggers;
+import com.github.m0bilebtw.animation.AnimationTriggers;
 import com.github.m0bilebtw.player.CEngineerPlayer;
 import com.github.m0bilebtw.projectile.ProjectileID;
 import com.github.m0bilebtw.sound.Sound;
@@ -10,6 +10,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -54,7 +55,7 @@ public class TrollTriggers {
     private CEngineerPlayer cEngineer;
 
     @Inject
-    private EmoteTriggers emoteTriggers;
+    private AnimationTriggers animationTriggers;
 
     private int lastSnowballTriggerTick = -1;
 
@@ -73,6 +74,15 @@ public class TrollTriggers {
 
     @Subscribe
     public void onAnimationChanged(AnimationChanged animationChanged) {
+        if (!config.easterEggs())
+            return;
+
+        Player localPlayer = client.getLocalPlayer();
+        if (localPlayer == animationChanged.getActor() && localPlayer.getAnimation() != -1) {
+            animationTriggers.runTriggersForLocalPlayerAnimation(localPlayer.getAnimation());
+            return;
+        }
+
         if (cEngineer.isOutOfRenderDistance())
             return;
 
@@ -80,14 +90,11 @@ public class TrollTriggers {
         if (!cEngineer.actorEquals(actor))
             return;
 
-        if (!config.easterEggs())
-            return;
-
         int actorAnimationId = actor.getAnimation();
         if (actorAnimationId == -1)
             return;
 
-        emoteTriggers.runTriggers(actorAnimationId);
+        animationTriggers.runTriggersForCEngiAnimation(actorAnimationId);
     }
 
     @Subscribe
