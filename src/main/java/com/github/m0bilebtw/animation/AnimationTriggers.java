@@ -109,17 +109,8 @@ public class AnimationTriggers {
             case "a friend 2":
                 soundEngine.playClip(Sound.EMOTE_TROLL_AF, executor);
                 break;
-            case "hmic andeey":
-                soundEngine.playClip(Sound.EMOTE_TROLL_AN, executor);
-                break;
             case "taint licka":
                 soundEngine.playClip(Sound.EMOTE_TROLL_EL, executor);
-                break;
-            case "itsvevisk":
-                soundEngine.playClip(Sound.EMOTE_TROLL_VE, executor);
-                break;
-            case "ironrhapsody":
-                soundEngine.playClip(Sound.EMOTE_TROLL_IR, executor);
                 break;
             case "westham":
             case "debiedobies":
