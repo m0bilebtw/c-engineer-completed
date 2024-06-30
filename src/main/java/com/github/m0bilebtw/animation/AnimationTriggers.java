@@ -43,6 +43,7 @@ public class AnimationTriggers {
     private static final WorldArea AKKHA_ROOM = new WorldArea(new WorldPoint(3671, 5398, 1), 29, 20);
     private static final WorldArea BABA_PUZZLE_ROOM = new WorldArea(new WorldPoint(3788, 5264, 0), 42, 31);
 
+    private static final WorldArea TOA_CHEST_ROOM = new WorldArea(new WorldPoint(3673, 5138, 0), 15, 13);
     private static final WorldArea TOB_CHEST_ROOM = new WorldArea(new WorldPoint(3225, 4320, 0), 18, 14);
 
     public void runTriggersForLocalPlayerAnimation(int animationId) {
@@ -50,14 +51,14 @@ public class AnimationTriggers {
     }
 
     private void checkFunnyFeelingTrollTrigger(int animationId) {
-        if (!cEngineer.isFollowingMe())
-            return;
-
         if (animationId != GENERIC_CHEST_OPEN)
             return;
 
+        if (!cEngineer.isFollowingMe())
+            return;
+
         WorldPoint currentLocation = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-        if (TOB_CHEST_ROOM.contains(currentLocation)) {
+        if (TOA_CHEST_ROOM.contains(currentLocation) || TOB_CHEST_ROOM.contains(currentLocation)) {
             executor.schedule(this::funnyFeelingTroll, 600, TimeUnit.MILLISECONDS);
         }
     }
