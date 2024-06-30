@@ -20,30 +20,36 @@ public enum Sound {
 
     ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true),
 
-    SNOWBALL_V4_1("", true), // todo rest of new snowball sounds
+    SNOWBALL_V4_1("SnowballV4_1_r1.wav", true),
+    SNOWBALL_V4_2("SnowballV4_2_r1.wav", true),
+    SNOWBALL_V4_3("SnowballV4_3_r1.wav", true),
+    SNOWBALL_V4_4("SnowballV4_4_r1.wav", true),
+    SNOWBALL_V4_5("SnowballV4_5_r1.wav", true),
+    SNOWBALL_V4_6("SnowballV4_6_r1.wav", true),
+    SNOWBALL_V4_7("SnowballV4_7_r1.wav", true),
 
-    SNOWBALL_GAUNTLET_LOBBY("", true),
+    SNOWBALL_GAUNTLET_LOBBY("SnowballV4_NR_Gauntlet_r1.wav", true),
 
-    SNOWBALL_EQUIPPING_BUCKET_HELM_G("", true),
-    SNOWBALL_EQUIPPING_GIANT_BOOT("", true),
-    SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("", true),
-    SNOWBALL_EQUIPPING_MASK_OF_REBIRTH("", true),
+    SNOWBALL_EQUIPPING_BUCKET_HELM_G("SnowballV4_NR_BucketHelmG_r1.wav", true),
+    SNOWBALL_EQUIPPING_GIANT_BOOT("SnowballV4_NR_GiantBoot_r1.wav", true),
+    SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("SnowballV4_NR_SagaciousSpectacles_r1.wav", true),
+    SNOWBALL_EQUIPPING_MASK_OF_REBIRTH("SnowballV4_NR_MaskOfRebirth_r1.wav", true),
 
     EMOTE_TROLL_AKKHA("Akkha_r1.wav", true),
 
-    EMOTE_TROLL_BABA_1("", true),
-    EMOTE_TROLL_BABA_2("", true),
-    EMOTE_TROLL_BABA_3("", true),
+    EMOTE_TROLL_BABA_1("BaBa_1_r1.wav", true),
+    EMOTE_TROLL_BABA_2("BaBa_2_r1.wav", true),
+    EMOTE_TROLL_BABA_3("BaBa_3_r1.wav", true),
 
     EMOTE_TROLL_WE("Emote_We_r1.wav", true),
     EMOTE_TROLL_EL("Emote_El_r1.wav", true),
-    EMOTE_TROLL_AF("", true),
+    EMOTE_TROLL_AF("AFriend2_Bye_r1.wav", true),
 
-    CHAT_TROLL_SKILL_SPECS_HELLO("", true),
-    CHAT_TROLL_SKILL_SPECS_OK("", true),
-    CHAT_TROLL_SKILL_SPECS_OOPS("", true),
+    CHAT_TROLL_SKILL_SPECS_HELLO("SkillSpecs_Hello_r1.wav", true),
+    CHAT_TROLL_SKILL_SPECS_OK("SkillSpecs_OK_r1.wav", true),
+    CHAT_TROLL_SKILL_SPECS_OOPS("SkillSpecs_Oops_r1.wav", true),
 
-    TOB_GREEN_BALL("", true),
+    TOB_GREEN_BALL("GreenBall_r1.wav", true),
 
     STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
     ;
@@ -75,7 +81,13 @@ public enum Sound {
     }
 
     private static final Sound[] SNOWBALL_SOUNDS_NOT_FROM_EQUIPPED_ITEMS = new Sound[] {
-            Sound.SNOWBALL_V4_1, // todo rest of snowball sounds in array (except certain item equipped)
+            SNOWBALL_V4_1,
+            SNOWBALL_V4_2,
+            SNOWBALL_V4_3,
+            SNOWBALL_V4_4,
+            SNOWBALL_V4_5,
+            SNOWBALL_V4_6,
+            SNOWBALL_V4_7,
     };
 
     public static Sound randomBabaEmoteSound() {
