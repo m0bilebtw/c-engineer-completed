@@ -20,14 +20,7 @@ public enum Sound {
 
     ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true),
 
-    SNOWBALL_V3_1("SnowballV3_Battery_r1.wav", true),
-    SNOWBALL_V3_2("SnowballV3_Bits_r1.wav", true),
-    SNOWBALL_V3_3("SnowballV3_Call_r1.wav", true),
-    SNOWBALL_V3_4("SnowballV3_Knock_r1.wav", true),
-    SNOWBALL_V3_5("SnowballV3_Notif_r1.wav", true),
-    SNOWBALL_V3_6("SnowballV3_Steam_r1.wav", true),
-    SNOWBALL_V3_7("SnowballV3_Sus_r1.wav", true),
-    SNOWBALL_V3_8("SnowballV3_USB_r1.wav", true),
+    SNOWBALL_V4_1("", true), // todo rest of new snowball sounds
 
     SNOWBALL_GAUNTLET_LOBBY("", true),
 
@@ -43,10 +36,7 @@ public enum Sound {
     EMOTE_TROLL_BABA_3("", true),
 
     EMOTE_TROLL_WE("Emote_We_r1.wav", true),
-    EMOTE_TROLL_VE("Emote_Ve_r1.wav", true),
-    EMOTE_TROLL_IR("Emote_IR_r1.wav", true),
     EMOTE_TROLL_EL("Emote_El_r1.wav", true),
-    EMOTE_TROLL_AN("Emote_An_r1.wav", true),
     EMOTE_TROLL_AF("", true),
 
     CHAT_TROLL_SKILL_SPECS_HELLO("", true),
@@ -85,14 +75,7 @@ public enum Sound {
     }
 
     private static final Sound[] SNOWBALL_SOUNDS_NOT_FROM_EQUIPPED_ITEMS = new Sound[] {
-            Sound.SNOWBALL_V3_1,
-            Sound.SNOWBALL_V3_2,
-            Sound.SNOWBALL_V3_3,
-            Sound.SNOWBALL_V3_4,
-            Sound.SNOWBALL_V3_5,
-            Sound.SNOWBALL_V3_6,
-            Sound.SNOWBALL_V3_7,
-            Sound.SNOWBALL_V3_8,
+            Sound.SNOWBALL_V4_1, // todo rest of snowball sounds in array (except certain item equipped)
     };
 
     public static Sound randomBabaEmoteSound() {
