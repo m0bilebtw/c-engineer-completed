@@ -166,7 +166,7 @@ public class TrollTriggers {
 
     private Sound pickSnowballSoundBasedOnEquipment() {
         if (cEngineer.isWearing(ItemID.BUCKET_HELM_G))
-            return Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G;
+            return Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G_OR_FUNNY_FEEL;
 
         if (cEngineer.isWearing(ItemID.GIANT_BOOT))
             return Sound.SNOWBALL_EQUIPPING_GIANT_BOOT;

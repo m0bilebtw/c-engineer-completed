@@ -30,7 +30,7 @@ public enum Sound {
 
     SNOWBALL_GAUNTLET_LOBBY("SnowballV4_NR_Gauntlet_r1.wav", true),
 
-    SNOWBALL_EQUIPPING_BUCKET_HELM_G("SnowballV4_NR_BucketHelmG_r1.wav", true),
+    SNOWBALL_EQUIPPING_BUCKET_HELM_G_OR_FUNNY_FEEL("SnowballV4_NR_BucketHelmG_r1.wav", true),
     SNOWBALL_EQUIPPING_GIANT_BOOT("SnowballV4_NR_GiantBoot_r1.wav", true),
     SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("SnowballV4_NR_SagaciousSpectacles_r1.wav", true),
     SNOWBALL_EQUIPPING_MASK_OF_REBIRTH("SnowballV4_NR_MaskOfRebirth_r1.wav", true),

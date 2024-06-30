@@ -74,7 +74,7 @@ public class AnimationTriggers {
                 .runeLiteFormattedMessage(highlightedMessage)
                 .build());
 
-        soundEngine.playClip(Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G, executor);
+        soundEngine.playClip(Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G_OR_FUNNY_FEEL, executor);
     }
 
     public void runTriggersForCEngiAnimation(int animationId) {
