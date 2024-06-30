@@ -31,7 +31,7 @@ public class CEngineerChatTrolls {
 
     private void skillSpecsChatTrolls(ChatMessage chatMessageFromC) {
         switch (chatMessageFromC.getMessage().toLowerCase()) {
-            case "hello skillspecs":
+            case "hello skill specs":
                 soundEngine.playClip(Sound.CHAT_TROLL_SKILL_SPECS_HELLO, executor);
                 break;
             case "are you ok":
