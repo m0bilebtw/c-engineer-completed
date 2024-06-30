@@ -32,6 +32,7 @@ import static com.github.m0bilebtw.projectile.ProjectileSoundID.SNOWBALL_SOUND_I
 public class TrollTriggers {
     private static final Pattern STAT_SPY_REGEX = Pattern.compile(Text.standardize(CEngineerPlayer.RSN + " is reading your skill stats!"));
     private static final Pattern ESCAPE_CRYSTAL_REGEX = Pattern.compile(Text.standardize(CEngineerPlayer.RSN + " activated your crystal\\."));
+    private static final Pattern TOB_GREEN_BALL_BOUNCE_REGEX = Pattern.compile(Text.standardize("<col=0a721f>A powerful projectile bounces into your direction\\.\\.\\.</col>"));
 
     private static final int SNOWBALL_COOLDOWN_TICKS = 50;
     private static final Duration SNOWBALL_DELAY_GAUNTLET_SOUND = Duration.ofSeconds(450);
@@ -64,11 +65,18 @@ public class TrollTriggers {
         if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() != ChatMessageType.SPAM)
             return;
 
-        if (config.easterEggs() && STAT_SPY_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
+        if (!config.easterEggs())
+            return;
+
+        String standardisedMessage = Text.standardize(chatMessage.getMessage());
+        if (STAT_SPY_REGEX.matcher(standardisedMessage).matches()) {
             soundEngine.playClip(Sound.STAT_SPY_SOUP, executor);
 
-        } else if (config.easterEggs() && ESCAPE_CRYSTAL_REGEX.matcher(Text.standardize(chatMessage.getMessage())).matches()) {
+        } else if (ESCAPE_CRYSTAL_REGEX.matcher(standardisedMessage).matches()) {
             soundEngine.playClip(Sound.ESCAPE_CRYSTAL, executor);
+
+        } else if (cEngineer.isFollowingMe() && TOB_GREEN_BALL_BOUNCE_REGEX.matcher(standardisedMessage).matches()) {
+            soundEngine.playClip(Sound.TOB_GREEN_BALL, executor);
         }
     }
 

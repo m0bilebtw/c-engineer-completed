@@ -53,6 +53,8 @@ public enum Sound {
     CHAT_TROLL_SKILL_SPECS_OK("", true),
     CHAT_TROLL_SKILL_SPECS_OOPS("", true),
 
+    TOB_GREEN_BALL("", true),
+
     STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
     ;
 
