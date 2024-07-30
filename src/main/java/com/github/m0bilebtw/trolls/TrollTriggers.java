@@ -195,11 +195,16 @@ public class TrollTriggers {
     }
 
     private void iceBarrageTroll(Actor actorFromGraphicChanged) {
-        if (!(actorFromGraphicChanged instanceof NPC)) return;
+        if (!(actorFromGraphicChanged instanceof NPC))
+            return;
 
         NPC npc = (NPC) actorFromGraphicChanged;
-        if (!npc.hasSpotAnim(GraphicID.ICE_BARRAGE)) return;
-        if (!cEngineer.isInteracting(npc)) return;
+        if (!npc.hasSpotAnim(GraphicID.ICE_BARRAGE))
+            return;
+        if (!cEngineer.isInteracting(npc))
+            return;
+        if (cEngineer.tilesFrom(client.getLocalPlayer()) > 10)
+            return;
 
         soundEngine.playClip(Sound.ATTACK_TROLL_IB, executor);
     }

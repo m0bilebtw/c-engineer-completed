@@ -166,6 +166,16 @@ public class CEngineerPlayer {
         return cEngineerWP.distanceTo2D(projectileWP) <= 2;
     }
 
+    public int tilesFrom(Actor actor) {
+        if (actor == null || player == null)
+            return Integer.MAX_VALUE;
+
+        WorldPoint cEngineerWP = player.getWorldLocation();
+        WorldPoint actorWP = actor.getWorldLocation();
+
+        return cEngineerWP.distanceTo2D(actorWP);
+    }
+
     public void sendChatIfEnabled(String message) {
         if (config.showChatMessages()) {
             client.addChatMessage(ChatMessageType.PUBLICCHAT, RSN, message, null);

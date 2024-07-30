@@ -129,6 +129,9 @@ public class AnimationTriggers {
     }
 
     private void diangoClawsTroll() {
+        if (cEngineer.tilesFrom(client.getLocalPlayer()) > 10)
+            return;
+
         if (cEngineer.isWearingAttackTrollRequirements()) {
             soundEngine.playClip(Sound.ATTACK_TROLL_DC, executor);
         }
