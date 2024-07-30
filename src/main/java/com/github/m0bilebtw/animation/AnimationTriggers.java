@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.m0bilebtw.animation.AnimationID.DIANGO_CLAWS;
 import static com.github.m0bilebtw.animation.AnimationID.GENERIC_CHEST_OPEN;
 import static com.github.m0bilebtw.animation.AnimationID.PREMIER_SHIELD;
 import static com.github.m0bilebtw.animation.AnimationID.SMOOTH_DANCE;
@@ -84,6 +85,8 @@ public class AnimationTriggers {
             babaTroll();
         } else if (animationId == SMOOTH_DANCE) {
             smoothDanceTrolls();
+        } else if (animationId == DIANGO_CLAWS) {
+            diangoClawsTroll();
         }
     }
 
@@ -122,6 +125,12 @@ public class AnimationTriggers {
                 soundEngine.playClip(Sound.QUEST, executor);
                 break;
             default: break;
+        }
+    }
+
+    private void diangoClawsTroll() {
+        if (cEngineer.isWearingAttackTrollRequirements()) {
+            soundEngine.playClip(Sound.ATTACK_TROLL_DC, executor);
         }
     }
 }

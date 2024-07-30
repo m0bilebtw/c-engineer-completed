@@ -5,6 +5,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.HitsplatID;
+import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldPoint;
@@ -18,6 +19,7 @@ import net.runelite.client.eventbus.Subscribe;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Arrays;
+import java.util.List;
 
 @Singleton
 public class CEngineerPlayer {
@@ -25,6 +27,10 @@ public class CEngineerPlayer {
 
     private static final int ITEM_IDS_START_FROM = 512;
     private static final int FIGHT_INTERACT_OR_DAMAGE_COOLDOWN = 8;
+
+    private static final List<Integer> AHRIMS_HOODS = List.of(ItemID.AHRIMS_HOOD, ItemID.AHRIMS_HOOD_100, ItemID.AHRIMS_HOOD_75, ItemID.AHRIMS_HOOD_50, ItemID.AHRIMS_HOOD_25, ItemID.AHRIMS_HOOD_0);
+    private static final List<Integer> AHRIMS_TOPS = List.of(ItemID.AHRIMS_ROBETOP, ItemID.AHRIMS_ROBETOP_100, ItemID.AHRIMS_ROBETOP_75, ItemID.AHRIMS_ROBETOP_50, ItemID.AHRIMS_ROBETOP_25, ItemID.AHRIMS_ROBETOP_0);
+    private static final List<Integer> AHRIMS_BOTTOMS = List.of(ItemID.AHRIMS_ROBESKIRT, ItemID.AHRIMS_ROBESKIRT_100, ItemID.AHRIMS_ROBESKIRT_75, ItemID.AHRIMS_ROBESKIRT_50, ItemID.AHRIMS_ROBESKIRT_25, ItemID.AHRIMS_ROBESKIRT_0);
 
     @Inject
     private Client client;
@@ -115,6 +121,14 @@ public class CEngineerPlayer {
                 .filter(i -> i > ITEM_IDS_START_FROM)
                 .map(i -> i - ITEM_IDS_START_FROM)
                 .anyMatch(i -> i == itemId);
+    }
+
+    public boolean isWearingAttackTrollRequirements() {
+        return isWearing(ItemID._3RD_AGE_AMULET) &&
+                isWearing(ItemID.DRAGON_CLAWS) &&
+                AHRIMS_HOODS.stream().anyMatch(this::isWearing) &&
+                AHRIMS_TOPS.stream().anyMatch(this::isWearing) &&
+                AHRIMS_BOTTOMS.stream().anyMatch(this::isWearing);
     }
 
     public boolean isFollowingMe() {
