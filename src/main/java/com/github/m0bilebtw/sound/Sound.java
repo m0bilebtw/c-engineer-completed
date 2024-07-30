@@ -45,6 +45,9 @@ public enum Sound {
     EMOTE_TROLL_EL("Emote_El_r1.wav", true),
     EMOTE_TROLL_AF("AFriend2_Bye_r1.wav", true),
 
+    ATTACK_TROLL_IB("", true),
+    ATTACK_TROLL_DC("", true),
+
     CHAT_TROLL_SKILL_SPECS_HELLO("SkillSpecs_Hello_r1.wav", true),
     CHAT_TROLL_SKILL_SPECS_OK("SkillSpecs_OK_r1.wav", true),
     CHAT_TROLL_SKILL_SPECS_OOPS("SkillSpecs_Oops_r1.wav", true),

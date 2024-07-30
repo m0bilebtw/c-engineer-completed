@@ -129,6 +129,17 @@ public class CEngineerPlayer {
         return cEngineerInteractTarget == localPlayer;
     }
 
+    public boolean isInteracting(Actor actor) {
+        if (actor == null)
+            return false;
+
+        if (isOutOfRenderDistance())
+            return false;
+
+        Actor cEngineerInteractTarget = player.getInteracting();
+        return cEngineerInteractTarget == actor;
+    }
+
     public boolean actorEquals(Actor other) {
         return player == other;
     }
