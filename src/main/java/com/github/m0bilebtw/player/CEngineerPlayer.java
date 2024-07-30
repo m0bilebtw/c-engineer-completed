@@ -132,15 +132,7 @@ public class CEngineerPlayer {
     }
 
     public boolean isFollowingMe() {
-        if (isOutOfRenderDistance())
-            return false;
-
-        Player localPlayer = client.getLocalPlayer();
-        if (localPlayer == null)
-            return false;
-
-        Actor cEngineerInteractTarget = player.getInteracting();
-        return cEngineerInteractTarget == localPlayer;
+        return isInteracting(client.getLocalPlayer());
     }
 
     public boolean isInteracting(Actor actor) {
