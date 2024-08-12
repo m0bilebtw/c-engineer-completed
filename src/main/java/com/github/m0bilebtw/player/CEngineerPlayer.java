@@ -15,6 +15,7 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -67,7 +68,7 @@ public class CEngineerPlayer {
 
         if (isOutOfRenderDistance() ||
                 chatMessage.getType() != ChatMessageType.PUBLICCHAT ||
-                !RSN.equals(chatMessage.getName()))
+                !Text.standardize(RSN).equals(Text.standardize(chatMessage.getName())))
             return;
 
         cEngineerChatTrolls.runTriggers(chatMessage);
