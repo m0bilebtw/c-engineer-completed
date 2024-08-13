@@ -31,7 +31,7 @@ public class TrollTriggers {
     private static final Pattern TOB_GREEN_BALL_BOUNCE_REGEX = Pattern.compile(Text.standardize("<col=0a721f>A powerful projectile bounces into your direction\\.\\.\\.</col>"));
 
     private static final int SNOWBALL_COOLDOWN_TICKS = 50;
-    private static final Duration SNOWBALL_DELAY_GAUNTLET_SOUND = Duration.ofSeconds(450);
+    private static final Duration SNOWBALL_DELAY_GAUNTLET_SOUND = Duration.ofMinutes(9);
     private static final Duration SNOWBALL_DELAY_SOUNDS = Duration.ofSeconds(20);
 
     private static final WorldArea GAUNTLET_LOBBY = new WorldArea(new WorldPoint(3026, 6117, 1), 14, 14);
