@@ -22,11 +22,12 @@ import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.runelite.api.PlayerComposition.ITEM_OFFSET;
+
 @Singleton
 public class CEngineerPlayer {
     public static final String RSN = "C Engineer";
 
-    private static final int ITEM_IDS_START_FROM = 512;
     private static final int FIGHT_INTERACT_OR_DAMAGE_COOLDOWN = 8;
 
     private static final List<Integer> AHRIMS_HOODS = List.of(ItemID.AHRIMS_HOOD, ItemID.AHRIMS_HOOD_100, ItemID.AHRIMS_HOOD_75, ItemID.AHRIMS_HOOD_50, ItemID.AHRIMS_HOOD_25, ItemID.AHRIMS_HOOD_0);
@@ -119,8 +120,8 @@ public class CEngineerPlayer {
 
         int[] equipmentIds = player.getPlayerComposition().getEquipmentIds();
         return Arrays.stream(equipmentIds)
-                .filter(i -> i > ITEM_IDS_START_FROM)
-                .map(i -> i - ITEM_IDS_START_FROM)
+                .filter(i -> i > ITEM_OFFSET)
+                .map(i -> i - ITEM_OFFSET)
                 .anyMatch(i -> i == itemId);
     }
 
