@@ -26,6 +26,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import java.util.EnumMap;
@@ -40,6 +41,8 @@ public class AnnouncementTriggers {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? \\w+ combat task:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
+    private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
+    private static final String FARMING_CONTRACT_MESSAGE = Text.standardize("You've completed a Farming Guild Contract. You should return to Guildmaster Jane.");
 
     private static final Random random = new Random();
 
@@ -247,6 +250,18 @@ public class AnnouncementTriggers {
         } else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
             cEngineer.sendChatIfEnabled("Combat task: completed.");
             soundEngine.playClip(Sound.COMBAT_TASK, executor);
+            return;
+        }
+
+        String standardizedMessage = Text.standardize(chatMessage.getMessage());
+        if (config.announceHunterRumours() && HUNTER_RUMOUR_MESSAGE.equals(standardizedMessage)) {
+            cEngineer.sendChatIfEnabled("Hunter Rumour: completed.");
+            soundEngine.playClip(Sound.HUNTER_RUMOUR, executor);
+
+        } else if (config.announceFarmingContracts() && FARMING_CONTRACT_MESSAGE.equals(standardizedMessage)) {
+            cEngineer.sendChatIfEnabled("Farming Contract: completed.");
+            soundEngine.playClip(Sound.FARMING_CONTRACT, executor);
+
         }
     }
 

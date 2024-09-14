@@ -83,6 +83,28 @@ public interface CEngineerCompletedConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            keyName = "announceFarmingContracts",
+            name = "Completed Farming Contracts",
+            description = "Should C Engineer announce when you complete a farming contract?",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 7
+    )
+    default boolean announceFarmingContracts() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceHunterRumours",
+            name = "Completed Hunter Rumours",
+            description = "Should C Engineer announce when you receive the required creature part for a hunter rumour?",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 8
+    )
+    default boolean announceHunterRumours() {
+        return true;
+    }
+
     @ConfigSection(
             name = "Announce Other",
             description = "Which sounds that are not necessarily achievements (and not easter eggs) should play.",
