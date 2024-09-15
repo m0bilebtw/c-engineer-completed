@@ -11,6 +11,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
@@ -26,9 +27,12 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +45,7 @@ public class AnnouncementTriggers {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? \\w+ combat task:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
+    private static final Pattern SLAYER_TASK_REGEX = Pattern.compile("You have completed your task! You killed .*. You gained .* xp.");
     private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
     private static final String FARMING_CONTRACT_MESSAGE = Text.standardize("You've completed a Farming Guild Contract. You should return to Guildmaster Jane.");
 
@@ -250,6 +255,10 @@ public class AnnouncementTriggers {
         } else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
             cEngineer.sendChatIfEnabled("Combat task: completed.");
             soundEngine.playClip(Sound.COMBAT_TASK, executor);
+
+        } else if (config.announceSlayerTasks() && SLAYER_TASK_REGEX.matcher(Text.removeTags(chatMessage.getMessage())).matches()) {
+            cEngineer.sendChatIfEnabled("Slayer task: completed.");
+            soundEngine.playClip(Sound.SLAYER_TASK, executor);
             return;
         }
 
@@ -261,7 +270,27 @@ public class AnnouncementTriggers {
         } else if (config.announceFarmingContracts() && FARMING_CONTRACT_MESSAGE.equals(standardizedMessage)) {
             cEngineer.sendChatIfEnabled("Farming Contract: completed.");
             soundEngine.playClip(Sound.FARMING_CONTRACT, executor);
+        }
+    }
 
+    @Subscribe
+    public void onNpcLootReceived(NpcLootReceived npcLootReceived) {
+        Collection<ItemStack> loot = npcLootReceived.getItems();
+        for (ItemStack itemStack : loot) {
+            int itemId = itemStack.getId();
+
+            if (itemId == ItemID.GRUBBY_KEY && config.announceGrubbyKeyDrop()) {
+                cEngineer.sendChatIfEnabled("Another grubby key.");
+                soundEngine.playClip(Sound.GRUBBY_KEY, executor);
+
+            } else if (itemId == ItemID.LARRANS_KEY && config.announceLarransKeyDrop()) {
+                cEngineer.sendChatIfEnabled("Another Larran's key.");
+                soundEngine.playClip(Sound.LARRANS_KEY, executor);
+
+            } else if (itemId == ItemID.BRIMSTONE_KEY && config.announceBrimstoneKeyDrop()) {
+                cEngineer.sendChatIfEnabled("Another brimstone key.");
+                soundEngine.playClip(Sound.BRIMSTONE_KEY, executor);
+            }
         }
     }
 

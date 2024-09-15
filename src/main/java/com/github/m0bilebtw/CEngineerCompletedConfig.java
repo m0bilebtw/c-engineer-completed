@@ -84,11 +84,22 @@ public interface CEngineerCompletedConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "announceSlayerTasks",
+            name = "Completed Slayer Tasks",
+            description = "Should C Engineer announce when you complete a slayer task?",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 7
+    )
+    default boolean announceSlayerTasks() {
+        return true;
+    }
+
+    @ConfigItem(
             keyName = "announceFarmingContracts",
             name = "Completed Farming Contracts",
             description = "Should C Engineer announce when you complete a farming contract?",
             section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
-            position = 7
+            position = 8
     )
     default boolean announceFarmingContracts() {
         return true;
@@ -99,7 +110,7 @@ public interface CEngineerCompletedConfig extends Config {
             name = "Completed Hunter Rumours",
             description = "Should C Engineer announce when you receive the required creature part for a hunter rumour?",
             section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
-            position = 8
+            position = 9
     )
     default boolean announceHunterRumours() {
         return true;
@@ -131,6 +142,39 @@ public interface CEngineerCompletedConfig extends Config {
             position = 22
     )
     default boolean announceNonTrouverInfernal() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceGrubbyKeyDrop",
+            name = "Announce Grubby Key Drop",
+            description = "Should C Engineer announce when you receive a grubby key?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 23
+    )
+    default boolean announceGrubbyKeyDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceLarransKeyDrop",
+            name = "Announce Larran's Key Drop",
+            description = "Should C Engineer announce when you receive a Larran's key?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 24
+    )
+    default boolean announceLarransKeyDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceBrimstoneKeyDrop",
+            name = "Announce Brimstone Key Drop",
+            description = "Should C Engineer announce when you receive a brimstone key?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 25
+    )
+    default boolean announceBrimstoneKeyDrop() {
         return true;
     }
 

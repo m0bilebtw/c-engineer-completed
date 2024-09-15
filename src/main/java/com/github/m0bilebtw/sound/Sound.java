@@ -8,8 +8,12 @@ public enum Sound {
     COLLECTION_LOG_SLOT("ColLogSlotCompleted_r1.wav"),
     COMBAT_TASK("CombatTaskCompleted_r1.wav"),
     ACHIEVEMENT_DIARY("AchieveDiaryCompleted_r1.wav"),
+    SLAYER_TASK(""), // todo sound file
     HUNTER_RUMOUR(""), // todo sound file
     FARMING_CONTRACT(""), // todo sound file
+    GRUBBY_KEY(""), // todo sound file
+    LARRANS_KEY(""), // todo sound file
+    BRIMSTONE_KEY(""), // todo sound file
     DEATH("DyingHCIMCompleted_r1.wav"),
     DEATH_TO_C_ENGINEER("Sit_r1.wav"),
 
