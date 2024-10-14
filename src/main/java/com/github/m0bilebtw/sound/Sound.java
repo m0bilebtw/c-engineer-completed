@@ -11,9 +11,19 @@ public enum Sound {
     SLAYER_TASK("slayer_task_r1.wav"),
     HUNTER_RUMOUR("hunter_rumour_r1.wav"),
     FARMING_CONTRACT("farming_contract_r1.wav"),
+
+    // DROPS
     GRUBBY_KEY("grubby_key_r1.wav"),
     LARRANS_KEY("larrans_key_r1.wav"),
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
+    ANCIENT_SHARD("ancient_shard_r1.wav"),
+    CLUE_BEGINNER("clue_beginner_r1.wav"),
+    CLUE_EASY("clue_easy_r1.wav"),
+    CLUE_MEDIUM("clue_medium_r1.wav"),
+    CLUE_HARD("clue_hard_r1.wav"),
+    CLUE_ELITE("clue_elite_r1.wav"),
+    CLUE_MASTER("clue_master_r1.wav"),
+
     DEATH("DyingHCIMCompleted_r1.wav"),
     DEATH_TO_C_ENGINEER("Sit_r1.wav"),
 

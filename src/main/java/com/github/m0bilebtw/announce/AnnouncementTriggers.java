@@ -32,9 +32,11 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -276,6 +278,13 @@ public class AnnouncementTriggers {
     @Subscribe
     public void onNpcLootReceived(NpcLootReceived npcLootReceived) {
         Collection<ItemStack> loot = npcLootReceived.getItems();
+        List<Integer> beginnerClues = Arrays.asList(ItemID.CLUE_SCROLL_BEGINNER);
+        List<Integer> easyClues = Arrays.asList(ItemID.CLUE_SCROLL_EASY, ItemID.CLUE_NEST_EASY, ItemID.CLUE_BOTTLE_EASY, ItemID.CLUE_GEODE_EASY);
+        List<Integer> mediumClues = Arrays.asList(ItemID.CLUE_SCROLL_MEDIUM, ItemID.CLUE_NEST_MEDIUM, ItemID.CLUE_BOTTLE_MEDIUM, ItemID.CLUE_GEODE_MEDIUM);
+        List<Integer> hardClues = Arrays.asList(ItemID.CLUE_SCROLL_HARD, ItemID.CLUE_NEST_HARD, ItemID.CLUE_BOTTLE_HARD, ItemID.CLUE_GEODE_HARD);
+        List<Integer> eliteClues = Arrays.asList(ItemID.CLUE_SCROLL_ELITE, ItemID.CLUE_NEST_ELITE, ItemID.CLUE_BOTTLE_ELITE, ItemID.CLUE_GEODE_ELITE);
+        List<Integer> masterClues = Arrays.asList(ItemID.CLUE_SCROLL_MASTER);
+
         for (ItemStack itemStack : loot) {
             int itemId = itemStack.getId();
 
@@ -290,6 +299,35 @@ public class AnnouncementTriggers {
             } else if (itemId == ItemID.BRIMSTONE_KEY && config.announceBrimstoneKeyDrop()) {
                 cEngineer.sendChatIfEnabled("Another brimstone key.");
                 soundEngine.playClip(Sound.BRIMSTONE_KEY, executor);
+
+            } else if (itemId == ItemID.ANCIENT_SHARD && config.announceAncientShardDrop()) {
+                cEngineer.sendChatIfEnabled("Another Ancient Shard.");
+                soundEngine.playClip(Sound.BRIMSTONE_KEY, executor);
+
+            } else if (beginnerClues.contains(itemId) && config.announceBeginnerClueScrollDrop()) {
+                cEngineer.sendChatIfEnabled("Another Beginner Clue.");
+                soundEngine.playClip(Sound.CLUE_BEGINNER, executor);
+                
+            } else if (easyClues.contains(itemId) && config.announceEasyClueScrollDrop()) {
+                cEngineer.sendChatIfEnabled("Another Easy Clue.");
+                soundEngine.playClip(Sound.CLUE_EASY, executor);
+                
+            } else if (mediumClues.contains(itemId) && config.announceMediumClueScrollDrop()) {
+                cEngineer.sendChatIfEnabled("Another Medium Clue.");
+                soundEngine.playClip(Sound.CLUE_MEDIUM, executor);
+                
+            } else if (hardClues.contains(itemId) && config.announceHardClueScrollDrop()) {
+                cEngineer.sendChatIfEnabled("Another Hard Clue.");
+                soundEngine.playClip(Sound.CLUE_HARD, executor);
+                
+            } else if (eliteClues.contains(itemId) && config.announceEliteClueScrollDrop()) {
+                cEngineer.sendChatIfEnabled("Another Elite Clue.");
+                soundEngine.playClip(Sound.CLUE_ELITE, executor);
+                
+            } else if (masterClues.contains(itemId) && config.announceMasterClueScrollDrop()) {
+                cEngineer.sendChatIfEnabled("Another Master Clue.");
+                soundEngine.playClip(Sound.CLUE_MASTER, executor);
+                
             }
         }
     }

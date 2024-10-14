@@ -178,6 +178,83 @@ public interface CEngineerCompletedConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            keyName = "announceAncientShardDrop",
+            name = "Announce Ancient Shard Drop",
+            description = "Should C Engineer announce when you receive an Ancient Shard?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 26
+    )
+    default boolean announceAncientShardDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceBeginnerClueScrollDrop",
+            name = "Announce Beginner Clue Scroll Drop",
+            description = "Should C Engineer announce when you receive an Beginner Clue Scroll?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 27
+    )
+    default boolean announceBeginnerClueScrollDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceEasyClueScrollDrop",
+            name = "Announce Easy Clue Scroll Drop",
+            description = "Should C Engineer announce when you receive an Easy Clue Scroll?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 28
+    )
+    default boolean announceEasyClueScrollDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceMediumClueScrollDrop",
+            name = "Announce Medium Clue Scroll Drop",
+            description = "Should C Engineer announce when you receive a Medium Clue Scroll?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 29
+    )
+    default boolean announceMediumClueScrollDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceHardClueScrollDrop",
+            name = "Announce Hard Clue Scroll Drop",
+            description = "Should C Engineer announce when you receive a Hard Clue Scroll?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 30
+    )
+    default boolean announceHardClueScrollDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceEliteClueScrollDrop",
+            name = "Announce Elite Clue Scroll Drop",
+            description = "Should C Engineer announce when you receive an Elite Clue Scroll?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 31
+    )
+    default boolean announceEliteClueScrollDrop() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceMasterClueScrollDrop",
+            name = "Announce Master Clue Scroll Drop",
+            description = "Should C Engineer announce when you receive a Master Clue Scroll?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 32
+    )
+    default boolean announceMasterClueScrollDrop() {
+        return true;
+    }
+
     @ConfigSection(
             name = "General Announcement Settings",
             description = "Settings for other details when achievement sounds play.",
