@@ -48,6 +48,8 @@ public class AnnouncementTriggers {
     private static final Pattern SLAYER_TASK_REGEX = Pattern.compile("You have completed your task! You killed .*. You gained .* xp.");
     private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
     private static final String FARMING_CONTRACT_MESSAGE = Text.standardize("You've completed a Farming Guild Contract. You should return to Guildmaster Jane.");
+    private static final String SUPERIOR_MESSAGE = Text.standardize("A superior foe has appeared...");
+
 
     private static final Random random = new Random();
 
@@ -259,6 +261,9 @@ public class AnnouncementTriggers {
         } else if (config.announceSlayerTasks() && SLAYER_TASK_REGEX.matcher(Text.removeTags(chatMessage.getMessage())).matches()) {
             cEngineer.sendChatIfEnabled("Slayer task: completed.");
             soundEngine.playClip(Sound.SLAYER_TASK, executor);
+            return;
+        } else if (config.announceSuperior() && SUPERIOR_MESSAGE.matcher(Text.removeTags(chatmessage.getMessage())).matches()) {
+            soundEngine.playClip(Sound.SUPERIOR, executor);
             return;
         }
 

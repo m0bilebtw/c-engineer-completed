@@ -16,6 +16,7 @@ public enum Sound {
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
     DEATH("DyingHCIMCompleted_r1.wav"),
     DEATH_TO_C_ENGINEER("Sit_r1.wav"),
+//    SUPERIOR("superior_foe.wav"), - I don't have a clip, but it would go here, if Cengineer would like to. - cwilson21
 
     QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav"),
 
