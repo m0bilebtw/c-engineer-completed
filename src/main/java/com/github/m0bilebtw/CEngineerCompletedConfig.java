@@ -9,6 +9,7 @@ import net.runelite.client.config.Range;
 @ConfigGroup(CEngineerCompletedConfig.GROUP)
 public interface CEngineerCompletedConfig extends Config {
     String GROUP = "cengineercompleted";
+    String LEAGUES_TASK_HIDDEN_REMINDER_CONFIG = "needToRemindAboutDisablingLeaguesTasks";
 
     @ConfigSection(
             name = "Announce Achievements",
@@ -113,6 +114,28 @@ public interface CEngineerCompletedConfig extends Config {
             position = 9
     )
     default boolean announceHunterRumours() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceLeaguesTasks",
+            name = "Completed Leagues Tasks",
+            description = "Should C Engineer announce when you complete a leagues task?",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 10
+    )
+    default boolean announceLeaguesTasks() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = LEAGUES_TASK_HIDDEN_REMINDER_CONFIG,
+            name = "Need to remind user they can disable leagues tasks announcements if they want",
+            description = "Leagues tasks can get spammy, and some users might not know they can toggle individual announcements instead of the whole plugin",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            hidden = true
+    )
+    default boolean needToRemindAboutDisablingLeaguesTasks() {
         return true;
     }
 

@@ -25,6 +25,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
@@ -44,6 +45,7 @@ import java.util.regex.Pattern;
 public class AnnouncementTriggers {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? \\w+ combat task:.*");
+    private static final Pattern LEAGUES_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? \\w+ task:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
     private static final Pattern SLAYER_TASK_REGEX = Pattern.compile("You have completed your task! You killed .*. You gained .* xp.");
     private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
@@ -82,6 +84,9 @@ public class AnnouncementTriggers {
 
     @Inject
     private CEngineerCompletedConfig config;
+
+    @Inject
+    private ConfigManager configManager;
 
     @Inject
     private SoundEngine soundEngine;
@@ -204,9 +209,17 @@ public class AnnouncementTriggers {
     }
 
     private void sendHighlightedMessageForColLogNotifSetting() {
+        sendHighlightedMessage("Please enable \"Collection log - New addition notification\" in your game settings for C Engineer to know when to announce it! (The chat message one, pop-up doesn't matter)");
+    }
+
+    private void sendHighlightedMessageForLeaguesTaskSetting() {
+        sendHighlightedMessage("C Engineer announcing leagues tasks might get spammy, but remember you can disable these announcements while keeping the others active in the plugin settings!");
+    }
+
+    private void sendHighlightedMessage(String message) {
         String highlightedMessage = new ChatMessageBuilder()
                 .append(ChatColorType.HIGHLIGHT)
-                .append("Please enable \"Collection log - New addition notification\" in your game settings for C Engineer to know when to announce it! (The chat message one, pop-up doesn't matter)")
+                .append(message)
                 .build();
 
         chatMessageManager.queue(QueuedMessage.builder()
@@ -255,6 +268,15 @@ public class AnnouncementTriggers {
         } else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
             cEngineer.sendChatIfEnabled("Combat task: completed.");
             soundEngine.playClip(Sound.COMBAT_TASK, executor);
+
+        } else if (config.announceLeaguesTasks() && LEAGUES_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
+            cEngineer.sendChatIfEnabled("Leagues task: completed.");
+            soundEngine.playClip(Sound.LEAGUES_TASK, executor);
+
+            if (config.needToRemindAboutDisablingLeaguesTasks()) {
+                configManager.setConfiguration(CEngineerCompletedConfig.GROUP, CEngineerCompletedConfig.LEAGUES_TASK_HIDDEN_REMINDER_CONFIG, false);
+                sendHighlightedMessageForLeaguesTaskSetting();
+            }
 
         } else if (config.announceSlayerTasks() && SLAYER_TASK_REGEX.matcher(Text.removeTags(chatMessage.getMessage())).matches()) {
             cEngineer.sendChatIfEnabled("Slayer task: completed.");

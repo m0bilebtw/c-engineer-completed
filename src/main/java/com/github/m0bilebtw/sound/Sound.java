@@ -11,6 +11,7 @@ public enum Sound {
     SLAYER_TASK("slayer_task_r1.wav"),
     HUNTER_RUMOUR("hunter_rumour_r1.wav"),
     FARMING_CONTRACT("farming_contract_r1.wav"),
+    LEAGUES_TASK(""), // todo sound file
     GRUBBY_KEY("grubby_key_r1.wav"),
     LARRANS_KEY("larrans_key_r1.wav"),
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
