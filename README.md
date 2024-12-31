@@ -74,3 +74,4 @@ expansion in the future while also 'supporting' user-swapped sounds for pre-exis
 ### Known Issues
 
 - PulseAudio on linux can just refuse to accept the audio formats used despite claiming to accept them :man_shrugging:
+- Pipewire on linux can cut off sounds early - this might be fixed given a more recent version of the jdk and more recent version of pipewire, but currently cannot confirm 🤷‍♂️
