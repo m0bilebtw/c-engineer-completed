@@ -265,7 +265,7 @@ public class AnnouncementTriggers {
             cEngineer.sendChatIfEnabled("Quest: completed.");
             soundEngine.playClip(Sound.QUEST, executor);
 
-        } else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(chatMessage.getMessage()).matches()) {
+        } else if (config.announceCombatAchievement() && COMBAT_TASK_REGEX.matcher(Text.removeTags(chatMessage.getMessage())).matches()) {
             cEngineer.sendChatIfEnabled("Combat task: completed.");
             soundEngine.playClip(Sound.COMBAT_TASK, executor);
 
