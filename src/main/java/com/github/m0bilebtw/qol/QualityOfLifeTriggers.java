@@ -8,10 +8,10 @@ import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -64,10 +64,10 @@ public class QualityOfLifeTriggers {
 
         ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
         boolean warnForEquip = equipment != null &&
-                (equipment.contains(ItemID.INFERNAL_CAPE) || equipment.contains(ItemID.INFERNAL_MAX_CAPE));
+                (equipment.contains(ItemID.INFERNAL_CAPE) || equipment.contains(ItemID.SKILLCAPE_MAX_INFERNALCAPE_DUMMY));
         ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
         boolean warnForInvent = inventory != null &&
-                (inventory.contains(ItemID.INFERNAL_CAPE) || inventory.contains(ItemID.INFERNAL_MAX_CAPE));
+                (inventory.contains(ItemID.INFERNAL_CAPE) || inventory.contains(ItemID.SKILLCAPE_MAX_INFERNALCAPE_DUMMY));
 
         if (warnForEquip || warnForInvent) {
             lastInfernalParchmentWarningTick = client.getTickCount();
