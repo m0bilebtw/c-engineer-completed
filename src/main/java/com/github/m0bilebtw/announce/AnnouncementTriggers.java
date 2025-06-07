@@ -11,7 +11,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.ActorDeath;
@@ -19,6 +18,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -301,15 +301,15 @@ public class AnnouncementTriggers {
         for (ItemStack itemStack : loot) {
             int itemId = itemStack.getId();
 
-            if (itemId == ItemID.GRUBBY_KEY && config.announceGrubbyKeyDrop()) {
+            if (itemId == ItemID.HOSDUN_GRUBBY_KEY && config.announceGrubbyKeyDrop()) {
                 cEngineer.sendChatIfEnabled("Another grubby key.");
                 soundEngine.playClip(Sound.GRUBBY_KEY, executor);
 
-            } else if (itemId == ItemID.LARRANS_KEY && config.announceLarransKeyDrop()) {
+            } else if (itemId == ItemID.SLAYER_WILDERNESS_KEY && config.announceLarransKeyDrop()) {
                 cEngineer.sendChatIfEnabled("Another Larran's key.");
                 soundEngine.playClip(Sound.LARRANS_KEY, executor);
 
-            } else if (itemId == ItemID.BRIMSTONE_KEY && config.announceBrimstoneKeyDrop()) {
+            } else if (itemId == ItemID.KONAR_KEY && config.announceBrimstoneKeyDrop()) {
                 cEngineer.sendChatIfEnabled("Another brimstone key.");
                 soundEngine.playClip(Sound.BRIMSTONE_KEY, executor);
             }
