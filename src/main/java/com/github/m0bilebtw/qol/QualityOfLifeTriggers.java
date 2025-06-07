@@ -6,10 +6,10 @@ import com.github.m0bilebtw.player.LoggedInState;
 import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
@@ -62,10 +62,10 @@ public class QualityOfLifeTriggers {
         if (atBountyHunter())
             return;
 
-        ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+        ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
         boolean warnForEquip = equipment != null &&
                 (equipment.contains(ItemID.INFERNAL_CAPE) || equipment.contains(ItemID.SKILLCAPE_MAX_INFERNALCAPE_DUMMY));
-        ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+        ItemContainer inventory = client.getItemContainer(InventoryID.INV);
         boolean warnForInvent = inventory != null &&
                 (inventory.contains(ItemID.INFERNAL_CAPE) || inventory.contains(ItemID.SKILLCAPE_MAX_INFERNALCAPE_DUMMY));
 
