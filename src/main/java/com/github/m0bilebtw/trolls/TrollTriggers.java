@@ -6,7 +6,13 @@ import com.github.m0bilebtw.player.CEngineerPlayer;
 import com.github.m0bilebtw.projectile.ProjectileID;
 import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GraphicID;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -15,6 +21,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SoundEffectPlayed;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
@@ -164,7 +171,7 @@ public class TrollTriggers {
         }
 
         Sound sound = pickSnowballSoundBasedOnEquipment();
-        if (cEngineer.isWearing(ItemID._3RD_AGE_AMULET)) {
+        if (cEngineer.isWearing(ItemID.TRAIL_MAGE_AMULET)) {
             soundEngine.playClip(sound, executor);
         } else {
             soundEngine.playClip(sound, executor, SNOWBALL_DELAY_SOUNDS);
@@ -172,16 +179,16 @@ public class TrollTriggers {
     }
 
     private Sound pickSnowballSoundBasedOnEquipment() {
-        if (cEngineer.isWearing(ItemID.BUCKET_HELM_G))
+        if (cEngineer.isWearing(ItemID.BUCKET_HELM_GOLD))
             return Sound.SNOWBALL_EQUIPPING_BUCKET_HELM_G_OR_FUNNY_FEEL;
 
         if (cEngineer.isWearing(ItemID.GIANT_BOOT))
             return Sound.SNOWBALL_EQUIPPING_GIANT_BOOT;
 
-        if (cEngineer.isWearing(ItemID.SAGACIOUS_SPECTACLES))
+        if (cEngineer.isWearing(ItemID.WISE_SPECTACLES))
             return Sound.SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES;
 
-        if (cEngineer.isWearing(ItemID.MASK_OF_REBIRTH))
+        if (cEngineer.isWearing(ItemID.TOA_AMASCUT_MASK))
             return Sound.SNOWBALL_EQUIPPING_MASK_OF_REBIRTH;
 
         return Sound.randomSnowballSoundNotFromEquippedItem();
