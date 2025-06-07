@@ -9,7 +9,6 @@ import com.github.m0bilebtw.sound.SoundEngine;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
@@ -22,6 +21,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
@@ -206,7 +206,7 @@ public class TrollTriggers {
             return;
 
         NPC npc = (NPC) actorFromGraphicChanged;
-        if (!npc.hasSpotAnim(GraphicID.ICE_BARRAGE))
+        if (!npc.hasSpotAnim(SpotanimID.ICE_BARRAGE_IMPACT))
             return;
         if (!cEngineer.isInteracting(npc))
             return;
