@@ -5,7 +5,6 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.HitsplatID;
-import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldPoint;
@@ -14,6 +13,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
@@ -30,9 +30,9 @@ public class CEngineerPlayer {
 
     private static final int FIGHT_INTERACT_OR_DAMAGE_COOLDOWN = 8;
 
-    private static final List<Integer> AHRIMS_HOODS = List.of(ItemID.AHRIMS_HOOD, ItemID.AHRIMS_HOOD_100, ItemID.AHRIMS_HOOD_75, ItemID.AHRIMS_HOOD_50, ItemID.AHRIMS_HOOD_25, ItemID.AHRIMS_HOOD_0);
-    private static final List<Integer> AHRIMS_TOPS = List.of(ItemID.AHRIMS_ROBETOP, ItemID.AHRIMS_ROBETOP_100, ItemID.AHRIMS_ROBETOP_75, ItemID.AHRIMS_ROBETOP_50, ItemID.AHRIMS_ROBETOP_25, ItemID.AHRIMS_ROBETOP_0);
-    private static final List<Integer> AHRIMS_BOTTOMS = List.of(ItemID.AHRIMS_ROBESKIRT, ItemID.AHRIMS_ROBESKIRT_100, ItemID.AHRIMS_ROBESKIRT_75, ItemID.AHRIMS_ROBESKIRT_50, ItemID.AHRIMS_ROBESKIRT_25, ItemID.AHRIMS_ROBESKIRT_0);
+    private static final List<Integer> AHRIMS_HOODS = List.of(ItemID.BARROWS_AHRIM_HEAD, ItemID.BARROWS_AHRIM_HEAD_100, ItemID.BARROWS_AHRIM_HEAD_75, ItemID.BARROWS_AHRIM_HEAD_50, ItemID.BARROWS_AHRIM_HEAD_25, ItemID.BARROWS_AHRIM_HEAD_BROKEN);
+    private static final List<Integer> AHRIMS_TOPS = List.of(ItemID.BARROWS_AHRIM_BODY, ItemID.BARROWS_AHRIM_BODY_100, ItemID.BARROWS_AHRIM_BODY_75, ItemID.BARROWS_AHRIM_BODY_50, ItemID.BARROWS_AHRIM_BODY_25, ItemID.BARROWS_AHRIM_BODY_BROKEN);
+    private static final List<Integer> AHRIMS_BOTTOMS = List.of(ItemID.BARROWS_AHRIM_LEGS, ItemID.BARROWS_AHRIM_LEGS_100, ItemID.BARROWS_AHRIM_LEGS_75, ItemID.BARROWS_AHRIM_LEGS_50, ItemID.BARROWS_AHRIM_LEGS_25, ItemID.BARROWS_AHRIM_LEGS_BROKEN);
 
     @Inject
     private Client client;
@@ -126,7 +126,7 @@ public class CEngineerPlayer {
     }
 
     public boolean isWearingAttackTrollRequirements() {
-        return isWearing(ItemID._3RD_AGE_AMULET) &&
+        return isWearing(ItemID.TRAIL_MAGE_AMULET) &&
                 isWearing(ItemID.DRAGON_CLAWS) &&
                 AHRIMS_HOODS.stream().anyMatch(this::isWearing) &&
                 AHRIMS_TOPS.stream().anyMatch(this::isWearing) &&
