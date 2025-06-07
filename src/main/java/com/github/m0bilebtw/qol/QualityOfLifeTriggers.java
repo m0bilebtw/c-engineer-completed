@@ -9,9 +9,9 @@ import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -44,7 +44,7 @@ public class QualityOfLifeTriggers {
 
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged) {
-        if (varbitChanged.getVarbitId() == Varbits.IN_WILDERNESS && varbitChanged.getValue() == 1) {
+        if (varbitChanged.getVarbitId() == VarbitID.INSIDE_WILDERNESS && varbitChanged.getValue() == 1) {
             checkAndWarnForUnparchmentedInfernal();
         }
     }
