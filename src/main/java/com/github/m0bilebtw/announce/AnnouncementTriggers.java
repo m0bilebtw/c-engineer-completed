@@ -13,13 +13,13 @@ import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -53,18 +53,18 @@ public class AnnouncementTriggers {
 
     private static final Random random = new Random();
 
-    private static final int[] VARBITS_ACHIEVEMENT_DIARIES = {
-            Varbits.DIARY_ARDOUGNE_EASY,   Varbits.DIARY_ARDOUGNE_MEDIUM,   Varbits.DIARY_ARDOUGNE_HARD,   Varbits.DIARY_ARDOUGNE_ELITE,
-            Varbits.DIARY_DESERT_EASY, 	   Varbits.DIARY_DESERT_MEDIUM, 	Varbits.DIARY_DESERT_HARD, 	   Varbits.DIARY_DESERT_ELITE,
-            Varbits.DIARY_FALADOR_EASY,    Varbits.DIARY_FALADOR_MEDIUM,    Varbits.DIARY_FALADOR_HARD,    Varbits.DIARY_FALADOR_ELITE,
-            Varbits.DIARY_KANDARIN_EASY,   Varbits.DIARY_KANDARIN_MEDIUM,   Varbits.DIARY_KANDARIN_HARD,   Varbits.DIARY_KANDARIN_ELITE,
-            Varbits.DIARY_KARAMJA_EASY,    Varbits.DIARY_KARAMJA_MEDIUM,    Varbits.DIARY_KARAMJA_HARD,    Varbits.DIARY_KARAMJA_ELITE,
-            Varbits.DIARY_KOUREND_EASY,    Varbits.DIARY_KOUREND_MEDIUM,    Varbits.DIARY_KOUREND_HARD,    Varbits.DIARY_KOUREND_ELITE,
-            Varbits.DIARY_LUMBRIDGE_EASY,  Varbits.DIARY_LUMBRIDGE_MEDIUM,  Varbits.DIARY_LUMBRIDGE_HARD,  Varbits.DIARY_LUMBRIDGE_ELITE,
-            Varbits.DIARY_MORYTANIA_EASY,  Varbits.DIARY_MORYTANIA_MEDIUM,  Varbits.DIARY_MORYTANIA_HARD,  Varbits.DIARY_MORYTANIA_ELITE,
-            Varbits.DIARY_VARROCK_EASY,    Varbits.DIARY_VARROCK_MEDIUM,    Varbits.DIARY_VARROCK_HARD,    Varbits.DIARY_VARROCK_ELITE,
-            Varbits.DIARY_WESTERN_EASY,    Varbits.DIARY_WESTERN_MEDIUM,    Varbits.DIARY_WESTERN_HARD,    Varbits.DIARY_WESTERN_ELITE,
-            Varbits.DIARY_WILDERNESS_EASY, Varbits.DIARY_WILDERNESS_MEDIUM, Varbits.DIARY_WILDERNESS_HARD, Varbits.DIARY_WILDERNESS_ELITE
+    private static final int[] VARBIT_IDS_ACHIEVEMENT_DIARIES = {
+            VarbitID.ARDOUGNE_DIARY_EASY_COMPLETE,   VarbitID.ARDOUGNE_DIARY_MEDIUM_COMPLETE,   VarbitID.ARDOUGNE_DIARY_HARD_COMPLETE,   VarbitID.ARDOUGNE_DIARY_ELITE_COMPLETE,
+            VarbitID.DESERT_DIARY_EASY_COMPLETE, 	 VarbitID.DESERT_DIARY_MEDIUM_COMPLETE, 	VarbitID.DESERT_DIARY_HARD_COMPLETE, 	 VarbitID.DESERT_DIARY_ELITE_COMPLETE,
+            VarbitID.FALADOR_DIARY_EASY_COMPLETE,    VarbitID.FALADOR_DIARY_MEDIUM_COMPLETE,    VarbitID.FALADOR_DIARY_HARD_COMPLETE,    VarbitID.FALADOR_DIARY_ELITE_COMPLETE,
+            VarbitID.KANDARIN_DIARY_EASY_COMPLETE,   VarbitID.KANDARIN_DIARY_MEDIUM_COMPLETE,   VarbitID.KANDARIN_DIARY_HARD_COMPLETE,   VarbitID.KANDARIN_DIARY_ELITE_COMPLETE,
+            VarbitID.ATJUN_EASY_DONE,                VarbitID.ATJUN_MED_DONE,                   VarbitID.ATJUN_HARD_DONE,                VarbitID.KARAMJA_DIARY_ELITE_COMPLETE,
+            VarbitID.KOUREND_DIARY_EASY_COMPLETE,    VarbitID.KOUREND_DIARY_MEDIUM_COMPLETE,    VarbitID.KOUREND_DIARY_HARD_COMPLETE,    VarbitID.KOUREND_DIARY_ELITE_COMPLETE,
+            VarbitID.LUMBRIDGE_DIARY_EASY_COMPLETE,  VarbitID.LUMBRIDGE_DIARY_MEDIUM_COMPLETE,  VarbitID.LUMBRIDGE_DIARY_HARD_COMPLETE,  VarbitID.LUMBRIDGE_DIARY_ELITE_COMPLETE,
+            VarbitID.MORYTANIA_DIARY_EASY_COMPLETE,  VarbitID.MORYTANIA_DIARY_MEDIUM_COMPLETE,  VarbitID.MORYTANIA_DIARY_HARD_COMPLETE,  VarbitID.MORYTANIA_DIARY_ELITE_COMPLETE,
+            VarbitID.VARROCK_DIARY_EASY_COMPLETE,    VarbitID.VARROCK_DIARY_MEDIUM_COMPLETE,    VarbitID.VARROCK_DIARY_HARD_COMPLETE,    VarbitID.VARROCK_DIARY_ELITE_COMPLETE,
+            VarbitID.WESTERN_DIARY_EASY_COMPLETE,    VarbitID.WESTERN_DIARY_MEDIUM_COMPLETE,    VarbitID.WESTERN_DIARY_HARD_COMPLETE,    VarbitID.WESTERN_DIARY_ELITE_COMPLETE,
+            VarbitID.WILDERNESS_DIARY_EASY_COMPLETE, VarbitID.WILDERNESS_DIARY_MEDIUM_COMPLETE, VarbitID.WILDERNESS_DIARY_HARD_COMPLETE, VarbitID.WILDERNESS_DIARY_ELITE_COMPLETE
     };
 
     private static final Set<Integer> badCollectionLogNotificationSettingValues = Set.of(0, 2);
@@ -120,7 +120,7 @@ public class AnnouncementTriggers {
         for (final Skill skill : Skill.values()) {
             oldExperience.put(skill, client.getSkillExperience(skill));
         }
-        for (@Varbit int diary : VARBITS_ACHIEVEMENT_DIARIES) {
+        for (@Varbit int diary : VARBIT_IDS_ACHIEVEMENT_DIARIES) {
             int value = client.getVarbitValue(diary);
             oldAchievementDiaries.put(diary, value);
         }
@@ -170,7 +170,7 @@ public class AnnouncementTriggers {
 
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged) {
-        if (varbitChanged.getVarbitId() == Varbits.COLLECTION_LOG_NOTIFICATION) {
+        if (varbitChanged.getVarbitId() == VarbitID.OPTION_COLLECTION_NEW_ITEM) {
             checkAndWarnForCollectionLogNotificationSetting(varbitChanged.getValue());
         }
 
@@ -184,7 +184,7 @@ public class AnnouncementTriggers {
         }
 
         // Apparently I can't check if it's a particular varbit using the names from Varbits enum, so this is the way
-        for (@Varbit int diary : VARBITS_ACHIEVEMENT_DIARIES) {
+        for (@Varbit int diary : VARBIT_IDS_ACHIEVEMENT_DIARIES) {
             int newValue = client.getVarbitValue(diary);
             int previousValue = oldAchievementDiaries.getOrDefault(diary, -1);
             oldAchievementDiaries.put(diary, newValue);
@@ -230,9 +230,9 @@ public class AnnouncementTriggers {
 
     private boolean isAchievementDiaryCompleted(int diary, int value) {
         switch (diary) {
-            case Varbits.DIARY_KARAMJA_EASY:
-            case Varbits.DIARY_KARAMJA_MEDIUM:
-            case Varbits.DIARY_KARAMJA_HARD:
+            case VarbitID.ATJUN_EASY_DONE:
+            case VarbitID.ATJUN_MED_DONE:
+            case VarbitID.ATJUN_HARD_DONE:
                 return value == 2; // jagex, why?
             default:
                 return value == 1;
@@ -247,7 +247,7 @@ public class AnnouncementTriggers {
 				soundEngine.playClip(Sound.LEVEL_UP, executor);
 			} else if ("announceCollectionLog".equals(event.getKey())) {
                 clientThread.invokeLater(() ->
-                        checkAndWarnForCollectionLogNotificationSetting(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)));
+                        checkAndWarnForCollectionLogNotificationSetting(client.getVarbitValue(VarbitID.OPTION_COLLECTION_NEW_ITEM)));
             }
         }
     }
