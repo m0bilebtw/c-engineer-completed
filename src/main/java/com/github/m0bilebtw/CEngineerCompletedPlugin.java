@@ -5,7 +5,6 @@ import com.github.m0bilebtw.eastereggs.EasterEggTriggers;
 import com.github.m0bilebtw.player.CEngineerPlayer;
 import com.github.m0bilebtw.player.LoggedInState;
 import com.github.m0bilebtw.qol.QualityOfLifeTriggers;
-import com.github.m0bilebtw.sound.SoundEngine;
 import com.github.m0bilebtw.sound.SoundFileManager;
 import com.github.m0bilebtw.trolls.TrollTriggers;
 import com.google.inject.Provides;
@@ -51,9 +50,6 @@ public class CEngineerCompletedPlugin extends Plugin {
     private EventBus eventBus;
 
     @Inject
-    private SoundEngine soundEngine;
-
-    @Inject
     private CEngineerPlayer cEngineer;
 
     @Inject
@@ -95,7 +91,6 @@ public class CEngineerCompletedPlugin extends Plugin {
         eventBus.unregister(loggedInState);
 
         announcementTriggers.shutDown();
-        soundEngine.close();
     }
 
     @Provides

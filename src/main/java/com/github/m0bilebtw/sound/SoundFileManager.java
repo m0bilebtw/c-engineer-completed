@@ -9,10 +9,7 @@ import okhttp3.Response;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,8 +31,8 @@ public class SoundFileManager {
 
     private static final HttpUrl RAW_GITHUB = HttpUrl.parse("https://raw.githubusercontent.com/m0bilebtw/c-engineer-completed/sounds");
 
-    public static InputStream getSoundStream(Sound sound) throws FileNotFoundException {
-        return new FileInputStream(DOWNLOAD_DIR.resolve(sound.getResourceName()).toFile());
+    public static File getSoundFile(Sound sound) {
+        return DOWNLOAD_DIR.resolve(sound.getResourceName()).toFile();
     }
 
     public static void prepareSoundFiles(OkHttpClient okHttpClient, boolean downloadStreamerTrolls) {
