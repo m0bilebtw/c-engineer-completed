@@ -3,15 +3,15 @@ package com.github.m0bilebtw.sound;
 import java.util.Random;
 
 public enum Sound {
-    LEVEL_UP("LevelUpCompleted_r1.wav"),
-    QUEST("QuestCompleted_r1.wav"),
+    LEVEL_UP("LevelUpCompleted_r2.wav"),
+    QUEST("QuestCompleted_r2.wav"),
     COLLECTION_LOG_SLOT("ColLogSlotCompleted_r1.wav"),
     COMBAT_TASK("CombatTaskCompleted_r1.wav"),
     ACHIEVEMENT_DIARY("AchieveDiaryCompleted_r1.wav"),
-    SLAYER_TASK("slayer_task_r1.wav"),
-    HUNTER_RUMOUR("hunter_rumour_r1.wav"),
-    FARMING_CONTRACT("farming_contract_r1.wav"),
-    LEAGUES_TASK("leagues_task_r1.wav"),
+    SLAYER_TASK("slayer_task_r2.wav"),
+    HUNTER_RUMOUR("hunter_rumour_r2.wav"),
+    FARMING_CONTRACT("farming_contract_r2.wav"),
+    LEAGUES_TASK("leagues_task_r2.wav"),
     GRUBBY_KEY("grubby_key_r1.wav"),
     LARRANS_KEY("larrans_key_r1.wav"),
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
@@ -21,7 +21,7 @@ public enum Sound {
     QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav"),
 
     EASTER_EGG_STAIRCASE("Staircase_r1.wav"),
-    EASTER_EGG_STRAYDOG_BONE("ILoveYou_r1.wav"),
+    EASTER_EGG_STRAYDOG_BONE("ILoveYou_r2.wav"),
     EASTER_EGG_TWISTED_BOW_1GP("TwistedBow1GP_r1.wav"),
     EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav"),
 
@@ -49,11 +49,11 @@ public enum Sound {
     EMOTE_TROLL_BABA_3("BaBa_3_r1.wav", true),
 
     EMOTE_TROLL_WE("Emote_We_r1.wav", true),
-    EMOTE_TROLL_EL("Emote_El_r1.wav", true),
+    EMOTE_TROLL_EL("Emote_El_r2.wav", true),
     EMOTE_TROLL_AF("AFriend2_Bye_r1.wav", true),
 
     ATTACK_TROLL_IB("attack_troll_IB_r1.wav", true),
-    ATTACK_TROLL_DC("attack_troll_DC_r1.wav", true),
+    ATTACK_TROLL_DC("attack_troll_DC_r2.wav", true),
 
     CHAT_TROLL_SKILL_SPECS_HELLO("SkillSpecs_Hello_r1.wav", true),
     CHAT_TROLL_SKILL_SPECS_OK("SkillSpecs_OK_r1.wav", true),

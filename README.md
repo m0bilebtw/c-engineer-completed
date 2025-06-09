@@ -74,4 +74,6 @@ expansion in the future while also 'supporting' user-swapped sounds for pre-exis
 ### Known Issues
 
 - PulseAudio on linux can just refuse to accept the audio formats used despite claiming to accept them :man_shrugging:
-- Pipewire on linux can cut off sounds early - this might be fixed given a more recent version of the jdk and more recent version of pipewire, but currently cannot confirm 🤷‍♂️
+- ~~PipeWire on linux can cut off sounds early - this might be fixed given a more recent version of the jdk and more recent version of pipewire, but currently cannot confirm :man_shrugging:~~
+  - PipeWire was cutting off sounds early, if they were between ~1.5 seconds and 2 seconds long (#26). This has been worked around by artificially extending sounds with silence to bring them up to 2 seconds long, where they are no longer cut off.
+  I believe I've updated all such files, but please report any still getting cut off for you via an issue on this repo (once the fix is actually released, see #26 for progress).

@@ -2,12 +2,20 @@ package com.github.m0bilebtw.sound;
 
 import org.junit.Test;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class SoundTest {
 
@@ -26,5 +34,33 @@ public class SoundTest {
                 .collect(Collectors.toSet());
 
         assertEquals(Sound.values().length, uniqueResourceNames.size());
+    }
+
+    @Test
+    public void soundsAvoidDurationRangeThatPipeWireCutsOff() throws UnsupportedAudioFileException, IOException {
+        final double lowerBoundInc = 1.5;
+        final double upperBoundExc = 2.0;
+
+        Set<Sound> cutOffSounds = new HashSet<>();
+        for (Sound sound : Sound.values()) {
+            final double duration = getDurationInSeconds(sound);
+            if (duration >= lowerBoundInc && duration < upperBoundExc) {
+                cutOffSounds.add(sound);
+            }
+        }
+
+        assertTrue(
+                cutOffSounds.size() + " sounds will get cut off on PipeWire\n" +
+                cutOffSounds.stream().map(s -> s.name() + ": " + s.getResourceName()).collect(Collectors.joining("\n")) + "\n",
+                cutOffSounds.isEmpty()
+        );
+    }
+
+    private double getDurationInSeconds(Sound sound) throws UnsupportedAudioFileException, IOException {
+        File file = SoundFileManager.getSoundFile(sound);
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+        AudioFormat format = audioInputStream.getFormat();
+        long frames = audioInputStream.getFrameLength();
+        return (double) frames / format.getFrameRate();
     }
 }
