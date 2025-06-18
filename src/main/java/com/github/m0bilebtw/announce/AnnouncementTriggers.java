@@ -49,6 +49,7 @@ public class AnnouncementTriggers {
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
     private static final Pattern SLAYER_TASK_REGEX = Pattern.compile("You have completed your task! You killed .*. You gained .* xp.");
     private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
+    private static final String HUNTER_RUMOUR_FULL_INV_MESSAGE = Text.standardize("You find a rare piece of the creature! Though without space in your inventory, it drops to the ground.");
     private static final String FARMING_CONTRACT_MESSAGE = Text.standardize("You've completed a Farming Guild Contract. You should return to Guildmaster Jane.");
 
     private static final Random random = new Random();
@@ -285,7 +286,9 @@ public class AnnouncementTriggers {
         }
 
         String standardizedMessage = Text.standardize(chatMessage.getMessage());
-        if (config.announceHunterRumours() && HUNTER_RUMOUR_MESSAGE.equals(standardizedMessage)) {
+        if (config.announceHunterRumours() && (
+                HUNTER_RUMOUR_MESSAGE.equals(standardizedMessage)) || HUNTER_RUMOUR_FULL_INV_MESSAGE.equals(standardizedMessage)
+        ) {
             cEngineer.sendChatIfEnabled("Hunter Rumour: completed.");
             soundEngine.playClip(Sound.HUNTER_RUMOUR, executor);
 
