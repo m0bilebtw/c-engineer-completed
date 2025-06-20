@@ -288,8 +288,8 @@ public class AnnouncementTriggers {
 
         String standardizedMessage = Text.standardize(chatMessage.getMessage());
         if (config.announceHunterRumours() && (
-                HUNTER_RUMOUR_MESSAGE.equals(standardizedMessage)) || HUNTER_RUMOUR_FULL_INV_MESSAGE.equals(standardizedMessage)
-        ) {
+                HUNTER_RUMOUR_MESSAGE.equals(standardizedMessage) || HUNTER_RUMOUR_FULL_INV_MESSAGE.equals(standardizedMessage)
+        )) {
             cEngineer.sendChatIfEnabled("Hunter Rumour: completed.");
             soundEngine.playClip(Sound.HUNTER_RUMOUR, executor);
 
