@@ -50,6 +50,7 @@ public class AnnouncementTriggers {
     private static final Pattern SLAYER_TASK_REGEX = Pattern.compile("You have completed your task! You killed .*. You gained .* xp.");
     private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
     private static final String HUNTER_RUMOUR_FULL_INV_MESSAGE = Text.standardize("You find a rare piece of the creature! Though without space in your inventory, it drops to the ground.");
+    private static final String HUNTER_RUMOUR_FULL_INV_DISCARDED_MESSAGE = Text.standardize("You have found a rare piece of the creature! You then discard it as you had no inventory space to pick it up.");
     private static final String FARMING_CONTRACT_MESSAGE = Text.standardize("You've completed a Farming Guild Contract. You should return to Guildmaster Jane.");
 
     private static final Random random = new Random();
@@ -291,6 +292,10 @@ public class AnnouncementTriggers {
         ) {
             cEngineer.sendChatIfEnabled("Hunter Rumour: completed.");
             soundEngine.playClip(Sound.HUNTER_RUMOUR, executor);
+
+        } else if (config.announceHunterRumours() && HUNTER_RUMOUR_FULL_INV_DISCARDED_MESSAGE.equals(standardizedMessage)) {
+            cEngineer.sendChatIfEnabled("Hunter Rumour: not completed! You need more inventory space!");
+            soundEngine.playClip(Sound.HUNTER_RUMOUR_NOT_COMPLETED, executor);
 
         } else if (config.announceFarmingContracts() && FARMING_CONTRACT_MESSAGE.equals(standardizedMessage)) {
             cEngineer.sendChatIfEnabled("Farming Contract: completed.");
