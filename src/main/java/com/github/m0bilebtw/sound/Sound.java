@@ -28,13 +28,19 @@ public enum Sound {
 
     ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true),
 
-    SNOWBALL_V4_1("SnowballV4_1_r1.wav", true),
-    SNOWBALL_V4_2("SnowballV4_2_r1.wav", true),
-    SNOWBALL_V4_3("SnowballV4_3_r1.wav", true),
-    SNOWBALL_V4_4("SnowballV4_4_r1.wav", true),
-    SNOWBALL_V4_5("SnowballV4_5_r1.wav", true),
-    SNOWBALL_V4_6("SnowballV4_6_r1.wav", true),
-    SNOWBALL_V4_7("SnowballV4_7_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_1("SnowballTrollV2_steamPings_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_2("SnowballTrollV2_farts_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_3("SnowballV3_Notif_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_4("SnowballTrollV2_epicNotifSpam_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_5("SnowballV3_Sus_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_6("SnowballV4_7_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_7("SnowballV3_Bits_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_8("SnowballV3_Battery_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_9("SnowballV4_6_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_10("SnowballTroll3_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_11("SnowballTroll1_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_12("SnowballV3_Knock_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_13("SnowballTroll8_r1.wav", true),
 
     SNOWBALL_GAUNTLET_LOBBY("SnowballV4_NR_Gauntlet_r1.wav", true),
 
@@ -92,13 +98,19 @@ public enum Sound {
     }
 
     private static final Sound[] SNOWBALL_SOUNDS_NOT_FROM_EQUIPPED_ITEMS = new Sound[] {
-            SNOWBALL_V4_1,
-            SNOWBALL_V4_2,
-            SNOWBALL_V4_3,
-            SNOWBALL_V4_4,
-            SNOWBALL_V4_5,
-            SNOWBALL_V4_6,
-            SNOWBALL_V4_7,
+            SNOWBALL_CONSOLIDATED_V1_1,
+            SNOWBALL_CONSOLIDATED_V1_2,
+            SNOWBALL_CONSOLIDATED_V1_3,
+            SNOWBALL_CONSOLIDATED_V1_4,
+            SNOWBALL_CONSOLIDATED_V1_5,
+            SNOWBALL_CONSOLIDATED_V1_6,
+            SNOWBALL_CONSOLIDATED_V1_7,
+            SNOWBALL_CONSOLIDATED_V1_8,
+            SNOWBALL_CONSOLIDATED_V1_9,
+            SNOWBALL_CONSOLIDATED_V1_10,
+            SNOWBALL_CONSOLIDATED_V1_11,
+            SNOWBALL_CONSOLIDATED_V1_12,
+            SNOWBALL_CONSOLIDATED_V1_13
     };
 
     public static Sound randomBabaEmoteSound() {
