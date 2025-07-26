@@ -1,5 +1,7 @@
 package com.github.m0bilebtw.sound;
 
+import lombok.Getter;
+
 import java.util.Random;
 
 public enum Sound {
@@ -71,6 +73,7 @@ public enum Sound {
     STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
     ;
 
+    @Getter
     private final String resourceName;
     private final boolean isStreamerTroll;
 
@@ -83,12 +86,13 @@ public enum Sound {
         isStreamerTroll = streamTroll;
     }
 
-    public String getResourceName() {
-        return resourceName;
-    }
-
     boolean isStreamerTroll() {
         return isStreamerTroll;
+    }
+
+    @Override
+    public String toString() {
+        return resourceName;
     }
 
     private static final Random random = new Random();

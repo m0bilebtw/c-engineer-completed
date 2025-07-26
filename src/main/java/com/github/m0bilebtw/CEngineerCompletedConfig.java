@@ -1,5 +1,6 @@
 package com.github.m0bilebtw;
 
+import com.github.m0bilebtw.sound.Sound;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -237,7 +238,8 @@ public interface CEngineerCompletedConfig extends Config {
     @ConfigSection(
             name = "Easter Eggs and Streamer Trolls",
             description = "Settings for non-achievement sounds.",
-            position = 60
+            position = 60,
+            closedByDefault = true
     )
     String SECTION_EASTER_EGGS_AND_STREAMERS = "Easter Eggs and Streamer Trolls";
 
@@ -272,5 +274,16 @@ public interface CEngineerCompletedConfig extends Config {
     )
     default boolean muteSnowballsIfCEngineerIsNear() {
         return true;
+    }
+
+    @ConfigItem(
+            keyName = "selectAnySoundToTestPlayIt",
+            name = "(SPOILERS) Test any sound",
+            description = "(SPOILERS) Choose a sound to play it to test it works and its volume. This will also be the sound played when changing volume",
+            section = SECTION_EASTER_EGGS_AND_STREAMERS,
+            position = 64
+    )
+    default Sound selectAnySoundToTestPlayIt() {
+        return Sound.LEVEL_UP;
     }
 }
