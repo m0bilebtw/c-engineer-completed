@@ -38,13 +38,14 @@ public class SoundTest {
 
     @Test
     public void soundsAvoidDurationRangeThatPipeWireCutsOff() throws UnsupportedAudioFileException, IOException {
-        final double lowerBoundInc = 1.5;
+        // bounds found by manually testing to 3 d.p. - both 1.492 and 1.999 (and all in-between) get cut off
+        final double lowerBoundExc = 1.491;
         final double upperBoundExc = 2.0;
 
         Set<Sound> cutOffSounds = new HashSet<>();
         for (Sound sound : Sound.values()) {
             final double duration = getDurationInSeconds(sound);
-            if (duration >= lowerBoundInc && duration < upperBoundExc) {
+            if (duration > lowerBoundExc && duration < upperBoundExc) {
                 cutOffSounds.add(sound);
             }
         }
