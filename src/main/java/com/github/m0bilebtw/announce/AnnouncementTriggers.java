@@ -7,6 +7,7 @@ import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -16,8 +17,11 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
@@ -42,6 +46,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class AnnouncementTriggers {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("CA_ID:\\d+\\|Congratulations, you've completed an? \\w+ combat task:.*");
@@ -103,6 +108,7 @@ public class AnnouncementTriggers {
     private final Map<Integer, Integer> oldAchievementDiaries = new HashMap<>();
 
     private int lastColLogSettingWarning = -1;
+    private boolean delayedCoXColLogAnnouncementPending = false;
 
     public void initialise() {
         clientThread.invoke(this::initialiseOldXPAndDiaryMaps);
@@ -129,6 +135,13 @@ public class AnnouncementTriggers {
     }
 
     @Subscribe
+    public void onGameTick(GameTick gameTick) {
+        if (delayedCoXColLogAnnouncementPending) {
+            delayedCoXColLogAnnouncementPending = isInChambersOfXeric();
+        }
+    }
+
+    @Subscribe
     public void onGameStateChanged(GameStateChanged event) {
         GameState gameState = event.getGameState();
 
@@ -138,6 +151,9 @@ public class AnnouncementTriggers {
                 oldAchievementDiaries.clear();
             }
             lastColLogSettingWarning = client.getTickCount(); // avoid warning during DC
+        } else if (config.needToInformAboutDelayedCoXColLog()) {
+            configManager.setConfiguration(CEngineerCompletedConfig.GROUP, CEngineerCompletedConfig.DELAY_COX_COL_LOG_HIDDEN_NOTIFY_CONFIG, false);
+            sendHighlightedMessageForDelayedCoXColLogSetting();
         }
     }
 
@@ -218,6 +234,10 @@ public class AnnouncementTriggers {
         sendHighlightedMessage("C Engineer announcing leagues tasks might get spammy, but remember you can disable these announcements while keeping the others active in the plugin settings!");
     }
 
+    private void sendHighlightedMessageForDelayedCoXColLogSetting() {
+        sendHighlightedMessage("C Engineer announcing CoX collection log slots now delays until you open the chest, but you can change it back in the plugin settings!");
+    }
+
     private void sendHighlightedMessage(String message) {
         String highlightedMessage = new ChatMessageBuilder()
                 .append(ChatColorType.HIGHLIGHT)
@@ -260,8 +280,11 @@ public class AnnouncementTriggers {
             return;
 
         if (config.announceCollectionLog() && COLLECTION_LOG_ITEM_REGEX.matcher(chatMessage.getMessage()).matches()) {
-            cEngineer.sendChatIfEnabled("Collection log slot: completed.");
-            soundEngine.playClip(Sound.COLLECTION_LOG_SLOT, executor);
+            if (config.delayCoXCollectionLogAnnouncements() && isInChambersOfXeric()) {
+                delayedCoXColLogAnnouncementPending = true;
+            } else {
+                announceColLog();
+            }
 
         } else if (config.announceQuestCompletion() && QUEST_REGEX.matcher(chatMessage.getMessage()).matches()) {
             cEngineer.sendChatIfEnabled("Quest: completed.");
@@ -301,6 +324,19 @@ public class AnnouncementTriggers {
             cEngineer.sendChatIfEnabled("Farming Contract: completed.");
             soundEngine.playClip(Sound.FARMING_CONTRACT, executor);
         }
+    }
+
+    @Subscribe
+    public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
+        if (delayedCoXColLogAnnouncementPending && widgetLoaded.getGroupId() == InterfaceID.RAIDS_REWARDS) {
+            delayedCoXColLogAnnouncementPending = false;
+            announceColLog();
+        }
+    }
+
+    private void announceColLog() {
+        cEngineer.sendChatIfEnabled("Collection log slot: completed.");
+        soundEngine.playClip(Sound.COLLECTION_LOG_SLOT, executor);
     }
 
     @Subscribe
@@ -349,5 +385,9 @@ public class AnnouncementTriggers {
     private void diedToAnythingElse() {
         cEngineer.sendChatIfEnabled("Dying on my HCIM: completed.");
         soundEngine.playClip(Sound.DEATH, executor);
+    }
+
+    private boolean isInChambersOfXeric() {
+        return client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1;
     }
 }

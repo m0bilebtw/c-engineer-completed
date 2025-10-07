@@ -11,6 +11,7 @@ import net.runelite.client.config.Range;
 public interface CEngineerCompletedConfig extends Config {
     String GROUP = "cengineercompleted";
     String LEAGUES_TASK_HIDDEN_REMINDER_CONFIG = "needToRemindAboutDisablingLeaguesTasks";
+    String DELAY_COX_COL_LOG_HIDDEN_NOTIFY_CONFIG = "needToInformAboutDelayedCoxColLogs";
 
     @ConfigSection(
             name = "Announce Achievements",
@@ -233,6 +234,28 @@ public interface CEngineerCompletedConfig extends Config {
     )
     default int announcementVolume() {
         return 100;
+    }
+
+    @ConfigItem(
+            keyName = "delayCoXCollectionLogAnnouncements",
+            name = "Delay CoX collection log announcements",
+            description = "Wait until you open the reward chest at CoX before announcing new collection log slots (also delays Olmlet announcement)",
+            section = SECTION_GENERAL_ANNOUNCEMENT_SETTINGS,
+            position = 43
+    )
+    default boolean delayCoXCollectionLogAnnouncements() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = DELAY_COX_COL_LOG_HIDDEN_NOTIFY_CONFIG,
+            name = "Need to inform users CoX col log announcements will now be delayed until opening chest by default",
+            description = "This was requested because a lot of people turn off the plugin during CoX to avoid spoiling if the item is new until they open the chest",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            hidden = true
+    )
+    default boolean needToInformAboutDelayedCoXColLog() {
+        return true;
     }
 
     @ConfigSection(
