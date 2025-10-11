@@ -24,7 +24,7 @@ dependencies {
 }
 
 group = 'com.github.m0bilebtw'
-version = '1.4.0'
+version = '1.4.1'
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
