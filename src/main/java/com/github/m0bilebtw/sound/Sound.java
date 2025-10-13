@@ -15,6 +15,7 @@ public enum Sound {
     HUNTER_RUMOUR_NOT_COMPLETED("hunter_rumour_not_completed_r1.wav"),
     FARMING_CONTRACT("farming_contract_r2.wav"),
     LEAGUES_TASK("leagues_task_r2.wav"),
+    GRID_TASK("grid_task_r1.wav"),
     GRUBBY_KEY("grubby_key_r1.wav"),
     LARRANS_KEY("larrans_key_r1.wav"),
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
