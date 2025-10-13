@@ -36,6 +36,19 @@ public class SoundTest {
         assertEquals(Sound.values().length, uniqueResourceNames.size());
     }
 
+    /**
+     * Bash snippets to also help in identifying and automatically fixing such files.
+     * It's better to run these in the sounds folder in .runelite rather than the sounds branch of the repo,
+     * because then you automatically ignore any previous revisions of a sound.
+     * <p>
+     * Identify sounds that will cut off:
+     * <p>
+     * {@code for f in *.wav; do duration=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$f"); echo "$f $duration"; done}
+     * <p>
+     * Create new sounds that are padded to prevent cut off where needed:
+     * <p>
+     * {@code for f in *.wav; do duration=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$f"); if (( $(echo "$duration >= 1.491 && $duration < 2" | bc -l) )); then padding=$(echo "2 - $duration" | bc -l); ffmpeg -i "$f" -af "apad=pad_dur=0$padding" -y "${f%.wav}_PADDED.wav"; fi; done}
+     */
     @Test
     public void soundsAvoidDurationRangeThatPipeWireCutsOff() throws UnsupportedAudioFileException, IOException {
         // bounds found by manually testing to 3 d.p. - both 1.492 and 1.999 (and all in-between) get cut off
