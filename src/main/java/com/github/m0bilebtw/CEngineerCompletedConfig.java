@@ -141,6 +141,17 @@ public interface CEngineerCompletedConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            keyName = "announceGridTiles",
+            name = "Completed Grid Tiles",
+            description = "Should C Engineer announce when you complete a grid tile?",
+            section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 11
+    )
+    default boolean announceGridTiles() {
+        return true;
+    }
+
     @ConfigSection(
             name = "Announce Other",
             description = "Which sounds that are not necessarily achievements (and not easter eggs) should play.",

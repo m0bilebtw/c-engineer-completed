@@ -51,6 +51,7 @@ public class AnnouncementTriggers {
     private static final Pattern COLLECTION_LOG_ITEM_REGEX = Pattern.compile("New item added to your collection log:.*");
     private static final Pattern COMBAT_TASK_REGEX = Pattern.compile("CA_ID:\\d+\\|Congratulations, you've completed an? \\w+ combat task:.*");
     private static final Pattern LEAGUES_TASK_REGEX = Pattern.compile("Congratulations, you've completed an? \\w+ task:.*");
+    private static final Pattern GRID_TILE_REGEX = Pattern.compile("Congratulations, you've completed the Grid Tile:.*");
     private static final Pattern QUEST_REGEX = Pattern.compile("Congratulations, you've completed a quest:.*");
     private static final Pattern SLAYER_TASK_REGEX = Pattern.compile("You have completed your task! You killed .*. You gained .* xp.");
     private static final String HUNTER_RUMOUR_MESSAGE = Text.standardize("You find a rare piece of the creature! You should take it back to the Hunter Guild.");
@@ -303,6 +304,10 @@ public class AnnouncementTriggers {
                 configManager.setConfiguration(CEngineerCompletedConfig.GROUP, CEngineerCompletedConfig.LEAGUES_TASK_HIDDEN_REMINDER_CONFIG, false);
                 sendHighlightedMessageForLeaguesTaskSetting();
             }
+
+        } else if (config.announceGridTiles() && GRID_TILE_REGEX.matcher(chatMessage.getMessage()).matches()) {
+            cEngineer.sendChatIfEnabled("Grid task: completed.");
+            soundEngine.playClip(Sound.GRID_TASK, executor);
 
         } else if (config.announceSlayerTasks() && SLAYER_TASK_REGEX.matcher(Text.removeTags(chatMessage.getMessage())).matches()) {
             cEngineer.sendChatIfEnabled("Slayer task: completed.");
