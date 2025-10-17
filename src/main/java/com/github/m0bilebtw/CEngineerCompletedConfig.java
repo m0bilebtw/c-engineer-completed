@@ -121,12 +121,12 @@ public interface CEngineerCompletedConfig extends Config {
 
     @ConfigItem(
             keyName = "announceLeaguesTasks",
-            name = "Completed Leagues & Grid Tasks",
-            description = "Should C Engineer announce when you complete a leagues or grid task?",
+            name = "Completed Leagues Tasks",
+            description = "Should C Engineer announce when you complete a leagues task?",
             section = SECTION_ACHIEVEMENT_ANNOUNCEMENTS,
             position = 10
     )
-    default boolean announceLeaguesAndGridTasks() {
+    default boolean announceLeaguesTasks() {
         return true;
     }
 
