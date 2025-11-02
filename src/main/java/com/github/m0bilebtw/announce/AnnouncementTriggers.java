@@ -78,6 +78,8 @@ public class AnnouncementTriggers {
 
     private static final Set<Integer> badCollectionLogNotificationSettingValues = Set.of(0, 2);
 
+    private static final String onyxItemNameLowerCase = "onyx";
+
     @Inject
     private Client client;
 
@@ -282,7 +284,7 @@ public class AnnouncementTriggers {
             return;
 
         if (config.announceCollectionLog() && COLLECTION_LOG_ITEM_REGEX.matcher(chatMessage.getMessage()).matches()) {
-            if (config.delayCoXCollectionLogAnnouncements() && isInChambersOfXeric()) {
+            if (config.delayCoXCollectionLogAnnouncements() && isInChambersOfXeric() && !Text.standardize(chatMessage.getMessage()).contains(onyxItemNameLowerCase)) {
                 delayedCoXColLogAnnouncementPending = true;
             } else {
                 announceColLog();
