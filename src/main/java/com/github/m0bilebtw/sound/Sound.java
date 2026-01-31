@@ -23,6 +23,7 @@ public enum Sound {
     DEATH_TO_C_ENGINEER("Sit_r1.wav"),
 
     QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav"),
+    QOL_GEM_CRAB_MOVED("gem_crab_moved_r1.wav"),
 
     EASTER_EGG_STAIRCASE("Staircase_r1.wav"),
     EASTER_EGG_STRAYDOG_BONE("ILoveYou_r2.wav"),

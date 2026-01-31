@@ -5,9 +5,11 @@ import com.github.m0bilebtw.player.CEngineerPlayer;
 import com.github.m0bilebtw.player.LoggedInState;
 import com.github.m0bilebtw.sound.Sound;
 import com.github.m0bilebtw.sound.SoundEngine;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
+import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
@@ -40,12 +42,26 @@ public class QualityOfLifeTriggers {
     @Inject
     private LoggedInState loggedInState;
 
+    private static final String GEMSTONE_CRAB_ACTOR_NAME = "Gemstone Crab";
+
     private int lastInfernalParchmentWarningTick = -1;
 
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged) {
         if (varbitChanged.getVarbitId() == VarbitID.INSIDE_WILDERNESS && varbitChanged.getValue() == 1) {
             checkAndWarnForUnparchmentedInfernal();
+        }
+    }
+
+    @Subscribe
+    public void onActorDeath(ActorDeath actorDeath) {
+        if (!config.announceGemstoneCrabMovement())
+            return;
+
+        Actor actor = actorDeath.getActor();
+        if (client.getLocalPlayer().getInteracting() == actor && GEMSTONE_CRAB_ACTOR_NAME.equals(actor.getName())) {
+            cEngineer.sendChatIfEnabled("The gem crab has moved!");
+            soundEngine.playClip(Sound.QOL_GEM_CRAB_MOVED, executor);
         }
     }
 

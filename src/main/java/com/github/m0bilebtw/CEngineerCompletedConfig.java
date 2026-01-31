@@ -214,6 +214,17 @@ public interface CEngineerCompletedConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            keyName = "announceGemstoneCrabMovement",
+            name = "Announce Gemstone Crab Movement",
+            description = "Should C Engineer announce when the Gemstone Crab moves?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 26
+    )
+    default boolean announceGemstoneCrabMovement() {
+        return true;
+    }
+
     @ConfigSection(
             name = "General Announcement Settings",
             description = "Settings for other details when achievement sounds play.",
