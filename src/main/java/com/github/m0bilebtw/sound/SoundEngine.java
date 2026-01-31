@@ -6,9 +6,6 @@ import net.runelite.client.audio.AudioPlayer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,7 +34,7 @@ public class SoundEngine {
 
         try {
             audioPlayer.play(SoundFileManager.getSoundFile(sound), gain);
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+        } catch (Exception e) {
             log.warn("Failed to load C Engineer sound {}", sound, e);
         }
     }
