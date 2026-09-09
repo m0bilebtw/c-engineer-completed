@@ -19,11 +19,16 @@ public enum Sound {
     GRUBBY_KEY("grubby_key_r1.wav"),
     LARRANS_KEY("larrans_key_r1.wav"),
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
+    VALUABLE_DROP("valuable_drop_r1.wav"),
+    BARROWS_NEVER_LUCKY("barrows_never_lucky_r1.wav"),
+    SUPERIOR_FOE("superior_foe_r1.wav"),
+    RAID_UNIQUE_FOR_SOMEONE_ELSE("purple_not_for_me_r1.wav"),
     DEATH("DyingHCIMCompleted_r1.wav"),
     DEATH_TO_C_ENGINEER("Sit_r1.wav"),
 
     QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav"),
     QOL_GEM_CRAB_MOVED("gem_crab_moved_r1.wav"),
+    QOL_SHOOTING_STAR_LAYER_MINED("shooting_star_layer_r1.wav"),
 
     EASTER_EGG_STAIRCASE("Staircase_r1.wav"),
     EASTER_EGG_STRAYDOG_BONE("ILoveYou_r2.wav"),

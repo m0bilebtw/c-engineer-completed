@@ -225,6 +225,87 @@ public interface CEngineerCompletedConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            keyName = "announceShootingStarLayerMined",
+            name = "Announce Shooting Star Layer Mined",
+            description = "Should C Engineer announce when the crashed star you are at is mined down to its next layer?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 27
+    )
+    default boolean announceShootingStarLayerMined() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceSuperiorFoe",
+            name = "Announce Superior Foe",
+            description = "Should C Engineer announce when a superior slayer foe appears?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 28
+    )
+    default boolean announceSuperiorFoe() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceBarrowsNeverLucky",
+            name = "Announce Barrows Chest Without A Unique",
+            description = "Should C Engineer sympathise when you open a Barrows chest that has no brother's equipment in it?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 29
+    )
+    default boolean announceBarrowsNeverLucky() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceRaidUniqueForSomeoneElse",
+            name = "Announce Someone Else's Raid Purple",
+            description = "Should C Engineer announce when a unique drops in your Chambers of Xeric, Theatre of Blood or Tombs of Amascut raid and it goes to someone else?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 30
+    )
+    default boolean announceRaidUniqueForSomeoneElse() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "announceValuableDrops",
+            name = "Announce Valuable Drops",
+            description = "Should C Engineer announce when a kill drops loot worth more than the value below, or an item matching the list below?",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 31
+    )
+    default boolean announceValuableDrops() {
+        return true;
+    }
+
+    @Range(
+            min = 0,
+            max = Integer.MAX_VALUE
+    )
+    @ConfigItem(
+            keyName = "valuableDropThreshold",
+            name = "Valuable drop value (gp)",
+            description = "How much the whole drop has to be worth (Grand Exchange price) before it is announced. Set to 0 to only announce the items listed below.",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 32
+    )
+    default int valuableDropThreshold() {
+        return 1_000_000;
+    }
+
+    @ConfigItem(
+            keyName = "valuableDropItems",
+            name = "Always valuable items",
+            description = "Comma separated item names that are always announced no matter what they are worth, which is handy for untradeables. Wildcards (*) are supported, e.g. \"vestige, *ancient icon\"",
+            section = SECTION_NON_ACHIEVEMENT_ANNOUNCEMENTS,
+            position = 33
+    )
+    default String valuableDropItems() {
+        return "";
+    }
+
     @ConfigSection(
             name = "General Announcement Settings",
             description = "Settings for other details when achievement sounds play.",
