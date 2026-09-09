@@ -270,7 +270,7 @@ public class AnnouncementTriggers {
         if (CEngineerCompletedConfig.GROUP.equals(event.getGroup())) {
 
 			if ("announcementVolume".equals(event.getKey()) || "selectAnySoundToTestPlayIt".equals(event.getKey())) {
-				soundEngine.playClip(config.selectAnySoundToTestPlayIt(), executor);
+				soundEngine.playClipImmediately(config.selectAnySoundToTestPlayIt(), executor);
 			} else if ("announceCollectionLog".equals(event.getKey())) {
                 clientThread.invokeLater(() ->
                         checkAndWarnForCollectionLogNotificationSetting(client.getVarbitValue(VarbitID.OPTION_COLLECTION_NEW_ITEM)));

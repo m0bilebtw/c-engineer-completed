@@ -259,11 +259,22 @@ public interface CEngineerCompletedConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "avoidOverlappingAnnouncements",
+            name = "Avoid overlapping announcements",
+            description = "Should C Engineer wait his turn when two things happen at once, saying the more notable one first and the other after, rather than talking over himself?",
+            section = SECTION_GENERAL_ANNOUNCEMENT_SETTINGS,
+            position = 43
+    )
+    default boolean avoidOverlappingAnnouncements() {
+        return true;
+    }
+
+    @ConfigItem(
             keyName = "delayCoXCollectionLogAnnouncements",
             name = "Delay CoX collection log announcements",
             description = "Wait until you open the reward chest at CoX before announcing new collection log slots (also delays Olmlet announcement)",
             section = SECTION_GENERAL_ANNOUNCEMENT_SETTINGS,
-            position = 43
+            position = 44
     )
     default boolean delayCoXCollectionLogAnnouncements() {
         return true;

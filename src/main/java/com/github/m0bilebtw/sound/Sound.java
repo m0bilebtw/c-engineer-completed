@@ -5,11 +5,11 @@ import lombok.Getter;
 import java.util.Random;
 
 public enum Sound {
-    LEVEL_UP("LevelUpCompleted_r2.wav"),
-    QUEST("QuestCompleted_r2.wav"),
-    COLLECTION_LOG_SLOT("ColLogSlotCompleted_r1.wav"),
+    LEVEL_UP("LevelUpCompleted_r2.wav", SoundPriority.LOW),
+    QUEST("QuestCompleted_r2.wav", SoundPriority.HIGH),
+    COLLECTION_LOG_SLOT("ColLogSlotCompleted_r1.wav", SoundPriority.HIGH),
     COMBAT_TASK("CombatTaskCompleted_r1.wav"),
-    ACHIEVEMENT_DIARY("AchieveDiaryCompleted_r1.wav"),
+    ACHIEVEMENT_DIARY("AchieveDiaryCompleted_r1.wav", SoundPriority.HIGH),
     SLAYER_TASK("slayer_task_r2.wav"),
     HUNTER_RUMOUR("hunter_rumour_r2.wav"),
     HUNTER_RUMOUR_NOT_COMPLETED("hunter_rumour_not_completed_r1.wav"),
@@ -19,73 +19,84 @@ public enum Sound {
     GRUBBY_KEY("grubby_key_r1.wav"),
     LARRANS_KEY("larrans_key_r1.wav"),
     BRIMSTONE_KEY("brimstone_key_r1.wav"),
-    DEATH("DyingHCIMCompleted_r1.wav"),
-    DEATH_TO_C_ENGINEER("Sit_r1.wav"),
+    DEATH("DyingHCIMCompleted_r1.wav", SoundPriority.HIGH),
+    DEATH_TO_C_ENGINEER("Sit_r1.wav", SoundPriority.HIGH),
 
-    QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav"),
-    QOL_GEM_CRAB_MOVED("gem_crab_moved_r1.wav"),
+    QOL_NON_PARCH_INFERNAL("Parched_Infernal_r1.wav", SoundPriority.LOW),
+    QOL_GEM_CRAB_MOVED("gem_crab_moved_r1.wav", SoundPriority.LOW),
 
-    EASTER_EGG_STAIRCASE("Staircase_r1.wav"),
-    EASTER_EGG_STRAYDOG_BONE("ILoveYou_r2.wav"),
-    EASTER_EGG_TWISTED_BOW_1GP("TwistedBow1GP_r1.wav"),
-    EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav"),
+    EASTER_EGG_STAIRCASE("Staircase_r1.wav", SoundPriority.LOW),
+    EASTER_EGG_STRAYDOG_BONE("ILoveYou_r2.wav", SoundPriority.LOW),
+    EASTER_EGG_TWISTED_BOW_1GP("TwistedBow1GP_r1.wav", SoundPriority.LOW),
+    EASTER_EGG_ZULRAH_PB("ZulrahPB_r1.wav", SoundPriority.LOW),
 
-    ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true),
+    ESCAPE_CRYSTAL("Escape_Crystal_r1.wav", true, SoundPriority.HIGH),
 
-    SNOWBALL_CONSOLIDATED_V1_1("SnowballTrollV2_steamPings_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_2("SnowballTrollV2_farts_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_3("SnowballV3_Notif_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_4("SnowballTrollV2_epicNotifSpam_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_5("SnowballV3_Sus_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_6("SnowballV4_7_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_7("SnowballV3_Bits_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_8("SnowballV3_Battery_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_9("SnowballV4_6_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_10("SnowballTroll3_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_11("SnowballTroll1_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_12("SnowballV3_Knock_r1.wav", true),
-    SNOWBALL_CONSOLIDATED_V1_13("SnowballTroll8_r1.wav", true),
+    SNOWBALL_CONSOLIDATED_V1_1("SnowballTrollV2_steamPings_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_2("SnowballTrollV2_farts_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_3("SnowballV3_Notif_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_4("SnowballTrollV2_epicNotifSpam_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_5("SnowballV3_Sus_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_6("SnowballV4_7_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_7("SnowballV3_Bits_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_8("SnowballV3_Battery_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_9("SnowballV4_6_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_10("SnowballTroll3_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_11("SnowballTroll1_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_12("SnowballV3_Knock_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_CONSOLIDATED_V1_13("SnowballTroll8_r1.wav", true, SoundPriority.LOW),
 
-    SNOWBALL_GAUNTLET_LOBBY("SnowballV4_NR_Gauntlet_r1.wav", true),
+    SNOWBALL_GAUNTLET_LOBBY("SnowballV4_NR_Gauntlet_r1.wav", true, SoundPriority.LOW),
 
-    SNOWBALL_EQUIPPING_BUCKET_HELM_G_OR_FUNNY_FEEL("SnowballV4_NR_BucketHelmG_r1.wav", true),
-    SNOWBALL_EQUIPPING_GIANT_BOOT("SnowballV4_NR_GiantBoot_r1.wav", true),
-    SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("SnowballV4_NR_SagaciousSpectacles_r1.wav", true),
-    SNOWBALL_EQUIPPING_MASK_OF_REBIRTH("SnowballV4_NR_MaskOfRebirth_r1.wav", true),
+    SNOWBALL_EQUIPPING_BUCKET_HELM_G_OR_FUNNY_FEEL("SnowballV4_NR_BucketHelmG_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_EQUIPPING_GIANT_BOOT("SnowballV4_NR_GiantBoot_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_EQUIPPING_SAGACIOUS_SPECTACLES("SnowballV4_NR_SagaciousSpectacles_r1.wav", true, SoundPriority.LOW),
+    SNOWBALL_EQUIPPING_MASK_OF_REBIRTH("SnowballV4_NR_MaskOfRebirth_r1.wav", true, SoundPriority.LOW),
 
-    EMOTE_TROLL_AKKHA("Akkha_r1.wav", true),
+    EMOTE_TROLL_AKKHA("Akkha_r1.wav", true, SoundPriority.LOW),
 
-    EMOTE_TROLL_BABA_1("BaBa_1_r1.wav", true),
-    EMOTE_TROLL_BABA_2("BaBa_2_r1.wav", true),
-    EMOTE_TROLL_BABA_3("BaBa_3_r1.wav", true),
+    EMOTE_TROLL_BABA_1("BaBa_1_r1.wav", true, SoundPriority.LOW),
+    EMOTE_TROLL_BABA_2("BaBa_2_r1.wav", true, SoundPriority.LOW),
+    EMOTE_TROLL_BABA_3("BaBa_3_r1.wav", true, SoundPriority.LOW),
 
-    EMOTE_TROLL_WE("Emote_We_r1.wav", true),
-    EMOTE_TROLL_EL("Emote_El_r2.wav", true),
-    EMOTE_TROLL_AF("AFriend2_Bye_r1.wav", true),
+    EMOTE_TROLL_WE("Emote_We_r1.wav", true, SoundPriority.LOW),
+    EMOTE_TROLL_EL("Emote_El_r2.wav", true, SoundPriority.LOW),
+    EMOTE_TROLL_AF("AFriend2_Bye_r1.wav", true, SoundPriority.LOW),
 
-    ATTACK_TROLL_IB("attack_troll_IB_r1.wav", true),
-    ATTACK_TROLL_DC("attack_troll_DC_r2.wav", true),
+    ATTACK_TROLL_IB("attack_troll_IB_r1.wav", true, SoundPriority.LOW),
+    ATTACK_TROLL_DC("attack_troll_DC_r2.wav", true, SoundPriority.LOW),
 
-    CHAT_TROLL_SKILL_SPECS_HELLO("SkillSpecs_Hello_r1.wav", true),
-    CHAT_TROLL_SKILL_SPECS_OK("SkillSpecs_OK_r1.wav", true),
-    CHAT_TROLL_SKILL_SPECS_OOPS("SkillSpecs_Oops_r1.wav", true),
+    CHAT_TROLL_SKILL_SPECS_HELLO("SkillSpecs_Hello_r1.wav", true, SoundPriority.LOW),
+    CHAT_TROLL_SKILL_SPECS_OK("SkillSpecs_OK_r1.wav", true, SoundPriority.LOW),
+    CHAT_TROLL_SKILL_SPECS_OOPS("SkillSpecs_Oops_r1.wav", true, SoundPriority.LOW),
 
-    TOB_GREEN_BALL("GreenBall_r1.wav", true),
+    TOB_GREEN_BALL("GreenBall_r1.wav", true, SoundPriority.LOW),
 
-    STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true),
+    STAT_SPY_SOUP("StatSpy_Soup_r1.wav", true, SoundPriority.LOW),
     ;
 
     @Getter
     private final String resourceName;
     private final boolean isStreamerTroll;
+    @Getter
+    private final SoundPriority priority;
 
     Sound(String resNam) {
-        this(resNam, false);
+        this(resNam, false, SoundPriority.NORMAL);
     }
 
     Sound(String resNam, boolean streamTroll) {
+        this(resNam, streamTroll, SoundPriority.NORMAL);
+    }
+
+    Sound(String resNam, SoundPriority soundPriority) {
+        this(resNam, false, soundPriority);
+    }
+
+    Sound(String resNam, boolean streamTroll, SoundPriority soundPriority) {
         resourceName = resNam;
         isStreamerTroll = streamTroll;
+        priority = soundPriority;
     }
 
     boolean isStreamerTroll() {
